@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity"
+    tools:context=".LoginActivity"
     android:background="@drawable/ic_background_udea">
 
 
@@ -81,15 +81,16 @@
             android:textColor="@color/colorPrimaryLight"
             android:text="Entrar" />
 
-        <ImageButton
+        <Button
             android:id="@+id/btn_signin_google"
-            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="40dp"
+            android:layout_marginTop="10dp"
             android:background="@android:color/background_light"
             android:elevation="0dp"
-            android:textDirection="firstStrong"
-            android:src="@drawable/ic_btn_google_light_normal_ios" />
+            android:onClick="signinGoogleAcount"
+            android:drawableLeft="@drawable/ic_btn_google_light_normal_ios"
+            android:text="Iniciar con Google" />
     </LinearLayout>
 
 
