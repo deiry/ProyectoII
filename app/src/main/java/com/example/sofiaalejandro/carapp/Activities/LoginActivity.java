@@ -1,10 +1,12 @@
-package com.example.sofiaalejandro.carapp;
+package com.example.sofiaalejandro.carapp.Activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.sofiaalejandro.carapp.Activities.HomeActivity;
+import com.example.sofiaalejandro.carapp.R;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
