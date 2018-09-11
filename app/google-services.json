@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "939429209116-of3pkbs714cdr4t4m6s85j0d0hh8495j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sofiaalejandro.carapp",
+            "certificate_hash": "a6f70b354be3af4326cb9afde79f27283c74108d"
+          }
+        },
+        {
           "client_id": "939429209116-o03ujr9pb7befeh75lieabtton855bak.apps.googleusercontent.com",
           "client_type": 3
         }
