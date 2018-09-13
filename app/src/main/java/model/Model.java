@@ -1,7 +1,6 @@
-package com.example.sofiaalejandro.carapp.Activities.model;
+package model;
 
 import android.util.Log;
-import android.widget.Toast;
 
 
 import com.google.firebase.database.DataSnapshot;
@@ -11,15 +10,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.security.SecureRandom;
-import java.util.List;
-import java.util.UUID;
 
-public class Model {
+public class Model extends com.activeandroid.Model{
     private DatabaseReference mDatabase;
     private String hashCode = null;
     private int LENG = 20;
 
-    public void save(){
+    public void saveModel(){
         if(hashCode == null){
             hashCode = HashCode.randomString(this.LENG);
         }
