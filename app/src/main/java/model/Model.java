@@ -15,6 +15,8 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
+import adapter.CarAdapter;
+
 public abstract class Model{
     private DatabaseReference mDatabase;
     public String hashCode = null;

@@ -11,7 +11,6 @@ import java.util.List;
 
 @Table(name = "tbl_route")
 public class Route extends Model{
-
     final static public String ROU_CN_DEPARTURE_LAT = "departureLat";
     final static public String ROU_CN_DEPARTURE_LNG = "departureLng";
     final static public String ROU_CN_ARRIVAL_LAT = "arrivalLat";

@@ -1,4 +1,6 @@
-package model;
+package adapter;
+
+import model.Car;
 
 public class CarAdapter {
 

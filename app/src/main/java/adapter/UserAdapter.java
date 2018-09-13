@@ -1,4 +1,6 @@
-package model;
+package adapter;
+
+import model.User;
 
 public class UserAdapter {
 

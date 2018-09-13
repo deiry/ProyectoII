@@ -11,6 +11,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import adapter.CarAdapter;
+
 @Table(name = "tbl_car")
 public class Car extends Model{
     final static public String CAR_CN_NAME = "name";
@@ -46,8 +48,8 @@ public class Car extends Model{
     public Car() {
     }
 
-    public Car(String name, String color, String plaque, User driver, int passegerNum,
-               String brand, String model) {
+    public Car(String name, String color, String plaque, User driver,
+               int passegerNum, String brand, String model) {
         this.name = name;
         this.color = color;
         this.plaque = plaque;
