@@ -4,7 +4,7 @@ import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
 @Table(name = "tbl_route_passenger")
-public class RoutexPassenger extends Model {
+public class Passenger extends Model {
 
     final static public String RP_CN_PASSENGER = "user";
     final static public String RP_CN_ROUTE = "route";
@@ -15,11 +15,16 @@ public class RoutexPassenger extends Model {
     @Column(name = RP_CN_ROUTE)
     private Route route;
 
-    public RoutexPassenger(User user, Route route) {
+    /* constructors */
+    public Passenger() {
+    }
+
+    public Passenger(User user, Route route) {
         this.user = user;
         this.route = route;
     }
 
+    /* getters and setters methods*/
     public User getUser() {
         return user;
     }
