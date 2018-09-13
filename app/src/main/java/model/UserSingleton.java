@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 import com.google.firebase.auth.FirebaseUser;
 

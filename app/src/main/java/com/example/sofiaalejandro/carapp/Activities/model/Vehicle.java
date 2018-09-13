@@ -1,5 +1,7 @@
 package com.example.sofiaalejandro.carapp.Activities.model;
 
+import model.Model;
+
 public class Vehicle extends Model {
     private String color = "";
     private String plate = "";
