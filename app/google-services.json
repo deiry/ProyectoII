@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "939429209116",
+    "firebase_url": "https://udeacarpooling-1535860506184.firebaseio.com",
+    "project_id": "udeacarpooling-1535860506184",
+    "storage_bucket": "udeacarpooling-1535860506184.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:939429209116:android:41924c7b8a04c570",
+        "android_client_info": {
+          "package_name": "com.example.sofiaalejandro.carapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "939429209116-1h6llm2egng47mkuqnqe4p22rbv0862h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sofiaalejandro.carapp",
+            "certificate_hash": "52078146592174f581e9070bfddc750c88c3b28f"
+          }
+        },
+        {
+          "client_id": "939429209116-of3pkbs714cdr4t4m6s85j0d0hh8495j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sofiaalejandro.carapp",
+            "certificate_hash": "a6f70b354be3af4326cb9afde79f27283c74108d"
+          }
+        },
+        {
+          "client_id": "939429209116-o03ujr9pb7befeh75lieabtton855bak.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4P44yuse9WD0wQJGs-WRtZsSf3leRkZA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "939429209116-o03ujr9pb7befeh75lieabtton855bak.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
