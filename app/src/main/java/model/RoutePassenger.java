@@ -3,8 +3,13 @@ package model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.List;
+
 @Table(name = "tbl_route_passenger")
-public class Passenger extends Model {
+public class RoutePassenger extends Model {
 
     final static public String RP_CN_PASSENGER = "user";
     final static public String RP_CN_ROUTE = "route";
@@ -16,10 +21,10 @@ public class Passenger extends Model {
     private Route route;
 
     /* constructors */
-    public Passenger() {
+    public RoutePassenger() {
     }
 
-    public Passenger(User user, Route route) {
+    public RoutePassenger(User user, Route route) {
         this.user = user;
         this.route = route;
     }
@@ -39,5 +44,10 @@ public class Passenger extends Model {
 
     public void setRoute(Route route) {
         this.route = route;
+    }
+
+    @Override
+    public List<JSONObject> modelToJSON(){
+        return null;
     }
 }

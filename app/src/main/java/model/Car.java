@@ -1,7 +1,15 @@
 package model;
 
+import android.util.Log;
+
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Table(name = "tbl_car")
 public class Car extends Model{
@@ -36,6 +44,17 @@ public class Car extends Model{
 
     /*constructors*/
     public Car() {
+    }
+
+    public Car(String name, String color, String plaque, User driver, int passegerNum,
+               String brand, String model) {
+        this.name = name;
+        this.color = color;
+        this.plaque = plaque;
+        this.driver = driver;
+        this.passegerNum = passegerNum;
+        this.brand = brand;
+        this.model = model;
     }
 
     /* getters and setters methods*/
@@ -93,5 +112,24 @@ public class Car extends Model{
 
     public void setModel(String model) {
         this.model = model;
+    }
+
+    public List<JSONObject> modelToJSON(){
+        List<JSONObject> list = new ArrayList<>();
+        JSONObject jsonClass = new JSONObject();
+        CarAdapter carAdapter = new CarAdapter(this);
+        try {
+            jsonClass.put(CLASS_NAME,this.getClass().getSimpleName());
+            jsonClass.put(ID,this.getHashCode());
+            jsonClass.put(MODEL,carAdapter);
+        }catch (JSONException e){
+            Log.e("ErrorJSON",e.getMessage());
+        }
+
+        list.add(jsonClass);;
+
+        list.addAll(this.driver.modelToJSON());
+
+        return list;
     }
 }

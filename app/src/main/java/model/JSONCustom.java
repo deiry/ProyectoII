@@ -2,5 +2,8 @@ package model;
 
 import org.json.JSONObject;
 
-public class JSONCustom extends JSONObject {
+import java.io.Serializable;
+
+public class JSONCustom extends JSONObject implements Serializable{
+
 }

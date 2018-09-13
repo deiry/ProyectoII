@@ -2,43 +2,56 @@ package model;
 
 import android.util.Log;
 
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.security.SecureRandom;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-public class Model extends com.activeandroid.Model{
+import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.List;
+
+public abstract class Model{
     private DatabaseReference mDatabase;
-    private String hashCode = null;
-    private int LENG = 20;
+    public String hashCode = null;
+    public static String CLASS_NAME = "className";
+    public static String MODEL = "model";
+    public static String ID = "id";
+    private int LENG = 15;
+
+    public abstract List<JSONObject> modelToJSON();
 
     public void saveModel(){
-        if(hashCode == null){
-            hashCode = HashCode.randomString(this.LENG);
-        }
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child(this.getClass().getSimpleName()).child(this.hashCode).setValue(this);
+        ArrayList<JSONObject> list = null;
 
+        list = (ArrayList<JSONObject>) this.modelToJSON();
+        for (int i = 0; i < list.size(); i++) {
+            JSONObject json = list.get(i);
+            try {
+                //find(Class.forName(json.getString(CLASS_NAME)),json.optString(ID));
+                mDatabase.child(json.getString(CLASS_NAME)).child(json.optString(ID)).setValue(json.get(MODEL));
+            }catch (JSONException e){
+                Log.e("ErrorJSON",e.getMessage());
+            } /*catch (ClassNotFoundException e) {
+                Log.e("ErrorClass",e.getMessage());
+            }*/
+        }
     }
 
-    public void find(final Class<?> cls){
+    public void find(final Class<?> cls,final String id){
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        final String code = this.hashCode;
 
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
                 Object post = null;
-                try {
-                    post = dataSnapshot.child(cls.getSimpleName()).child(code).getValue(Class.forName(cls.getName()));
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
+                post = dataSnapshot.child(cls.getSimpleName()).child(id).getValue();
                 Object v =  post;
                 // [END_EXCLUDE]
             }
@@ -53,8 +66,37 @@ public class Model extends com.activeandroid.Model{
         mDatabase.addValueEventListener(postListener);
     }
 
+    public static void onChange(final Class<?> cls, final String id){
+        DatabaseReference mPostReference = FirebaseDatabase.getInstance().getReference().child(cls.getSimpleName()).child(id);
+        ValueEventListener postListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                Object post = null;
+                post = (CarAdapter) dataSnapshot.child(cls.getSimpleName()).child(id).getValue(CarAdapter.class);
+                /*try {
+                    post = (CarAdapter) dataSnapshot.child(cls.getSimpleName()).child(id).getValue(CarAdapter.class);
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }*/
+                Object v =  post;
+                // [END_EXCLUDE]
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("ERROR", "loadPost:onCancelled", databaseError.toException());
+                // [START_EXCLUDE]
+            }
+        };
+        mPostReference.addValueEventListener(postListener);
+    }
+
 
     public String getHashCode(){
+        if(hashCode == null)
+            this.hashCode = HashCode.randomString(this.LENG);
         return this.hashCode;
     }
 }

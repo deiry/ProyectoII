@@ -1,13 +1,11 @@
 package com.example.sofiaalejandro.carapp.Activities;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.example.sofiaalejandro.carapp.Activities.HomeActivity;
 import com.example.sofiaalejandro.carapp.R;
-import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -15,8 +13,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.Arrays;
-import java.util.List;
+import model.Car;
+import model.User;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -28,28 +26,30 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        List<AuthUI.IdpConfig> providers = Arrays.asList(
-                new AuthUI.IdpConfig.EmailBuilder().build(),
-                new AuthUI.IdpConfig.GoogleBuilder().build());
+        User user = new User("David Alejandro",
+                "jandro240@gmail.com",
+                "");
 
-        // Create and launch sign-in intent
-        /*startActivityForResult(
-                AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setAvailableProviders(providers)
-                        //.setLogo(R.drawable.ic_background_udea)
-                        .setTheme(R.style.LoginTheme)
-                        .build(),
-                RC_SIGN_IN);*/
+        Car car = new Car("carro1",
+                "verde",
+                "KFV47D",
+                    user,
+                4,
+                "Bajaj",
+                "2015");
+
+        /*car.saveModel();
+
+        Model.onChange(car.getClass(),car.getHashCode());
+        Model.onChange(car.getDriver().getClass(),car.getDriver().getHashCode());*/
+
+
     }
 
 
@@ -84,6 +84,9 @@ public class LoginActivity extends AppCompatActivity {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
+
+
+
 
 
 }

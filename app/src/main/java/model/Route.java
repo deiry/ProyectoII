@@ -4,6 +4,11 @@ package model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.List;
+
 @Table(name = "tbl_route")
 public class Route extends Model{
 
@@ -132,5 +137,10 @@ public class Route extends Model{
 
     public void setCar(Car car) {
         this.car = car;
+    }
+
+    @Override
+    public List<JSONObject> modelToJSON(){
+        return null;
     }
 }
