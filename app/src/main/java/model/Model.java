@@ -7,6 +7,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,18 +25,20 @@ public abstract class Model{
     public static String MODEL = "model";
     public static String ID = "id";
     private int LENG = 15;
+    private FirebaseFirestore mFirestore;
 
     public abstract List<JSONObject> modelToJSON();
 
     public void saveModel(){
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        mFirestore = FirebaseFirestore.getInstance();
         ArrayList<JSONObject> list = null;
 
         list = (ArrayList<JSONObject>) this.modelToJSON();
         for (int i = 0; i < list.size(); i++) {
             JSONObject json = list.get(i);
             try {
-                //find(Class.forName(json.getString(CLASS_NAME)),json.optString(ID));
+
                 mDatabase.child(json.getString(CLASS_NAME)).child(json.optString(ID)).setValue(json.get(MODEL));
             }catch (JSONException e){
                 Log.e("ErrorJSON",e.getMessage());
