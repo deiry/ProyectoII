@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.sofiaalejandro.carapp.R;
 import com.firebase.ui.auth.IdpResponse;
@@ -20,6 +21,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 123;
     private GoogleSignInClient mGoogleSignInClient;
+    Car car;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
                 "jandro240@gmail.com",
                 "");
 
-        Car car = new Car("carro1",
+        car = new Car("carro1",
                 "verde",
                 "KFV47D",
                     user,
@@ -44,9 +46,11 @@ public class LoginActivity extends AppCompatActivity {
                 "Bajaj",
                 "2015");
 
-        /*car.saveModel();
+        car.save();
 
-        Model.onChange(car.getClass(),car.getHashCode());
+        Toast.makeText(this,car.getId(),Toast.LENGTH_SHORT).show();
+
+        /*Model.onChange(car.getClass(),car.getHashCode());
         Model.onChange(car.getDriver().getClass(),car.getDriver().getHashCode());*/
 
 

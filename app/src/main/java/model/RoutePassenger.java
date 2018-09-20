@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Map;
 
 @Table(name = "tbl_route_passenger")
 public class RoutePassenger extends Model {
@@ -48,6 +49,16 @@ public class RoutePassenger extends Model {
 
     @Override
     public List<JSONObject> modelToJSON(){
+        return null;
+    }
+
+    @Override
+    public void save() {
+
+    }
+
+    @Override
+    public Map<String, Object> toMap() {
         return null;
     }
 }

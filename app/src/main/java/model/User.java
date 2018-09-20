@@ -6,7 +6,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class User extends Model{
 
@@ -14,7 +16,7 @@ public class User extends Model{
     final static public String USR_CN_EMAIL = "email";
     final static public String USR_CN_TOKEN = "token";
 
-
+    private String id;
     private String name;
     private String email;
     private String token;
@@ -26,6 +28,14 @@ public class User extends Model{
         this.name = name;
         this.email = email;
         this.token = token;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -57,7 +67,6 @@ public class User extends Model{
         JSONObject jsonClass = new JSONObject();
         try{
             jsonClass.put(CLASS_NAME,this.getClass().getSimpleName());
-            jsonClass.put(ID,getHashCode());
             jsonClass.put(MODEL,this);
         }catch (JSONException e){
             Log.e("ErrorJSON",e.getMessage());
@@ -66,5 +75,19 @@ public class User extends Model{
         list.add(jsonClass);
 
         return list;
+    }
+
+    @Override
+    public void save() {
+
+    }
+
+    @Override
+    public Map<String, Object> toMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put(USR_CN_NAME, this.name);
+        map.put(USR_CN_EMAIL, this.email);
+        map.put(USR_CN_TOKEN, this.token);
+        return map;
     }
 }

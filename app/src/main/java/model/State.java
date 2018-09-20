@@ -6,6 +6,7 @@ import com.activeandroid.annotation.Table;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Map;
 
 @Table(name = "tbl_car")
 public class State extends Model{
@@ -20,6 +21,16 @@ public class State extends Model{
 
     @Override
     public List<JSONObject> modelToJSON(){
+        return null;
+    }
+
+    @Override
+    public void save() {
+
+    }
+
+    @Override
+    public Map<String, Object> toMap() {
         return null;
     }
 }

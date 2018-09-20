@@ -28,8 +28,6 @@ public class CarAdapter {
         this.name = car.getName();
         this.color = car.getColor();
         this.plaque = car.getPlaque();
-        this.hasCode = car.getHashCode();
-        this.driver = car.getDriver().getHashCode();
         this.passegerNum = car.getPassegerNum();
         this.brand = car.getBrand();
         this.model = car.getModel();

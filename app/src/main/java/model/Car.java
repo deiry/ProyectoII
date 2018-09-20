@@ -1,5 +1,6 @@
 package model;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.activeandroid.annotation.Column;
@@ -9,9 +10,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import adapter.CarAdapter;
+import callback.CallbackModel;
 
 @Table(name = "tbl_car")
 public class Car extends Model{
@@ -122,7 +126,6 @@ public class Car extends Model{
         CarAdapter carAdapter = new CarAdapter(this);
         try {
             jsonClass.put(CLASS_NAME,this.getClass().getSimpleName());
-            jsonClass.put(ID,this.getHashCode());
             jsonClass.put(MODEL,carAdapter);
         }catch (JSONException e){
             Log.e("ErrorJSON",e.getMessage());
@@ -133,5 +136,51 @@ public class Car extends Model{
         list.addAll(this.driver.modelToJSON());
 
         return list;
+    }
+
+    @Override
+    public void save() {
+        this.driver.saveModel(new CallbackModel() {
+            @Override
+            public void onSuccess(Object id) {
+                saveCar((String) id);
+            }
+
+            @Override
+            public void onError(Object model, String message) {
+                Log.w("ERROR MODEL", message);
+            }
+        });
+    }
+
+    private void saveCar(String idDriver){
+
+        this.driver.setId(idDriver);
+        final Car car = this;
+
+        this.saveModel(new CallbackModel() {
+            @Override
+            public void onSuccess(Object id) {
+                setId((String) id);
+            }
+
+            @Override
+            public void onError(Object model, String message) {
+
+            }
+        });
+    }
+
+    @Override
+    public Map<String, Object> toMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put(CAR_CN_NAME, this.name);
+        map.put(CAR_CN_COLOR, this.color);
+        map.put(CAR_CN_BRAND, this.brand);
+        map.put(CAR_CN_MODEL, this.model);
+        map.put(CAR_CN_PASSENGER_NUM, this.passegerNum);
+        map.put(CAR_CN_PLAQUE, this.plaque);
+        map.put(CAR_CN_DRIVER, this.driver.getId());
+        return map;
     }
 }
