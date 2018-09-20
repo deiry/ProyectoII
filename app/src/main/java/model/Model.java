@@ -38,8 +38,11 @@ public abstract class Model{
         for (int i = 0; i < list.size(); i++) {
             JSONObject json = list.get(i);
             try {
+                //find(Class.forName(json.getString(CLASS_NAME)),json.optString(ID));
+                mDatabase.child(json.getString(CLASS_NAME))
+                        .child(json.optString(ID))
+                        .setValue(json.get(MODEL));
 
-                mDatabase.child(json.getString(CLASS_NAME)).child(json.optString(ID)).setValue(json.get(MODEL));
             }catch (JSONException e){
                 Log.e("ErrorJSON",e.getMessage());
             } /*catch (ClassNotFoundException e) {
