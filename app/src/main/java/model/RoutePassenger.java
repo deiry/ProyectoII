@@ -6,8 +6,11 @@ import com.activeandroid.annotation.Table;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import callback.CallbackModel;
 
 @Table(name = "tbl_route_passenger")
 public class RoutePassenger extends Model {
@@ -53,12 +56,56 @@ public class RoutePassenger extends Model {
     }
 
     @Override
-    public void save() {
+    public void save(final CallbackModel callbackModel) {
+        this.user.save(new CallbackModel() {
+            @Override
+            public void onSuccess(Object id) {
+                user.setId((String) id);
+                saveRoute(callbackModel);
+            }
 
+            @Override
+            public void onError(Object model, String message) {
+
+            }
+        });
+    }
+
+    private void saveRoute(final CallbackModel callbackModel){
+        route.save(new CallbackModel() {
+            @Override
+            public void onSuccess(Object id) {
+                route.setId((String) id);
+                saveRoutePassenger(callbackModel);
+            }
+
+            @Override
+            public void onError(Object model, String message) {
+                callbackModel.onError(model,message);
+            }
+        });
+    }
+
+    private void saveRoutePassenger(final CallbackModel callbackModel){
+        this.saveModel(new CallbackModel() {
+            @Override
+            public void onSuccess(Object id) {
+                setId((String) id);
+                callbackModel.onSuccess(id);
+            }
+
+            @Override
+            public void onError(Object model, String message) {
+                callbackModel.onError(model, message);
+            }
+        });
     }
 
     @Override
     public Map<String, Object> toMap() {
-        return null;
+        Map<String, Object> map = new HashMap<>();
+        map.put(RP_CN_PASSENGER, this.user.getId());
+        map.put(RP_CN_ROUTE, this.route.getId());
+        return map;
     }
 }

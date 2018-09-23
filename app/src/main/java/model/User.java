@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import callback.CallbackModel;
+
 public class User extends Model{
 
     final static public String USR_CN_NAME = "name";
@@ -78,8 +80,23 @@ public class User extends Model{
     }
 
     @Override
-    public void save() {
+    public void save(final CallbackModel callbackModel) {
+        this.saveModel(new CallbackModel() {
+            @Override
+            public void onSuccess(Object id) {
+                setId((String) id);
+                callbackModel.onSuccess(id);
+            }
 
+            @Override
+            public void onError(Object model, String message) {
+
+            }
+        });
+    }
+
+    static public void findById(CallbackModel callbackModel){
+        Model.find(callbackModel,"id","ItV1fVBVxwBttOalqI8G\n","User");
     }
 
     @Override
