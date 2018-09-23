@@ -7,8 +7,11 @@ import com.activeandroid.annotation.Table;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import callback.CallbackModel;
 
 @Table(name = "tbl_route")
 public class Route extends Model{
@@ -38,7 +41,7 @@ public class Route extends Model{
     private double price;
 
     @Column(name = ROU_CN_DEPARTURE_TIME, notNull = true)
-    private String departureTime;
+    private double departureTime;
 
     @Column(name = ROU_CN_ARRIVAL_TIME, notNull = true)
     private double arrivalTime;
@@ -54,7 +57,7 @@ public class Route extends Model{
     }
 
     public Route(double departureLat, double departureLng, double arrivalLat, double arrivalLng,
-                 double price, String departureTime, double arrivalTime, State state, Car car) {
+                 double price, double departureTime, double arrivalTime, State state, Car car) {
         this.departureLat = departureLat;
         this.departureLng = departureLng;
         this.arrivalLat = arrivalLat;
@@ -107,11 +110,11 @@ public class Route extends Model{
         this.price = price;
     }
 
-    public String getDepartureTime() {
+    public double getDepartureTime() {
         return departureTime;
     }
 
-    public void setDepartureTime(String departureTime) {
+    public void setDepartureTime(double departureTime) {
         this.departureTime = departureTime;
     }
 
@@ -145,12 +148,65 @@ public class Route extends Model{
     }
 
     @Override
-    public void save() {
+    public void save(final CallbackModel callbackModel) {
+        this.car.save(new CallbackModel() {
+            @Override
+            public void onSuccess(Object id) {
+                car.setId((String) id);
+                saveState(callbackModel);
+            }
 
+            @Override
+            public void onError(Object model, String message) {
+                callbackModel.onError(model,message);
+            }
+        });
+    }
+
+    private void saveState(final CallbackModel callbackModel){
+        this.state.save(new CallbackModel() {
+            @Override
+            public void onSuccess(Object id) {
+                state.setId((String)id);
+                saveRoute(callbackModel);
+            }
+
+            @Override
+            public void onError(Object model, String message) {
+                callbackModel.onError(model, message);
+            }
+        });
+    }
+
+    private void saveRoute(final CallbackModel callbackModel){
+        this.saveModel(new CallbackModel() {
+            @Override
+            public void onSuccess(Object id) {
+                setId((String) id);
+                callbackModel.onSuccess(id);
+            }
+
+            @Override
+            public void onError(Object model, String message) {
+                callbackModel.onError(model,message);
+            }
+        });
     }
 
     @Override
     public Map<String, Object> toMap() {
-        return null;
+        Map<String, Object> map = new HashMap<>();
+        map.put(ROU_CN_ARRIVAL_LAT, this.arrivalLat);
+        map.put(ROU_CN_ARRIVAL_LNG, this.arrivalLng);
+        map.put(ROU_CN_ARRIVAL_TIME, this.arrivalTime);
+        map.put(ROU_CN_DEPARTURE_LAT, this.departureLat);
+        map.put(ROU_CN_DEPARTURE_LNG, this.departureLng);
+        map.put(ROU_CN_DEPARTURE_TIME, this.departureTime);
+        map.put(ROU_CN_CAR, this.car.getId());
+        map.put(ROU_CN_STATE, this.state.getId());
+        map.put(ROU_CN_PRICE, this.price);
+
+
+        return map;
     }
 }

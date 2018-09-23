@@ -139,34 +139,33 @@ public class Car extends Model{
     }
 
     @Override
-    public void save() {
-        this.driver.saveModel(new CallbackModel() {
+    public void save(final CallbackModel callbackModel) {
+        this.driver.save(new CallbackModel() {
             @Override
             public void onSuccess(Object id) {
-                saveCar((String) id);
+                driver.setId((String) id);
+                saveCar(callbackModel);
             }
 
             @Override
             public void onError(Object model, String message) {
-                Log.w("ERROR MODEL", message);
+                callbackModel.onError(model,message);
+
             }
         });
     }
 
-    private void saveCar(String idDriver){
-
-        this.driver.setId(idDriver);
-        final Car car = this;
-
+    private void saveCar(final CallbackModel callbackModel){
         this.saveModel(new CallbackModel() {
             @Override
             public void onSuccess(Object id) {
                 setId((String) id);
+                callbackModel.onSuccess(id);
             }
 
             @Override
             public void onError(Object model, String message) {
-
+                callbackModel.onError(model,message);
             }
         });
     }

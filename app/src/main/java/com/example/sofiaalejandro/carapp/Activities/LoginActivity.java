@@ -18,7 +18,12 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import callback.CallbackModel;
 import model.Car;
+import model.Route;
+import model.RoutePassenger;
+import model.State;
+import model.User;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -40,19 +45,90 @@ public class LoginActivity extends AppCompatActivity {
                 .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+      
+       User.findById(new CallbackModel() {
+            @Override
+            public void onSuccess(Object id) {
+                User u = (User) id;
+            }
+
+            @Override
+            public void onError(Object model, String message) {
+
+            }
+        });
+
+        /*User user = new User("David Alejandro",
+                "jandro240@gmail.com",
+                "");
+                final State state = new State();
+        state.setName("Cancel");
+
+        final Route route = new Route();
+        route.setArrivalLat(-7.897695);
+        route.setArrivalLng(6.034572);
+        route.setArrivalTime(12341234);
+        route.setDepartureLat(-6.456456);
+        route.setDepartureLng(6.982344);
+        route.setDepartureTime(1234567);
+        route.setCar(car);
+        route.setState(state);
+        route.setPrice(2000);
+
+
+
+        final RoutePassenger routePassenger = new RoutePassenger();
+        routePassenger.setRoute(route);
+        routePassenger.setUser(user);
+
+
+
+
+        car.save(new CallbackModel() {
+            @Override
+            public void onSuccess(Object id) {
+                route.save(new CallbackModel() {
+                    @Override
+                    public void onSuccess(Object id) {
+                        Toast.makeText(getApplicationContext(),(String) id , Toast.LENGTH_SHORT).show();
+                        routePassenger.save(new CallbackModel() {
+                            @Override
+                            public void onSuccess(Object id) {
+                                Toast.makeText(getApplicationContext(),(String) id , Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onError(Object model, String message) {
+
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(Object model, String message) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onError(Object model, String message) {
+
+            }
+        });*/
+        /*Model.onChange(car.getClass(),car.getHashCode());
+        Model.onChange(car.getDriver().getClass(),car.getDriver().getHashCode());*/
     }
 
     private void updateUI(@Nullable GoogleSignInAccount account) {
         if (account != null) {
             mStatusTextView.setText(account.getDisplayName());
-
             findViewById(R.id.btn_signin_google).setVisibility(View.GONE);
             findViewById(R.id.btn_signout_google).setVisibility(View.VISIBLE);
 
             Intent intent = new Intent(this,HomeActivity.class);
             startActivity(intent);
             this.finish();
-
         } else {
             mStatusTextView.setText("Desconectado");
 
