@@ -106,7 +106,8 @@ public class HomeActivity extends AppCompatActivity
         if (id == R.id.nav_find_route) {
             // Handle the camera action
         } else if (id == R.id.nav_self_routes) {
-
+            Intent intent = new Intent(this, FormCarActivity.class);
+            startActivity(intent);
         }
         else if (id == R.id.nav_signout) {
             AuthUI.getInstance()
