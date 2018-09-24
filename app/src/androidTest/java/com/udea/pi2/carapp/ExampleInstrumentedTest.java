@@ -1,4 +1,4 @@
-package com.example.sofiaalejandro.carapp;
+package com.udea.pi2.carapp;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

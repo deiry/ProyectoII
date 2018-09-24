@@ -1,4 +1,4 @@
-package com.example.sofiaalejandro.carapp.Activities;
+package com.udea.pi2.carapp.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,9 +20,6 @@ import com.google.android.gms.tasks.Task;
 
 import callback.CallbackModel;
 import model.Car;
-import model.Route;
-import model.RoutePassenger;
-import model.State;
 import model.User;
 
 public class LoginActivity extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package com.example.sofiaalejandro.carapp.Activities;
+package com.udea.pi2.carapp.Activities;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
