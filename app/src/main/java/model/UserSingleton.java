@@ -1,8 +1,9 @@
 package model;
 
+import com.activeandroid.Model;
 import com.google.firebase.auth.FirebaseUser;
 
-public class UserSingleton{
+public class UserSingleton extends Model{
 
     private static volatile UserSingleton user = new UserSingleton();
 

@@ -1,74 +1,109 @@
 package model;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
-
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
-public class Model extends com.activeandroid.Model{
+import adapter.CarAdapter;
+import callback.CallbackModel;
+
+public abstract class Model{
+    private static final String TAG = "model";
+    public static String CLASS_NAME = "className";
+    public static String MODEL = "model";
+    public static String ID = "id";
+
+    public String id = null;
+
     private DatabaseReference mDatabase;
-    private String hashCode = null;
-    private int LENG = 20;
+    private FirebaseFirestore mFirestore;
 
-    public void saveModel(){
-        if(hashCode == null){
-            hashCode = HashCode.randomString(this.LENG);
+    /* abstract methods */
+    public abstract List<JSONObject> modelToJSON();
+    public abstract void save(CallbackModel callbackModel);
+    public abstract Map<String,Object> toMap();
+
+    static public void find(final CallbackModel callbackModel, String field, String value, final String className){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        DocumentReference docRef = db.collection(className).document(value);
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                User city = documentSnapshot.toObject(User.class);
+                callbackModel.onSuccess(city);
+            }
+        });
+
+    }
+
+    public void saveModel(final CallbackModel callbackModel){
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mFirestore = FirebaseFirestore.getInstance();
+
+
+        if(this.getId() == null){
+
+            mFirestore.collection(this.getClass().getSimpleName()).add(this.toMap())
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
+                            callbackModel.onSuccess(documentReference.getId());
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(TAG, "Error adding document", e);
+                            callbackModel.onError(this,e.getMessage());
+                        }
+                    });
         }
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child(this.getClass().getSimpleName()).child(this.hashCode).setValue(this);
+        else{
+            final String id = this.getId();
+            mFirestore.collection(this.getClass().getSimpleName()).document(this.getId()).update(this.toMap())
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            callbackModel.onSuccess(id);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            callbackModel.onError(this,e.getMessage());
+                        }
+                    });
+        }
 
     }
 
-    public void find(final Class<?> cls){
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        final String code = this.hashCode;
-
-        ValueEventListener postListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
-                Object post = null;
-                try {
-                    post = dataSnapshot.child(cls.getSimpleName()).child(code).getValue(Class.forName(cls.getName()));
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-                Object v =  post;
-                // [END_EXCLUDE]
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w("ERROR", "loadPost:onCancelled", databaseError.toException());
-                // [START_EXCLUDE]
-            }
-        };
-        mDatabase.addValueEventListener(postListener);
+    public String getId() {
+        return id;
     }
 
-
-    public String getHashCode(){
-        return this.hashCode;
-    }
-}
-
-
-class HashCode {
-
-    static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    static SecureRandom rnd = new SecureRandom();
-
-    static public String randomString( int len ){
-        StringBuilder sb = new StringBuilder( len );
-        for( int i = 0; i < len; i++ )
-            sb.append( AB.charAt( rnd.nextInt(AB.length()) ) );
-        return sb.toString();
+    public void setId(String id) {
+        this.id = id;
     }
 }

@@ -1,7 +1,21 @@
 package model;
 
+import android.content.Context;
+import android.util.Log;
+
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import adapter.CarAdapter;
+import callback.CallbackModel;
 
 @Table(name = "tbl_car")
 public class Car extends Model{
@@ -36,6 +50,17 @@ public class Car extends Model{
 
     /*constructors*/
     public Car() {
+    }
+
+    public Car(String name, String color, String plaque, User driver,
+               int passegerNum, String brand, String model) {
+        this.name = name;
+        this.color = color;
+        this.plaque = plaque;
+        this.driver = driver;
+        this.passegerNum = passegerNum;
+        this.brand = brand;
+        this.model = model;
     }
 
     /* getters and setters methods*/
@@ -93,5 +118,68 @@ public class Car extends Model{
 
     public void setModel(String model) {
         this.model = model;
+    }
+
+    public List<JSONObject> modelToJSON(){
+        List<JSONObject> list = new ArrayList<>();
+        JSONObject jsonClass = new JSONObject();
+        CarAdapter carAdapter = new CarAdapter(this);
+        try {
+            jsonClass.put(CLASS_NAME,this.getClass().getSimpleName());
+            jsonClass.put(MODEL,carAdapter);
+        }catch (JSONException e){
+            Log.e("ErrorJSON",e.getMessage());
+        }
+
+        list.add(jsonClass);;
+
+        list.addAll(this.driver.modelToJSON());
+
+        return list;
+    }
+
+    @Override
+    public void save(final CallbackModel callbackModel) {
+        this.driver.save(new CallbackModel() {
+            @Override
+            public void onSuccess(Object id) {
+                driver.setId((String) id);
+                saveCar(callbackModel);
+            }
+
+            @Override
+            public void onError(Object model, String message) {
+                callbackModel.onError(model,message);
+
+            }
+        });
+    }
+
+    private void saveCar(final CallbackModel callbackModel){
+        this.saveModel(new CallbackModel() {
+            @Override
+            public void onSuccess(Object id) {
+                setId((String) id);
+                callbackModel.onSuccess(id);
+            }
+
+            @Override
+            public void onError(Object model, String message) {
+                callbackModel.onError(model,message);
+            }
+        });
+    }
+
+    @Override
+    public Map<String, Object> toMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put(CAR_CN_NAME, this.name);
+        map.put(CAR_CN_COLOR, this.color);
+        map.put(CAR_CN_BRAND, this.brand);
+        map.put(CAR_CN_MODEL, this.model);
+        map.put(CAR_CN_PASSENGER_NUM, this.passegerNum);
+        map.put(CAR_CN_PLAQUE, this.plaque);
+        map.put(CAR_CN_DRIVER, this.driver.getId());
+        return map;
     }
 }
