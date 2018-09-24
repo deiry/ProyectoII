@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FormCarActivity">
+
+
+   <ScrollView
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:layout_margin="20dp"
+           android:layout_weight="1"
+           android:orientation="vertical">
+
+           <!--Input Brand-->
+           <android.support.design.widget.TextInputLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content">
+
+               <android.support.design.widget.TextInputEditText
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:hint="Marca"
+                   android:id="@+id/input_brand"
+                   android:inputType="text"
+                   android:maxLines="1"/>
+
+           </android.support.design.widget.TextInputLayout>
+
+           <!--Input line-->
+           <android.support.design.widget.TextInputLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content">
+
+               <android.support.design.widget.TextInputEditText
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:hint="Línea"
+                   android:id="@+id/input_line"
+                   android:inputType="text"
+                   android:maxLines="1"/>
+
+           </android.support.design.widget.TextInputLayout>
+
+           <!--Input model-->
+           <android.support.design.widget.TextInputLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content">
+
+               <android.support.design.widget.TextInputEditText
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:hint="Modelo (Año)"
+                   android:id="@+id/input_model"
+                   android:inputType="text"
+                   android:maxLines="1"/>
+
+           </android.support.design.widget.TextInputLayout>
+
+           <!--Input plaque-->
+           <android.support.design.widget.TextInputLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content">
+
+               <android.support.design.widget.TextInputEditText
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:hint="Placa"
+                   android:id="@+id/input_plaque"
+                   android:inputType="text"
+                   />
+
+           </android.support.design.widget.TextInputLayout>
+
+           <!--Input número pasajeros-->
+           <android.support.design.widget.TextInputLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content">
+
+               <android.support.design.widget.TextInputEditText
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:hint="Número de pasajeros"
+                   android:id="@+id/input_num_passenger"
+                   android:inputType="number"
+                   />
+
+           </android.support.design.widget.TextInputLayout>
+
+           <!--Input Observaciones-->
+           <android.support.design.widget.TextInputLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content">
+
+               <android.support.design.widget.TextInputEditText
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:hint="Observaciones"
+                   android:id="@+id/input_obser"
+                   android:inputType="textMultiLine"
+                   android:lines="5"
+                   android:maxLines="4"
+                   />
+
+           </android.support.design.widget.TextInputLayout>
+
+           <Button
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:text="Guardar"
+               android:background="@color/colorPrimaryDark"
+               android:shadowRadius="3"/>
+
+       </LinearLayout>
+   </ScrollView>
+
+
+</LinearLayout>
