@@ -1,4 +1,4 @@
-package com.example.sofiaalejandro.carapp;
+package com.udea.pi2.carapp.Activities;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -18,6 +18,7 @@ import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.text.TextUtils;
 import android.view.MenuItem;
+import com.udea.pi2.carapp.R;
 
 import java.util.List;
 

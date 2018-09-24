@@ -1,6 +1,9 @@
-package com.example.sofiaalejandro.carapp.Activities;
+package com.udea.pi2.carapp.Activities;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -12,17 +15,22 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.example.sofiaalejandro.carapp.R;
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
+import com.udea.pi2.carapp.R;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    public FirebaseDatabase database;
     private FirebaseAuth auth;
+    NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,17 +54,12 @@ public class HomeActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        conectDataBase();
 
         getCurrentUser();
     }
 
-    private void conectDataBase() {
-        // Write a message to the database
-        this.database = FirebaseDatabase.getInstance();
-    }
 
     @Override
     public void onBackPressed() {
@@ -90,6 +93,10 @@ public class HomeActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    public void finishHome(){
+        this.finish();
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -99,9 +106,19 @@ public class HomeActivity extends AppCompatActivity
         if (id == R.id.nav_find_route) {
             // Handle the camera action
         } else if (id == R.id.nav_self_routes) {
-
-        }else if (id == R.id.nav_signout) {
-
+            Intent intent = new Intent(this, FormCarActivity.class);
+            startActivity(intent);
+        }
+        else if (id == R.id.nav_signout) {
+            AuthUI.getInstance()
+                    .signOut(this)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+                            startActivity(intent);
+                            finishHome();
+                        }
+                    });
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -110,11 +127,28 @@ public class HomeActivity extends AppCompatActivity
     }
 
     public void getCurrentUser() {
+        View headerView = navigationView.getHeaderView(0);
 
-        auth = FirebaseAuth.getInstance();
-        FirebaseUser user = auth.getCurrentUser();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         if(user != null){
+            String email = user.getEmail();
+            String name = user.getDisplayName();
+            Uri uri = user.getPhotoUrl();
+            TextView tv_email = (TextView) headerView.findViewById(R.id.email_current_user);
+            TextView tv_name = (TextView) headerView.findViewById(R.id.name_current_user);
+            ImageView image = (ImageView) headerView.findViewById(R.id.image_current_user);
+            try {
+                tv_email.setText(email);
+                tv_name.setText(name);
+                Picasso.get()
+                        .load(uri)
+                        .resize(200, 200)
+                        .centerCrop()
+                        .into(image);
+            }catch (Exception e){
+
+            }
 
         }
         else{

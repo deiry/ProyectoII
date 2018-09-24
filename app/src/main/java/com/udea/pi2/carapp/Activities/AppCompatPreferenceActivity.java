@@ -1,4 +1,4 @@
-package com.example.sofiaalejandro.carapp;
+package com.udea.pi2.carapp.Activities;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

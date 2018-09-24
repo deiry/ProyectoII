@@ -1,4 +1,4 @@
-package com.example.sofiaalejandro.carapp;
+package com.udea.pi2.carapp;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.sofiaalejandro.carapp", appContext.getPackageName());
+        assertEquals("com.udea.pi2.carapp", appContext.getPackageName());
     }
 }

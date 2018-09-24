@@ -1,4 +1,4 @@
-package com.example.sofiaalejandro.carapp;
+package com.udea.pi2.carapp.Activities;
 
 import android.graphics.Typeface;
 import android.support.design.widget.TextInputEditText;
@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.udea.pi2.carapp.R;
 
 
 import java.util.ArrayList;
