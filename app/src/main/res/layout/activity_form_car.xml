@@ -112,11 +112,13 @@
            </android.support.design.widget.TextInputLayout>
 
            <Button
+               android:id="@+id/btn_save_car"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
-               android:text="Guardar"
                android:background="@color/colorPrimaryDark"
-               android:shadowRadius="3"/>
+               android:shadowRadius="3"
+               android:text="Guardar"
+               android:onClick="saveCar"/>
 
        </LinearLayout>
    </ScrollView>

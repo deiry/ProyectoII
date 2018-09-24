@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Toast;
 
 
+import callback.CallbackModel;
 import model.Car;
 
 public class FormCarActivity extends AppCompatActivity {
@@ -54,7 +56,17 @@ public class FormCarActivity extends AppCompatActivity {
 
         String obs = inputObs.getText().toString();
         car.setName(obs);
-        //car.save();
+        car.save(new CallbackModel() {
+            @Override
+            public void onSuccess(Object id) {
+
+            }
+
+            @Override
+            public void onError(Object model, String message) {
+
+            }
+        });
 
     }
 
@@ -79,13 +91,8 @@ public class FormCarActivity extends AppCompatActivity {
     }
 
     public void validate(){
-
-
-
-
         }
-
-        public View.OnFocusChangeListener focusChangeListener(final TextInputEditText input){
+    public View.OnFocusChangeListener focusChangeListener(final TextInputEditText input){
 
         View.OnFocusChangeListener listener = new View.OnFocusChangeListener() {
             @Override
@@ -97,8 +104,7 @@ public class FormCarActivity extends AppCompatActivity {
         };
             return listener;
         }
-
-        public TextWatcher textChangedLister(final TextInputEditText input){
+    public TextWatcher textChangedLister(final TextInputEditText input){
             TextWatcher listerner = new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
