@@ -18,7 +18,7 @@ public class User extends Model{
     final static public String USR_CN_EMAIL = "email";
     final static public String USR_CN_TOKEN = "token";
 
-    private String id;
+    //private String id;
     private String name;
     private String email;
     private String token;
@@ -30,14 +30,6 @@ public class User extends Model{
         this.name = name;
         this.email = email;
         this.token = token;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getName() {
