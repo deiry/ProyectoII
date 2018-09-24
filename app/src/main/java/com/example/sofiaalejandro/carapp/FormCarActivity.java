@@ -1,16 +1,22 @@
 package com.example.sofiaalejandro.carapp;
 
+import android.graphics.Typeface;
 import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
+import java.util.ArrayList;
+
 import callback.CallbackModel;
 import model.Car;
+import petrov.kristiyan.colorpicker.ColorPicker;
 
 public class FormCarActivity extends AppCompatActivity {
     private String brand;
@@ -26,6 +32,9 @@ public class FormCarActivity extends AppCompatActivity {
     private TextInputEditText inputNum;
     private TextInputEditText inputObs;
     private Car car;
+    private String colorC;
+    private TextView tvColor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +44,7 @@ public class FormCarActivity extends AppCompatActivity {
         validate();
     }
 
-    public void saveCar(View view){
+    public void saveCar(View view) {
 
         validate();
         String brand = inputBrand.getText().toString();
@@ -68,63 +77,116 @@ public class FormCarActivity extends AppCompatActivity {
             }
         });
 
+        car.setColor(colorC);
+
     }
 
-    public void init(){
+    public void init() {
+
         inputBrand = (TextInputEditText) findViewById(R.id.input_brand);
         inputBrand.setOnFocusChangeListener(focusChangeListener(inputBrand));
+        inputBrand.addTextChangedListener(textChangedLister(inputBrand));
 
         inputLine = (TextInputEditText) findViewById(R.id.input_line);
         inputLine.setOnFocusChangeListener(focusChangeListener(inputLine));
+        inputLine.addTextChangedListener(textChangedLister(inputLine));
 
         inputModel = (TextInputEditText) findViewById(R.id.input_model);
         inputModel.setOnFocusChangeListener(focusChangeListener(inputModel));
+        inputModel.addTextChangedListener(textChangedLister(inputModel));
 
         inputPlaque = (TextInputEditText) findViewById(R.id.input_plaque);
         inputPlaque.setOnFocusChangeListener(focusChangeListener(inputPlaque));
+        inputPlaque.addTextChangedListener(textChangedLister(inputPlaque));
 
         inputNum = (TextInputEditText) findViewById(R.id.input_num_passenger);
         inputNum.setOnFocusChangeListener(focusChangeListener(inputNum));
+        inputNum.addTextChangedListener(textChangedLister(inputNum));
 
         inputObs = (TextInputEditText) findViewById(R.id.input_obser);
         inputObs.setOnFocusChangeListener(focusChangeListener(inputObs));
+        inputObs.addTextChangedListener(textChangedLister(inputObs));
+
+        tvColor = (TextView) findViewById(R.id.tv_color);
+        colorC = "";
     }
 
-    public void validate(){
-        }
-    public View.OnFocusChangeListener focusChangeListener(final TextInputEditText input){
+    public void validate() {
+    }
+
+    public View.OnFocusChangeListener focusChangeListener(final TextInputEditText input) {
 
         View.OnFocusChangeListener listener = new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    input.setError("Vacio");
+                if (!hasFocus && input.getText().toString().isEmpty()) {
+                    input.setError("Vacío");
+                } else if (!input.getText().toString().isEmpty()) {
+                    input.setError(null);
+                    TextInputLayout h = (TextInputLayout) findViewById(R.id.input_ly_brand);
+                    h.setErrorEnabled(false);
                 }
             }
         };
-            return listener;
-        }
-    public TextWatcher textChangedLister(final TextInputEditText input){
-            TextWatcher listerner = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    if(s.toString().isEmpty()){
-                        input.setError("Vacío");
-                    }
-                }
-            };
-            return listerner;
-        }
+        return listener;
     }
+
+    public TextWatcher textChangedLister(final TextInputEditText input) {
+        TextWatcher listerner = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().isEmpty()) {
+                    input.setError("Vacío");
+                } else {
+                    input.setError(null);
+                    TextInputLayout h = (TextInputLayout) findViewById(R.id.input_ly_brand);
+                    h.setErrorEnabled(false);
+                }
+            }
+        };
+        return listerner;
+    }
+
+    public void openColorPicker(View view) {
+        final ColorPicker colorPicker = new ColorPicker(this);
+        ArrayList<String> colors = new ArrayList<>();
+        colors.add("#ffffff");
+        colors.add("#000000");
+        colors.add("#b3b3b3");
+        colors.add("#bb0a30");
+        colors.add("#104E8B");
+        colors.add("#691F01");
+
+        colorPicker.setColors(colors)
+                    .setColumns(5)
+                    .setRoundColorButton(true)
+                    .setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
+                        @Override
+                        public void onChooseColor(int position, int color) {
+                            colorC = String.valueOf(color);
+                            tvColor.setTextColor(color);
+                            tvColor.setTypeface(null, Typeface.BOLD);
+                        }
+
+                        @Override
+                        public void onCancel() {
+
+                        }
+                    })
+                    .show();
+
+
+    }
+}
 
 
