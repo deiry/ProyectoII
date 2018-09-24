@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.sofiaalejandro.carapp", appContext.getPackageName());
+        assertEquals("com.udea.pi2.carapp", appContext.getPackageName());
     }
 }
