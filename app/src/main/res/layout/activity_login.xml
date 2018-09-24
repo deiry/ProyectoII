@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/ic_background_udea"
     android:orientation="vertical"
-    tools:context=".Activities.LoginActivity"
-    android:background="@drawable/ic_background_udea">
+    tools:context=".Activities.LoginActivity">
 
 
     <LinearLayout
@@ -21,7 +21,6 @@
             android:layout_weight="1"
             android:text="TextView" />
     </LinearLayout>
-
 
 
     <ScrollView
@@ -73,12 +72,13 @@
         </LinearLayout>
 
     </ScrollView>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2"
-        android:padding="20dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="20dp">
 
         <Button
             android:id="@+id/btn_signin"
@@ -86,8 +86,8 @@
             android:layout_height="40dp"
             android:layout_marginTop="10dp"
             android:background="@color/colorPrimary"
-            android:textColor="@color/colorPrimaryLight"
-            android:text="Entrar" />
+            android:text="Entrar"
+            android:textColor="@color/colorPrimaryLight" />
 
         <Button
             android:id="@+id/btn_signin_google"
@@ -95,9 +95,9 @@
             android:layout_height="40dp"
             android:layout_marginTop="10dp"
             android:background="@android:color/background_light"
+            android:drawableLeft="@drawable/ic_btn_google_light_normal_ios"
             android:elevation="0dp"
             android:onClick="signinGoogleAcount"
-            android:drawableLeft="@drawable/ic_btn_google_light_normal_ios"
             android:text="Iniciar con Google" />
 
         <Button
