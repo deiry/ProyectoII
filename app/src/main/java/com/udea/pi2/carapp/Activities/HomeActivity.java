@@ -1,6 +1,8 @@
 package com.udea.pi2.carapp.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -13,10 +15,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.example.sofiaalejandro.carapp.R;
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
+import com.udea.pi2.carapp.R;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -90,6 +95,10 @@ public class HomeActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    public void finishHome(){
+        this.finish();
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -101,7 +110,15 @@ public class HomeActivity extends AppCompatActivity
         } else if (id == R.id.nav_self_routes) {
 
         }else if (id == R.id.nav_signout) {
-
+            AuthUI.getInstance()
+                    .signOut(this)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+                            startActivity(intent);
+                            finishHome();
+                        }
+                    });
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -111,8 +128,7 @@ public class HomeActivity extends AppCompatActivity
 
     public void getCurrentUser() {
 
-        auth = FirebaseAuth.getInstance();
-        FirebaseUser user = auth.getCurrentUser();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         if(user != null){
 
