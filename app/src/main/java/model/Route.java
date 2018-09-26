@@ -4,7 +4,6 @@ package model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -208,5 +207,9 @@ public class Route extends Model{
 
 
         return map;
+    }
+
+    @Override
+    public void mapToModel(CallbackModel callbackModel, Map<String, Object> mapRequest) {
     }
 }

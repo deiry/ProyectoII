@@ -87,8 +87,12 @@ public class User extends Model{
         });
     }
 
-    static public void findById(CallbackModel callbackModel){
-        Model.find(callbackModel,"id","ItV1fVBVxwBttOalqI8G\n","User");
+    static public void findById(CallbackModel callbackModel,String id){
+        Model.singleRecord(callbackModel,"id","ItV1fVBVxwBttOalqI8G\n","User");
+    }
+
+    static public void findByEmail(CallbackModel callbackModel,String email){
+        Model.singleRecord(callbackModel,"email",email,"User");
     }
 
     @Override
@@ -98,5 +102,16 @@ public class User extends Model{
         map.put(USR_CN_EMAIL, this.email);
         map.put(USR_CN_TOKEN, this.token);
         return map;
+    }
+
+    @Override
+    public void mapToModel(CallbackModel callbackModel, Map<String, Object> mapRequest) {
+
+        HashMap<String, Object> map = (HashMap<String, Object>) mapRequest;
+        this.setName((String) map.get(USR_CN_NAME));
+        this.setEmail((String) map.get(USR_CN_EMAIL));
+        this.setToken((String) map.get(USR_CN_TOKEN));
+
+        callbackModel.onSuccess(this);
     }
 }

@@ -3,13 +3,16 @@ package model;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.json.JSONObject;
 
@@ -33,18 +36,104 @@ public abstract class Model{
     public abstract List<JSONObject> modelToJSON();
     public abstract void save(CallbackModel callbackModel);
     public abstract Map<String,Object> toMap();
+    public abstract void mapToModel(CallbackModel callbackModel, Map<String,Object> mapRequest);
 
-    static public void find(final CallbackModel callbackModel, String field, String value, final String className){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+    static  protected void findById(final CallbackModel callbackModel,String value, final String className){
+        //TODO: buscar por id
+        FirebaseFirestore.getInstance().collection(className).document(value).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            String id = task.getResult().getId();
 
-        DocumentReference docRef = db.collection(className).document(value);
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                User city = documentSnapshot.toObject(User.class);
-                callbackModel.onSuccess(city);
-            }
-        });
+                            if(className == "User"){
+                                final User model = new User();
+                                model.setId(id);
+                                model.mapToModel(new CallbackModel() {
+                                    @Override
+                                    public void onSuccess(Object id) {
+                                        callbackModel.onSuccess(model);
+                                    }
+
+                                    @Override
+                                    public void onError(Object model, String message) {
+                                        callbackModel.onError(model,message);
+                                    }
+                                }, task.getResult().getData());
+                            }
+                        }
+
+                    }
+                });
+    }
+
+    static protected void singleRecord(final CallbackModel callbackModel, String field, String value, final String className){
+        FirebaseFirestore.getInstance().collection(className).whereEqualTo(field,value).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot documentSnapshot : task.getResult().getDocuments()) {
+                                String id = documentSnapshot.getId();
+                                // here you can get the id.
+                                if(className == "User"){
+                                    final User model = new User();
+                                    model.setId(id);
+                                    model.mapToModel(new CallbackModel() {
+                                        @Override
+                                        public void onSuccess(Object id) {
+                                            callbackModel.onSuccess(model);
+                                        }
+
+                                        @Override
+                                        public void onError(Object model, String message) {
+                                            callbackModel.onError(model,message);
+                                        }
+                                    }, documentSnapshot.getData());
+
+
+                                }
+                                else if(className == "Car"){
+                                    final Car model = new Car();
+                                    model.setId(id);
+                                    model.mapToModel(new CallbackModel() {
+                                        @Override
+                                        public void onSuccess(Object id) {
+                                            callbackModel.onSuccess(model);
+                                        }
+
+                                        @Override
+                                        public void onError(Object model, String message) {
+
+                                        }
+                                    },documentSnapshot.getData());
+
+                                }
+                                /*else if(className == "State"){
+                                    State model = documentSnapshot.toObject(State.class);
+                                    model.setId(id);
+                                    callbackModel.onSuccess(model);
+                                }
+                                else if(className == "Route"){
+                                    Route model = documentSnapshot.toObject(Route.class);
+                                    model.setId(id);
+                                    callbackModel.onSuccess(model);
+                                }
+                                else if(className == "RoutePassenger"){
+                                    RoutePassenger model = documentSnapshot.toObject(RoutePassenger.class);
+                                    model.setId(id);
+                                    callbackModel.onSuccess(model);
+                                }*/
+
+
+                                // you can apply your actions...
+                            }
+                        } else {
+
+                        }
+                    }
+                });
 
     }
 
@@ -94,7 +183,7 @@ public abstract class Model{
         return id;
     }
 
-    public void setId(String id) {
+    protected void setId(String id) {
         this.id = id;
     }
 }

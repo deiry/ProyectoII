@@ -21,6 +21,7 @@ import com.udea.pi2.carapp.R;
 import java.util.Arrays;
 import java.util.List;
 
+import callback.CallbackModel;
 import model.User;
 
 public class LoginActivity extends AppCompatActivity {
@@ -68,7 +69,21 @@ public class LoginActivity extends AppCompatActivity {
                 u.setName(user.getDisplayName());
                 u.setToken(user.getIdToken(true).toString());
 
-                saveUser(u);
+                u.save(new CallbackModel() {
+                    @Override
+                    public void onSuccess(Object id) {
+                        Intent intent = new Intent(getApplicationContext(),HomeActivity.class);
+                        startActivity(intent);
+                        finishActivity();
+                    }
+
+                    @Override
+                    public void onError(Object model, String message) {
+
+                    }
+                });
+
+                //saveUser(u);
             } else {
                 // Sign in failed. If response is null the user canceled the
                 // sign-in flow using the back button. Otherwise check

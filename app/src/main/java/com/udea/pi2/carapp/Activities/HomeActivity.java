@@ -20,16 +20,14 @@ import android.widget.TextView;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 import com.udea.pi2.carapp.R;
 
+import callback.CallbackModel;
+import model.Car;
 import model.User;
 
 public class HomeActivity extends AppCompatActivity
@@ -142,19 +140,32 @@ public class HomeActivity extends AppCompatActivity
             String email = user.getEmail();
             String name = user.getDisplayName();
             Uri uri = user.getPhotoUrl();
-
-
-           /* u.save(new CallbackModel() {
+            User.findByEmail(new CallbackModel() {
                 @Override
                 public void onSuccess(Object id) {
-                    boolean b = true;
+                    User u = (User) id;
+                    final Car car = new Car();
+                    car.setName("micarro");
+                    car.setDriver(u);
+                    car.save(new CallbackModel() {
+                        @Override
+                        public void onSuccess(Object id) {
+                            String idd = car.getId();
+                            car.getBrand();
+                        }
+
+                        @Override
+                        public void onError(Object model, String message) {
+
+                        }
+                    });
                 }
 
                 @Override
                 public void onError(Object model, String message) {
 
                 }
-            });*/
+            },email);
             getUserFireSotore(email);
             TextView tv_email = (TextView) headerView.findViewById(R.id.email_current_user);
             TextView tv_name = (TextView) headerView.findViewById(R.id.name_current_user);
@@ -182,14 +193,7 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void getUserFireSotore(String email){
-        DocumentReference docRef = FirebaseFirestore.getInstance().collection("User").document(email);
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                User user = documentSnapshot.toObject(User.class);
-                user.getEmail();
-            }
-        });
+
 
     }
 }
