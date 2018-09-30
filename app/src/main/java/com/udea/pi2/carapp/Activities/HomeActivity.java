@@ -27,7 +27,6 @@ import com.squareup.picasso.Picasso;
 import com.udea.pi2.carapp.R;
 
 import callback.CallbackModel;
-import model.Car;
 import model.User;
 
 public class HomeActivity extends AppCompatActivity
@@ -144,21 +143,6 @@ public class HomeActivity extends AppCompatActivity
                 @Override
                 public void onSuccess(Object id) {
                     User u = (User) id;
-                    final Car car = new Car();
-                    car.setName("micarro");
-                    car.setDriver(u);
-                    car.save(new CallbackModel() {
-                        @Override
-                        public void onSuccess(Object id) {
-                            String idd = car.getId();
-                            car.getBrand();
-                        }
-
-                        @Override
-                        public void onError(Object model, String message) {
-
-                        }
-                    });
                 }
 
                 @Override
