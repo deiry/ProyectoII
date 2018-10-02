@@ -13,9 +13,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -47,21 +45,23 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="3"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="5dp">
 
                     <EditText
                         android:id="@+id/et_profile_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:inputType="textPersonName"
-                        android:text="Name" />
+                        android:hint="Nombre"
+                        android:inputType="textPersonName" />
 
                     <EditText
                         android:id="@+id/et_profile_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
+                        android:hint="Correo"
                         android:inputType="textEmailAddress" />
 
                 </LinearLayout>
@@ -69,16 +69,17 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
-            android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:orientation="vertical">
 
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerViewCarsProfile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 
 
 </LinearLayout>

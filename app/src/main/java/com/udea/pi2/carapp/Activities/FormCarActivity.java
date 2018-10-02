@@ -66,7 +66,7 @@ public class FormCarActivity extends AppCompatActivity {
 
         String obs = inputObs.getText().toString();
         car.setName(obs);
-        car.save(new CallbackModel() {
+        /*car.save(new CallbackModel() {
             @Override
             public void onSuccess(Object id) {
 
@@ -76,7 +76,7 @@ public class FormCarActivity extends AppCompatActivity {
             public void onError(Object model, String message) {
 
             }
-        });
+        });*/
 
         car.setColor(colorC);
 
