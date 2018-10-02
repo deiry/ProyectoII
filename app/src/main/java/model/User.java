@@ -88,7 +88,7 @@ public class User extends Model{
     }
 
     static public void findById(CallbackModel callbackModel,String id){
-        Model.singleRecord(callbackModel,"id","ItV1fVBVxwBttOalqI8G\n","User");
+        Model.singleRecord(callbackModel,"id",id,"User");
     }
 
     static public void findByEmail(CallbackModel callbackModel,String email){

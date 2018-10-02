@@ -74,5 +74,10 @@ public class State extends Model{
 
     @Override
     public void mapToModel(CallbackModel callbackModel, Map<String, Object> mapRequest) {
+
+        HashMap<String, Object> map = (HashMap<String, Object>) mapRequest;
+        this.setName((String) map.get(ST_CN_NAME));
+
+        callbackModel.onSuccess(this);
     }
 }

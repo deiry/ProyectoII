@@ -69,6 +69,7 @@ public abstract class Model{
     }
 
     static protected void singleRecord(final CallbackModel callbackModel, String field, String value, final String className){
+
         FirebaseFirestore.getInstance().collection(className).whereEqualTo(field,value).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -91,8 +92,6 @@ public abstract class Model{
                                             callbackModel.onError(model,message);
                                         }
                                     }, documentSnapshot.getData());
-
-
                                 }
                                 else if(className == "Car"){
                                     final Car model = new Car();
@@ -105,22 +104,43 @@ public abstract class Model{
 
                                         @Override
                                         public void onError(Object model, String message) {
-
+                                            callbackModel.onError(model,message);
                                         }
                                     },documentSnapshot.getData());
-
                                 }
-                                /*else if(className == "State"){
-                                    State model = documentSnapshot.toObject(State.class);
+                                else if(className == "State"){
+                                    final State model = documentSnapshot.toObject(State.class);
                                     model.setId(id);
+                                    model.mapToModel(new CallbackModel() {
+                                        @Override
+                                        public void onSuccess(Object id) {
+                                            callbackModel.onSuccess(model);
+                                        }
+
+                                        @Override
+                                        public void onError(Object model, String message) {
+                                            callbackModel.onError(model,message);
+                                        }
+                                    },documentSnapshot.getData());
                                     callbackModel.onSuccess(model);
                                 }
                                 else if(className == "Route"){
-                                    Route model = documentSnapshot.toObject(Route.class);
+                                    final Route model = documentSnapshot.toObject(Route.class);
                                     model.setId(id);
+                                    model.mapToModel(new CallbackModel() {
+                                        @Override
+                                        public void onSuccess(Object id) {
+                                            callbackModel.onSuccess(model);
+                                        }
+
+                                        @Override
+                                        public void onError(Object model, String message) {
+                                            callbackModel.onError(model, message);
+                                        }
+                                    },documentSnapshot.getData());
                                     callbackModel.onSuccess(model);
                                 }
-                                else if(className == "RoutePassenger"){
+                                /*else if(className == "RoutePassenger"){
                                     RoutePassenger model = documentSnapshot.toObject(RoutePassenger.class);
                                     model.setId(id);
                                     callbackModel.onSuccess(model);

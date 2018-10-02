@@ -110,5 +110,12 @@ public class RoutePassenger extends Model {
 
     @Override
     public void mapToModel(CallbackModel callbackModel, Map<String, Object> mapRequest) {
+
+        /*HashMap<String, Object> map = (HashMap<String, Object>) mapRequest;
+        this.setName((String) map.get(USR_CN_NAME));
+        this.setEmail((String) map.get(USR_CN_EMAIL));
+        this.setToken((String) map.get(USR_CN_TOKEN));
+
+        callbackModel.onSuccess(this);*/
     }
 }
