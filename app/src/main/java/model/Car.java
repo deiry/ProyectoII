@@ -169,6 +169,10 @@ public class Car extends Model{
         });
     }
 
+    static public void findSelfCars(CallbackModel callbackModel,String id){
+        Model.multiRecord(callbackModel,"driver",id,Car.class.getSimpleName());
+    }
+
     @Override
     public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();
@@ -189,9 +193,10 @@ public class Car extends Model{
         this.setColor((String) map.get(CAR_CN_COLOR));
         this.setBrand((String) map.get(CAR_CN_BRAND));
         this.setModel((String) map.get(CAR_CN_MODEL));
-        this.setPassegerNum((Integer) map.get(CAR_CN_PASSENGER_NUM));
+        Long passenger = (Long) map.get(CAR_CN_PASSENGER_NUM);
+        this.setPassegerNum((int) passegerNum);
         this.setPlaque((String) map.get(CAR_CN_PLAQUE));
-        Car.findById(new CallbackModel() {
+        User.findById(new CallbackModel() {
             @Override
             public void onSuccess(Object id) {
                 setDriver((User) id);
@@ -202,7 +207,7 @@ public class Car extends Model{
             public void onError(Object model, String message) {
                 callbackModel.onError(model,message);
             }
-        },(String) map.get(CAR_CN_DRIVER),"Car");
+        },(String) map.get(CAR_CN_DRIVER),"User");
     }
 
     private Car getThis(){

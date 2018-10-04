@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import callback.CallbackModel;
 import model.Car;
+import model.Model;
 import model.User;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -54,7 +55,13 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+        //getCars();
+    }
+
+    @Override
+    protected void onResume() {
         getCars();
+        super.onResume();
     }
 
     private void showFABMenu(){
@@ -73,29 +80,25 @@ public class ProfileActivity extends AppCompatActivity {
        // fab3.animate().translationY(0);
     }
 
-    public void goToCar(View view){
-
-    }
 
     public void getCars() {
         String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
         User.findByEmail(new CallbackModel() {
-
-
             @Override
             public void onSuccess(Object id) {
                 User u = (User) id;
-                ArrayList<Car> cars = new ArrayList<Car>();
-                for (int i = 0 ;  i < 3 ; i++){
-                    Car car = new Car();
-                    car.setName("carro "+ String.valueOf(i));
-                    car.setPlaque("WER-34"+String.valueOf(i));
-                    car.setDriver(u);
-                    cars.add(car);
+                Car.findSelfCars(new CallbackModel() {
+                    @Override
+                    public void onSuccess(Object id) {
+                        setCars((ArrayList<Car>) id);
+                    }
 
-                }
-                setCars(cars);
+                    @Override
+                    public void onError(Object model, String message) {
+
+                    }
+                },u.getId());
             }
 
             @Override
