@@ -25,9 +25,11 @@
             android:label="@string/title_activity_setting_user" />
         <activity
             android:name=".Activities.FormCarActivity"
-            android:parentActivityName=".Activities.ProfileActivity"></activity>
-        <activity android:name=".Activities.ProfileActivity"
-            android:parentActivityName=".Activities.HomeActivity"></activity>
+            android:parentActivityName=".Activities.ProfileActivity" />
+        <activity
+            android:name=".Activities.ProfileActivity"
+            android:parentActivityName=".Activities.HomeActivity" />
+        <activity android:name=".Activities.RoutesActivity"></activity>
     </application>
 
 </manifest>
