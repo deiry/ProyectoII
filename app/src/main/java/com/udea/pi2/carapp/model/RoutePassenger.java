@@ -1,4 +1,4 @@
-package model;
+package com.udea.pi2.carapp.model;
 
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;

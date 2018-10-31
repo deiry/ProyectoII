@@ -27,7 +27,7 @@ import com.squareup.picasso.Picasso;
 import com.udea.pi2.carapp.R;
 
 import callback.CallbackModel;
-import model.User;
+import com.udea.pi2.carapp.model.User;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {

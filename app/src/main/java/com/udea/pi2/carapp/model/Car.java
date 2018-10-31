@@ -1,4 +1,4 @@
-package model;
+package com.udea.pi2.carapp.model;
 
 import android.util.Log;
 
@@ -24,7 +24,7 @@ public class Car extends Model{
     final static public String CAR_CN_DRIVER = "driver";
     final static public String CAR_CN_PASSENGER_NUM = "passengerNum";
     final static public String CAR_CN_BRAND = "brand";
-    final static public String CAR_CN_MODEL = "model";
+    final static public String CAR_CN_MODEL = "com/udea/pi2/carapp/model";
 
     @Column(name = CAR_CN_NAME)
     private String name;
@@ -171,6 +171,10 @@ public class Car extends Model{
 
     static public void findSelfCars(CallbackModel callbackModel,String id){
         Model.multiRecord(callbackModel,"driver",id,Car.class.getSimpleName());
+    }
+
+    static public void findAll(CallbackModel callbackModel){
+        Model.multiRecord(callbackModel,"",null,Car.class.getSimpleName());
     }
 
     @Override

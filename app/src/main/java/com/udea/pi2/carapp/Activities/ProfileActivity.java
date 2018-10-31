@@ -9,16 +9,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.udea.pi2.carapp.Adapters.CarAdapter;
 import com.udea.pi2.carapp.R;
 
 import java.util.ArrayList;
 
 import callback.CallbackModel;
-import model.Car;
-import model.Model;
-import model.User;
+import com.udea.pi2.carapp.model.Car;
+import com.udea.pi2.carapp.model.User;
 
 public class ProfileActivity extends AppCompatActivity {
     FloatingActionButton fab1;
@@ -47,15 +45,19 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        fab1.setOnClickListener(new View.OnClickListener() {
+        fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), FormCarActivity.class);
                 startActivity(intent);
             }
         });
+        fab1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-        //getCars();
+            }
+        });
     }
 
     @Override
@@ -99,6 +101,17 @@ public class ProfileActivity extends AppCompatActivity {
 
                     }
                 },u.getId());
+                /*Car.findAll(new CallbackModel() {
+                    @Override
+                    public void onSuccess(Object id) {
+                        setCars((ArrayList<Car>) id);
+                    }
+
+                    @Override
+                    public void onError(Object model, String message) {
+
+                    }
+                });*/
             }
 
             @Override
@@ -115,5 +128,9 @@ public class ProfileActivity extends AppCompatActivity {
         rv.setLayoutManager(llm);
         CarAdapter carsAdapter = new CarAdapter(cars);
         rv.setAdapter(carsAdapter);
+    }
+
+    public void goToCar(View v){
+
     }
 }

@@ -1,6 +1,6 @@
 package adapter;
 
-import model.Car;
+import com.udea.pi2.carapp.model.Car;
 
 public class CarAdapter {
 

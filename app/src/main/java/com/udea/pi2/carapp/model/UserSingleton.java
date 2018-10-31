@@ -1,4 +1,4 @@
-package model;
+package com.udea.pi2.carapp.model;
 
 import com.activeandroid.Model;
 import com.google.firebase.auth.FirebaseUser;

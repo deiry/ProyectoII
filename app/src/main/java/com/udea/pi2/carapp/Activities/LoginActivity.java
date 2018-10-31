@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import callback.CallbackModel;
-import model.User;
+import com.udea.pi2.carapp.model.User;
 
 public class LoginActivity extends AppCompatActivity {
 

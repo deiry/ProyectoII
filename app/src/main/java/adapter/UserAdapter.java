@@ -1,6 +1,6 @@
 package adapter;
 
-import model.User;
+import com.udea.pi2.carapp.model.User;
 
 public class UserAdapter {
 
