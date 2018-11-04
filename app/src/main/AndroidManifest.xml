@@ -29,7 +29,9 @@
         <activity
             android:name=".Activities.ProfileActivity"
             android:parentActivityName=".Activities.HomeActivity" />
-        <activity android:name=".Activities.RoutesActivity"></activity>
+        <activity android:name=".Activities.RoutesActivity" />
+        <activity android:name=".Activities.MapsActivity" />
+        <activity android:name=".Activities.RouteActivity"></activity>
     </application>
 
 </manifest>

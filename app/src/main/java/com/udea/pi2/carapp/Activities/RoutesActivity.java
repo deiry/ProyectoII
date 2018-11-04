@@ -1,14 +1,13 @@
 package com.udea.pi2.carapp.Activities;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.udea.pi2.carapp.R;
-import com.udea.pi2.carapp.model.Car;
+import com.udea.pi2.carapp.model.Route;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import callback.CallbackModel;
 
@@ -51,7 +50,21 @@ public class RoutesActivity extends AppCompatActivity {
 
     private void getSelfRoutes() {
         if(ID_CURRENT_USER != null){
+            Route.findSelfRoutes(new CallbackModel() {
+                @Override
+                public void onSuccess(Object id) {
+                    setRoutes((ArrayList<Route>) id);
+                }
 
+                @Override
+                public void onError(Object model, String message) {
+
+                }
+            },ID_CURRENT_USER);
         }
+    }
+
+    private void setRoutes(ArrayList<Route> id) {
+        Toast.makeText(this,id.toString(),Toast.LENGTH_LONG).show();
     }
 }

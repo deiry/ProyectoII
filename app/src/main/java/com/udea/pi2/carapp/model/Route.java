@@ -192,6 +192,10 @@ public class Route extends Model{
         });
     }
 
+    static public void findSelfRoutes(CallbackModel callbackModel,String id){
+        Model.multiRecord(callbackModel,"car",id,Route.class.getSimpleName());
+    }
+
     @Override
     public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();

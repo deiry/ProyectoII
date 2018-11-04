@@ -25,9 +25,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 import com.udea.pi2.carapp.R;
+import com.udea.pi2.carapp.model.User;
 
 import callback.CallbackModel;
-import com.udea.pi2.carapp.model.User;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -35,6 +35,7 @@ public class HomeActivity extends AppCompatActivity
     private static final String TAG = "FIRE";
     private FirebaseAuth auth;
     NavigationView navigationView;
+    User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +111,8 @@ public class HomeActivity extends AppCompatActivity
         if (id == R.id.nav_find_route) {
             // Handle the camera action
         } else if (id == R.id.nav_self_routes) {
-            Intent intent = new Intent(this, FormCarActivity.class);
+            Intent intent = new Intent(this, RoutesActivity.class);
+            intent.putExtra("idCurrentUser",currentUser.getId());
             startActivity(intent);
         }
         else if (id == R.id.nav_signout) {
@@ -146,7 +148,7 @@ public class HomeActivity extends AppCompatActivity
             User.findByEmail(new CallbackModel() {
                 @Override
                 public void onSuccess(Object id) {
-                    User u = (User) id;
+                    currentUser = (User) id;
                 }
 
                 @Override
