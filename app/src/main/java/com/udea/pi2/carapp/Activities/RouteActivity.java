@@ -1,12 +1,17 @@
 package com.udea.pi2.carapp.Activities;
 
+import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.udea.pi2.carapp.R;
 
@@ -17,6 +22,9 @@ public class RouteActivity extends AppCompatActivity {
 
     TextInputLayout ly_arrived_time;
     TextInputEditText et_arrived_time;
+    TextInputEditText et_route_date;
+    TextInputEditText et_arrived;
+    TextInputEditText et_departure;
 
     private static final String CERO = "0";
     private static final String DOS_PUNTOS = ":";
@@ -28,6 +36,13 @@ public class RouteActivity extends AppCompatActivity {
     final int hora = c.get(Calendar.HOUR_OF_DAY);
     final int minuto = c.get(Calendar.MINUTE);
 
+    final int year = c.get(Calendar.YEAR);
+    final int month = c.get(Calendar.MONTH);
+    final int day = c.get(Calendar.DAY_OF_MONTH);
+
+    int REQUEST_CODE = 1;
+    int REQUEST_CODE2 = 2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,62 +50,33 @@ public class RouteActivity extends AppCompatActivity {
 
         ly_arrived_time = (TextInputLayout) findViewById(R.id.input_ly_arrive_time);
         et_arrived_time = (TextInputEditText) findViewById(R.id.input_arrive_time);
+        et_route_date = (TextInputEditText) findViewById(R.id.input_route_date);
+        et_arrived = (TextInputEditText) findViewById(R.id.input_arrive);
+        et_departure = (TextInputEditText) findViewById(R.id.input_departure);
 
-/*        ly_arrived_time.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // TODO Auto-generated method stub
-                Calendar mcurrentTime = Calendar.getInstance();
-                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-                int minute = mcurrentTime.get(Calendar.MINUTE);
-                TimePickerDialog mTimePicker;
-                mTimePicker = new TimePickerDialog(getApplicationContext(), new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        et_arrived_time.setText("hola");
-                    }
-                }, hour, minute, true);//Yes 24 hour time
-                mTimePicker.setTitle("Select Time");
-                mTimePicker.show();
-            }
-        });
+    }
 
-        et_arrived_time.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // TODO Auto-generated method stub
-                Calendar mcurrentTime = Calendar.getInstance();
-                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-                int minute = mcurrentTime.get(Calendar.MINUTE);
-                TimePickerDialog mTimePicker;
-                mTimePicker = new TimePickerDialog(getApplicationContext(), new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                       // Toast.makeText(RouteActivity.this, String.valueOf(selectedHour) + ":" + String.valueOf(selectedMinute), Toast.LENGTH_SHORT).show();
-                        //et_arrived_time.setText( selectedHour + ":" + selectedMinute);
-                    }
-                }, hour, minute, true);//Yes 24 hour time
-                mTimePicker.setTitle("Select Time");
-                mTimePicker.show();
-            }
-        });*/
+    public void clickArriveLocation(View v){
+        Intent intent = new Intent(this, MapActivity.class);
+        startActivityForResult(intent, REQUEST_CODE);
+    }
+
+    public void clickDepartureLocation(View v){
+        Intent intent = new Intent(this, MapActivity.class);
+        startActivityForResult(intent, REQUEST_CODE);
     }
 
     public void clickArriveTime(View v){
         TimePickerDialog recogerHora = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                String AM_PM = (hourOfDay > 12) ? "p.m." : "a.m.";
+                hourOfDay = (hourOfDay > 12) ? (hourOfDay - 12) : hourOfDay;
                 //Formateo el hora obtenido: antepone el 0 si son menores de 10
                 String horaFormateada =  (hourOfDay < 10)? String.valueOf(CERO + hourOfDay) : String.valueOf(hourOfDay);
                 //Formateo el minuto obtenido: antepone el 0 si son menores de 10
                 String minutoFormateado = (minute < 10)? String.valueOf(CERO + minute):String.valueOf(minute);
                 //Obtengo el valor a.m. o p.m., dependiendo de la selección del usuario
-                String AM_PM;
-                if(hourOfDay < 12) {
-                    AM_PM = "a.m.";
-                } else {
-                    AM_PM = "p.m.";
-                }
                 //Muestro la hora con el formato deseado
                 et_arrived_time.setText(horaFormateada + DOS_PUNTOS + minutoFormateado + " " + AM_PM);
             }
@@ -101,4 +87,39 @@ public class RouteActivity extends AppCompatActivity {
 
         recogerHora.show();
     }
+
+    public void clickArriveDate(View v){
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int yy, int mm, int dd) {
+                Log.i("date",String.valueOf(yy)+ " " +String.valueOf(mm) + " " + String.valueOf(dd));
+                et_route_date.setText(String.valueOf(dd) + "-" + String.valueOf(mm+1) + "-" + String.valueOf(yy));
+            }
+        },year,month,day);
+
+        datePickerDialog.show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Toast.makeText(this,data.getDataString(),Toast.LENGTH_LONG).show();
+                String[] latlong =  data.getDataString().split(",");
+                double latitude = Double.parseDouble(latlong[0]);
+                double longitude = Double.parseDouble(latlong[1]);
+                et_arrived.setText(String.format("%.5f", latitude)+","+String.format("%.5f", longitude));
+            }
+        }
+        else if(requestCode == REQUEST_CODE2) {
+            if (resultCode == RESULT_OK) {
+                Toast.makeText(this,data.getDataString(),Toast.LENGTH_LONG).show();
+                String[] latlong =  data.getDataString().split(",");
+                double latitude = Double.parseDouble(latlong[0]);
+                double longitude = Double.parseDouble(latlong[1]);
+                et_departure.setText(String.format("%.5f", latitude)+","+String.format("%.5f", longitude));
+            }
+        }
+    }
+
 }

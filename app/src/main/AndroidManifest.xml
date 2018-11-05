@@ -9,6 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCEGzJctSn-RbH2OR7uHJh2fqEaLFGMKl4"/>
+
         <activity android:name=".Activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,8 +35,9 @@
             android:name=".Activities.ProfileActivity"
             android:parentActivityName=".Activities.HomeActivity" />
         <activity android:name=".Activities.RoutesActivity" />
-        <activity android:name=".Activities.MapsActivity" />
-        <activity android:name=".Activities.RouteActivity"></activity>
+        <activity android:name=".Activities.RouteActivity" />
+        <activity android:name=".Activities.MapActivity"></activity>
+
     </application>
 
 </manifest>
