@@ -1,7 +1,9 @@
 package com.udea.pi2.carapp.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Toast;
 
 import com.udea.pi2.carapp.R;
@@ -66,5 +68,11 @@ public class RoutesActivity extends AppCompatActivity {
 
     private void setRoutes(ArrayList<Route> id) {
         Toast.makeText(this,id.toString(),Toast.LENGTH_LONG).show();
+    }
+
+    public void addRoute(View v){
+        Intent intent = new Intent(this,RouteActivity.class);
+        intent.putExtra("idCurrentUser",ID_CURRENT_USER);
+        startActivity(intent);
     }
 }
