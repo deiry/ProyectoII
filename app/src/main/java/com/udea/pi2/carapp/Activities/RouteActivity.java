@@ -11,10 +11,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.maps.DirectionsApi;
+import com.google.maps.GeoApiContext;
+import com.google.maps.errors.ApiException;
+import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.LatLng;
+import com.google.maps.model.TravelMode;
 import com.udea.pi2.carapp.R;
 
+import java.io.IOException;
 import java.util.Calendar;
 
 
@@ -43,6 +51,11 @@ public class RouteActivity extends AppCompatActivity {
     int REQUEST_CODE = 1;
     int REQUEST_CODE2 = 2;
 
+    private double latArrive;
+    private double lngArrive;
+    private double latDeparture;
+    private double lngDeparture;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +76,7 @@ public class RouteActivity extends AppCompatActivity {
 
     public void clickDepartureLocation(View v){
         Intent intent = new Intent(this, MapActivity.class);
-        startActivityForResult(intent, REQUEST_CODE);
+        startActivityForResult(intent, REQUEST_CODE2);
     }
 
     public void clickArriveTime(View v){
@@ -104,22 +117,47 @@ public class RouteActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                Toast.makeText(this,data.getDataString(),Toast.LENGTH_LONG).show();
                 String[] latlong =  data.getDataString().split(",");
-                double latitude = Double.parseDouble(latlong[0]);
-                double longitude = Double.parseDouble(latlong[1]);
-                et_arrived.setText(String.format("%.5f", latitude)+","+String.format("%.5f", longitude));
+                latArrive = Double.parseDouble(latlong[0]);
+                lngArrive = Double.parseDouble(latlong[1]);
+                et_arrived.setText(String.format("%.5f", latArrive)+","+String.format("%.5f", lngArrive));
             }
         }
         else if(requestCode == REQUEST_CODE2) {
             if (resultCode == RESULT_OK) {
-                Toast.makeText(this,data.getDataString(),Toast.LENGTH_LONG).show();
                 String[] latlong =  data.getDataString().split(",");
-                double latitude = Double.parseDouble(latlong[0]);
-                double longitude = Double.parseDouble(latlong[1]);
-                et_departure.setText(String.format("%.5f", latitude)+","+String.format("%.5f", longitude));
+                latDeparture = Double.parseDouble(latlong[0]);
+                lngDeparture = Double.parseDouble(latlong[1]);
+                et_departure.setText(String.format("%.5f", latDeparture)+","+String.format("%.5f", lngDeparture));
+
+                try {
+                    calculateDepartureTime();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ApiException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
+/*
+* https://github.com/pjwelcome/GoogleMapsDirections/blob/master/app/src/main/java/com/multimeleon/android/googlemapsdirections/MapsActivity.java
+* */
+    private void calculateDepartureTime() throws InterruptedException, ApiException, IOException {
+        GeoApiContext context = new GeoApiContext.Builder()
+                .apiKey("AIzaSyCEGzJctSn-RbH2OR7uHJh2fqEaLFGMKl4")
+                .build();
+        DirectionsResult result = DirectionsApi.newRequest(context)
+                .mode(TravelMode.DRIVING)
+                .origin(new LatLng(latDeparture,lngDeparture))
+                .destination(new LatLng(latArrive, lngArrive))
+                //.departureTime()
+                .await();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        System.out.println(gson.toJson(result));
+    }
+
 
 }
