@@ -12,17 +12,8 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.maps.DirectionsApi;
-import com.google.maps.GeoApiContext;
-import com.google.maps.errors.ApiException;
-import com.google.maps.model.DirectionsResult;
-import com.google.maps.model.LatLng;
-import com.google.maps.model.TravelMode;
 import com.udea.pi2.carapp.R;
 
-import java.io.IOException;
 import java.util.Calendar;
 
 
@@ -129,35 +120,46 @@ public class RouteActivity extends AppCompatActivity {
                 latDeparture = Double.parseDouble(latlong[0]);
                 lngDeparture = Double.parseDouble(latlong[1]);
                 et_departure.setText(String.format("%.5f", latDeparture)+","+String.format("%.5f", lngDeparture));
-
-                try {
-                    calculateDepartureTime();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ApiException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                calculateDepartureTime();
             }
         }
     }
 /*
 * https://github.com/pjwelcome/GoogleMapsDirections/blob/master/app/src/main/java/com/multimeleon/android/googlemapsdirections/MapsActivity.java
 * */
-    private void calculateDepartureTime() throws InterruptedException, ApiException, IOException {
-        GeoApiContext context = new GeoApiContext.Builder()
-                .apiKey("AIzaSyCEGzJctSn-RbH2OR7uHJh2fqEaLFGMKl4")
-                .build();
-        DirectionsResult result = DirectionsApi.newRequest(context)
-                .mode(TravelMode.DRIVING)
-                .origin(new LatLng(latDeparture,lngDeparture))
-                .destination(new LatLng(latArrive, lngArrive))
-                //.departureTime()
-                .await();
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        System.out.println(gson.toJson(result));
+    private void calculateDepartureTime(){
+        double distance = distance(this.latArrive,this.latDeparture,this.lngArrive,this.lngDeparture,0,0);
+        double time = distance/(30000/60);
+
     }
 
+    /**
+     * Calculate distance between two points in latitude and longitude taking
+     * into account height difference. If you are not interested in height
+     * difference pass 0.0. Uses Haversine method as its base.
+     *
+     * lat1, lon1 Start point lat2, lon2 End point el1 Start altitude in meters
+     * el2 End altitude in meters
+     * @returns Distance in Meters
+     */
+    public static double distance(double lat1, double lat2, double lon1,
+                                  double lon2, double el1, double el2) {
+
+        final int R = 6371; // Radius of the earth
+
+        double latDistance = Math.toRadians(lat2 - lat1);
+        double lonDistance = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double distance = R * c * 1000; // convert to meters
+
+        double height = el1 - el2;
+
+        distance = Math.pow(distance, 2) + Math.pow(height, 2);
+
+        return Math.sqrt(distance);
+    }
 
 }
