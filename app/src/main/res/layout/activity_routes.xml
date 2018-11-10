@@ -15,6 +15,7 @@
         android:onClick="addRoute"
         android:src="@drawable/ic_baseline_add_24px"
         tools:layout_editor_absoluteX="341dp"
-        tools:layout_editor_absoluteY="466dp" />
+        tools:layout_editor_absoluteY="466dp"
+        tools:ignore="MissingConstraints" />
 
 </android.support.constraint.ConstraintLayout>

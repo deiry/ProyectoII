@@ -7,14 +7,28 @@ import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.udea.pi2.carapp.Adapters.CarAdapter;
 import com.udea.pi2.carapp.R;
+import com.udea.pi2.carapp.model.Car;
+import com.udea.pi2.carapp.model.User;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+
+import callback.CallbackModel;
+import callback.CallbackRecyclerCar;
 
 
 public class RouteActivity extends AppCompatActivity {
@@ -24,6 +38,12 @@ public class RouteActivity extends AppCompatActivity {
     TextInputEditText et_route_date;
     TextInputEditText et_arrived;
     TextInputEditText et_departure;
+    RecyclerView rv_car;
+    LinearLayout ly_list_car;
+    LinearLayout ly_select_car;
+    TextInputEditText et_car_brand;
+    TextInputEditText et_car_plaque;
+
 
     private static final String CERO = "0";
     private static final String DOS_PUNTOS = ":";
@@ -57,16 +77,95 @@ public class RouteActivity extends AppCompatActivity {
         et_route_date = (TextInputEditText) findViewById(R.id.input_route_date);
         et_arrived = (TextInputEditText) findViewById(R.id.input_arrive);
         et_departure = (TextInputEditText) findViewById(R.id.input_departure);
+        rv_car = (RecyclerView) findViewById(R.id.rv_route_car);
+        ly_list_car = (LinearLayout) findViewById(R.id.ly_list_car);
+
+      //  ly_select_car = (LinearLayout) findViewById(R.id.ly_car_select);
+      //  et_car_brand = (TextInputEditText) findViewById(R.id.input_car_marca);
+       // et_car_plaque = (TextInputEditText) findViewById(R.id.input_car_placa);
+
+        getCars();
 
     }
 
+    public void initRecyclerView(ArrayList<Car> cars){
+
+        LinearLayoutManager lm = new LinearLayoutManager(this);
+        lm.setOrientation(LinearLayoutManager.VERTICAL);
+        rv_car.setLayoutManager(lm);
+
+        CarAdapter adapter = new CarAdapter(cars, new CallbackRecyclerCar() {
+            @Override
+            public void onClickItem(Object item) {
+                Car carCurrent = (Car) item;
+              //  showSelectCar(carCurrent);
+
+            }
+        });
+        rv_car.setAdapter(adapter);
+    }
+
+    public void showSelectCar(Car car){
+        et_car_brand.setText(car.getBrand());
+        et_car_brand.setEnabled(false);
+        et_car_plaque.setText(car.getPlaque());
+        et_car_brand.setEnabled(false);
+        ly_list_car.setVisibility(View.GONE);
+        ly_select_car.setVisibility(View.VISIBLE);
+
+    }
+
+    public void getCars() {
+        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+
+        User.findByEmail(new CallbackModel() {
+            @Override
+            public void onSuccess(Object id) {
+                User u = (User) id;
+                Car.findSelfCars(new CallbackModel() {
+                    @Override
+                    public void onSuccess(Object id) {
+                        initRecyclerView((ArrayList<Car>) id);
+                    }
+
+                    @Override
+                    public void onError(Object model, String message) {
+
+                    }
+                },u.getId());
+
+            }
+
+            @Override
+            public void onError(Object model, String message) {
+
+            }
+        },email);
+    }
+
+
+
     public void clickArriveLocation(View v){
         Intent intent = new Intent(this, MapActivity.class);
+        //enviamos la ubicacion de partida
+        if(latDeparture != 0 && lngDeparture != 0){
+            intent.putExtra("lat",latDeparture);
+            intent.putExtra("lng", lngDeparture);
+            intent.putExtra("tittleMarker","Punto de Partida");
+            intent.putExtra("tittleActivity", "Ubicación de llegada");
+        }
         startActivityForResult(intent, REQUEST_CODE);
     }
 
     public void clickDepartureLocation(View v){
         Intent intent = new Intent(this, MapActivity.class);
+        //enviamos la ubicacion de llegada
+        if(latArrive != 0 && lngArrive != 0){
+            intent.putExtra("lat",latArrive);
+            intent.putExtra("lng", lngArrive);
+            intent.putExtra("tittleMarker","Punto de Llegada");
+            intent.putExtra("tittleActivity", "Ubicación de salida");
+        }
         startActivityForResult(intent, REQUEST_CODE2);
     }
 
@@ -150,6 +249,15 @@ public class RouteActivity extends AppCompatActivity {
 
 
 
+
+    }
+
+    public void onClickIda(View view){
+
+
+    }
+
+    public void oncClickIdaVuelta(View view){
 
     }
 
