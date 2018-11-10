@@ -131,6 +131,26 @@ public class RouteActivity extends AppCompatActivity {
         double distance = distance(this.latArrive,this.latDeparture,this.lngArrive,this.lngDeparture,0,0);
         double time = distance/(30000/60);
 
+        String strArriveTime = et_arrived_time.getText().toString();
+        if (!strArriveTime.isEmpty()) {
+            int hours = Integer.parseInt(strArriveTime.substring(0,2));
+            int minutes = Integer.parseInt(strArriveTime.substring(3,5));
+            time = Math.ceil(time);
+            if(minutes - time < 0){
+                minutes = minutes + 59 - (int) time;
+                hours--;
+            }
+            else
+            {
+                minutes = minutes - (int) time;
+            }
+
+        }
+
+
+
+
+
     }
 
     /**
