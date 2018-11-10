@@ -80,9 +80,9 @@ public class RouteActivity extends AppCompatActivity {
         rv_car = (RecyclerView) findViewById(R.id.rv_route_car);
         ly_list_car = (LinearLayout) findViewById(R.id.ly_list_car);
 
-      //  ly_select_car = (LinearLayout) findViewById(R.id.ly_car_select);
-      //  et_car_brand = (TextInputEditText) findViewById(R.id.input_car_marca);
-       // et_car_plaque = (TextInputEditText) findViewById(R.id.input_car_placa);
+        ly_select_car = (LinearLayout) findViewById(R.id.ly_car_select);
+        et_car_brand = (TextInputEditText) findViewById(R.id.input_car_marca);
+        et_car_plaque = (TextInputEditText) findViewById(R.id.input_car_placa);
 
         getCars();
 
@@ -98,7 +98,7 @@ public class RouteActivity extends AppCompatActivity {
             @Override
             public void onClickItem(Object item) {
                 Car carCurrent = (Car) item;
-              //  showSelectCar(carCurrent);
+                showSelectCar(carCurrent);
 
             }
         });
@@ -109,7 +109,7 @@ public class RouteActivity extends AppCompatActivity {
         et_car_brand.setText(car.getBrand());
         et_car_brand.setEnabled(false);
         et_car_plaque.setText(car.getPlaque());
-        et_car_brand.setEnabled(false);
+        et_car_plaque.setEnabled(false);
         ly_list_car.setVisibility(View.GONE);
         ly_select_car.setVisibility(View.VISIBLE);
 
