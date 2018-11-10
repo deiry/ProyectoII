@@ -3,28 +3,23 @@ package model;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import adapter.CarAdapter;
 import callback.CallbackModel;
 
 public abstract class Model{
@@ -42,20 +37,285 @@ public abstract class Model{
     public abstract List<JSONObject> modelToJSON();
     public abstract void save(CallbackModel callbackModel);
     public abstract Map<String,Object> toMap();
+    public abstract void mapToModel(CallbackModel callbackModel, Map<String,Object> mapRequest);
 
-    static public void find(final CallbackModel callbackModel, String field, String value, final String className){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+    static  protected void findById(final CallbackModel callbackModel,String value, final String className){
+        //TODO: buscar por id
+        FirebaseFirestore.getInstance().collection(className).document(value).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            String id = task.getResult().getId();
 
-        DocumentReference docRef = db.collection(className).document(value);
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                User city = documentSnapshot.toObject(User.class);
-                callbackModel.onSuccess(city);
-            }
-        });
+                            if(className == "User"){
+                                final User model = new User();
+                                model.setId(id);
+                                model.mapToModel(new CallbackModel() {
+                                    @Override
+                                    public void onSuccess(Object id) {
+                                        callbackModel.onSuccess(model);
+                                    }
+
+                                    @Override
+                                    public void onError(Object model, String message) {
+                                        callbackModel.onError(model,message);
+                                    }
+                                }, task.getResult().getData());
+                            }
+                            else if(className == "Car"){
+                                final User model = new User();
+                                model.setId(id);
+                                model.mapToModel(new CallbackModel() {
+                                    @Override
+                                    public void onSuccess(Object id) {
+                                        callbackModel.onSuccess(model);
+                                    }
+
+                                    @Override
+                                    public void onError(Object model, String message) {
+                                        callbackModel.onError(model,message);
+                                    }
+                                }, task.getResult().getData());
+                            }
+                        }
+
+                    }
+                });
+    }
+
+    static protected void singleRecord(final CallbackModel callbackModel, String field, String value, final String className){
+
+        FirebaseFirestore.getInstance().collection(className).whereEqualTo(field,value).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot documentSnapshot : task.getResult().getDocuments()) {
+                                String id = documentSnapshot.getId();
+                                // here you can get the id.
+                                if(className == "User"){
+                                    final User model = new User();
+                                    model.setId(id);
+                                    model.mapToModel(new CallbackModel() {
+                                        @Override
+                                        public void onSuccess(Object id) {
+                                            callbackModel.onSuccess(model);
+                                        }
+
+                                        @Override
+                                        public void onError(Object model, String message) {
+                                            callbackModel.onError(model,message);
+                                        }
+                                    }, documentSnapshot.getData());
+                                }
+                                else if(className == "Car"){
+                                    final Car model = new Car();
+                                    model.setId(id);
+                                    model.mapToModel(new CallbackModel() {
+                                        @Override
+                                        public void onSuccess(Object id) {
+                                            callbackModel.onSuccess(model);
+                                        }
+
+                                        @Override
+                                        public void onError(Object model, String message) {
+                                            callbackModel.onError(model,message);
+                                        }
+                                    },documentSnapshot.getData());
+                                }
+                                else if(className == "State"){
+                                    final State model = documentSnapshot.toObject(State.class);
+                                    model.setId(id);
+                                    model.mapToModel(new CallbackModel() {
+                                        @Override
+                                        public void onSuccess(Object id) {
+                                            callbackModel.onSuccess(model);
+                                        }
+
+                                        @Override
+                                        public void onError(Object model, String message) {
+                                            callbackModel.onError(model,message);
+                                        }
+                                    },documentSnapshot.getData());
+                                    callbackModel.onSuccess(model);
+                                }
+                                else if(className == "Route"){
+                                    final Route model = documentSnapshot.toObject(Route.class);
+                                    model.setId(id);
+                                    model.mapToModel(new CallbackModel() {
+                                        @Override
+                                        public void onSuccess(Object id) {
+                                            callbackModel.onSuccess(model);
+                                        }
+
+                                        @Override
+                                        public void onError(Object model, String message) {
+                                            callbackModel.onError(model, message);
+                                        }
+                                    },documentSnapshot.getData());
+                                    callbackModel.onSuccess(model);
+                                }
+                                /*else if(className == "RoutePassenger"){
+                                    RoutePassenger model = documentSnapshot.toObject(RoutePassenger.class);
+                                    model.setId(id);
+                                    callbackModel.onSuccess(model);
+                                }*/
+
+
+                                // you can apply your actions...
+                            }
+                        } else {
+
+                        }
+                    }
+                });
 
     }
+
+
+    static protected void multiRecord(final CallbackModel callbackModel, String field, String value, final String className){
+
+        FirebaseFirestore.getInstance().collection(className).whereEqualTo(field,value).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull final Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+
+                            final List<User> users = new ArrayList<>();
+                            final List<Car> cars = new ArrayList<>();
+                            final List<State> states = new ArrayList<>();
+                            final List<Route> routes = new ArrayList<>();
+
+                            final int size = task.getResult().getDocuments().size() - 1;
+                            final int count = 0;
+                            List<DocumentSnapshot> documents = task.getResult().getDocuments();
+
+
+                            //for (final DocumentSnapshot documentSnapshot : task.getResult().getDocuments()) {
+                            for (int i = 0; i <= size; i++){
+
+                                final int currentI = i;
+
+                                DocumentSnapshot documentSnapshot = documents.get(i);
+
+                                String id = documentSnapshot.getId();
+                                // here you can get the id.
+                                if(className.equals(User.class.getSimpleName())){
+                                    final User model = new User();
+                                    model.setId(id);
+                                    model.mapToModel(new CallbackModel() {
+                                        @Override
+                                        public void onSuccess(Object id) {
+
+                                            users.add((User) id);
+                                            if(size == currentI){
+                                                callbackModel.onSuccess(users);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onError(Object model, String message) {
+                                            callbackModel.onError(model,message);
+                                        }
+                                    }, documentSnapshot.getData());
+                                }
+                                else if(className.equals(Car.class.getSimpleName())){
+                                    final Car model = new Car();
+                                    model.setId(id);
+                                    model.mapToModel(new CallbackModel() {
+                                        @Override
+                                        public void onSuccess(Object id) {
+                                            cars.add((Car) id);
+                                            if(size == currentI){
+                                                callbackModel.onSuccess(cars);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onError(Object model, String message) {
+                                            callbackModel.onError(model,message);
+                                        }
+                                    },documentSnapshot.getData());
+                                }
+                                else if(className.equals(State.class.getSimpleName())){
+                                    final State model = documentSnapshot.toObject(State.class);
+                                    model.setId(id);
+                                    model.mapToModel(new CallbackModel() {
+                                        @Override
+                                        public void onSuccess(Object id) {
+                                            states.add((State) id);
+                                            if(size == currentI){
+                                                callbackModel.onSuccess(states);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onError(Object model, String message) {
+                                            callbackModel.onError(model,message);
+                                        }
+                                    },documentSnapshot.getData());
+                                    //callbackModel.onSuccess(model);
+                                }
+                                else if(className.equals(Route.class.getSimpleName())){
+                                    final Route model = documentSnapshot.toObject(Route.class);
+                                    model.setId(id);
+                                    model.mapToModel(new CallbackModel() {
+                                        @Override
+                                        public void onSuccess(Object id) {
+                                            routes.add((Route) id);
+                                            if(size == currentI){
+                                                callbackModel.onSuccess(routes);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onError(Object model, String message) {
+                                            callbackModel.onError(model, message);
+                                        }
+                                    },documentSnapshot.getData());
+                                    //callbackModel.onSuccess(model);
+                                }
+                                /*else if(className == "RoutePassenger"){
+                                    RoutePassenger model = documentSnapshot.toObject(RoutePassenger.class);
+                                    model.setId(id);
+                                    callbackModel.onSuccess(model);
+                                }*/
+
+
+                                // you can apply your actions...
+                            }
+                        } else {
+
+                        }
+                    }
+                });
+
+    }
+
+    private boolean addToList(Object model, String className){
+        if(className == User.class.getSimpleName()){
+
+        }
+        else if(className == Car.class.getSimpleName()){
+
+        }
+        else if(className == Route.class.getSimpleName()){
+
+        }
+        else if(className == State.class.getSimpleName()){
+
+        }
+        return false;
+    }
+
+    static private void setModel(CallbackModel callbackModel, Object model, int size, int count) {
+
+        if(count == (size - 1)){
+            callbackModel.onSuccess(model);
+        }
+    }
+
 
     public void saveModel(final CallbackModel callbackModel){
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -103,7 +363,7 @@ public abstract class Model{
         return id;
     }
 
-    public void setId(String id) {
+    protected void setId(String id) {
         this.id = id;
     }
 }

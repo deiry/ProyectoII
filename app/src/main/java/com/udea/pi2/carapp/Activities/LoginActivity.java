@@ -2,19 +2,27 @@ package com.udea.pi2.carapp.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.udea.pi2.carapp.R;
 
 import java.util.Arrays;
 import java.util.List;
+
+import callback.CallbackModel;
+import model.User;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -56,9 +64,26 @@ public class LoginActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                Intent intent = new Intent(this,HomeActivity.class);
-                startActivity(intent);
-                this.finish();
+                User u = new User();
+                u.setEmail(user.getEmail());
+                u.setName(user.getDisplayName());
+                u.setToken(user.getIdToken(true).toString());
+
+                u.save(new CallbackModel() {
+                    @Override
+                    public void onSuccess(Object id) {
+                        Intent intent = new Intent(getApplicationContext(),HomeActivity.class);
+                        startActivity(intent);
+                        finishActivity();
+                    }
+
+                    @Override
+                    public void onError(Object model, String message) {
+
+                    }
+                });
+
+                //saveUser(u);
             } else {
                 // Sign in failed. If response is null the user canceled the
                 // sign-in flow using the back button. Otherwise check
@@ -68,6 +93,30 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    private void finishActivity(){
+        this.finish();
+    }
+
+    private void saveUser(User u) {
+        FirebaseFirestore.getInstance().collection("User").document(u.getEmail())
+                .set(u)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                        Intent intent = new Intent(getApplicationContext(),HomeActivity.class);
+                        startActivity(intent);
+                        finishActivity();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                        AuthUI.getInstance().signOut(getApplicationContext());
+                    }
+                });
+    }
 
 
     /**

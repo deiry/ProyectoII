@@ -1,6 +1,5 @@
 package model;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.activeandroid.annotation.Column;
@@ -170,6 +169,10 @@ public class Car extends Model{
         });
     }
 
+    static public void findSelfCars(CallbackModel callbackModel,String id){
+        Model.multiRecord(callbackModel,"driver",id,Car.class.getSimpleName());
+    }
+
     @Override
     public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();
@@ -181,5 +184,33 @@ public class Car extends Model{
         map.put(CAR_CN_PLAQUE, this.plaque);
         map.put(CAR_CN_DRIVER, this.driver.getId());
         return map;
+    }
+
+    @Override
+    public void mapToModel(final CallbackModel callbackModel, Map<String, Object> mapRequest) {
+        HashMap<String, Object> map = (HashMap<String, Object>) mapRequest;
+        this.setName((String) map.get(CAR_CN_NAME));
+        this.setColor((String) map.get(CAR_CN_COLOR));
+        this.setBrand((String) map.get(CAR_CN_BRAND));
+        this.setModel((String) map.get(CAR_CN_MODEL));
+        Long passenger = (Long) map.get(CAR_CN_PASSENGER_NUM);
+        this.setPassegerNum((int) passegerNum);
+        this.setPlaque((String) map.get(CAR_CN_PLAQUE));
+        User.findById(new CallbackModel() {
+            @Override
+            public void onSuccess(Object id) {
+                setDriver((User) id);
+                callbackModel.onSuccess(getThis());
+            }
+
+            @Override
+            public void onError(Object model, String message) {
+                callbackModel.onError(model,message);
+            }
+        },(String) map.get(CAR_CN_DRIVER),"User");
+    }
+
+    private Car getThis(){
+        return this;
     }
 }

@@ -18,7 +18,7 @@ public class User extends Model{
     final static public String USR_CN_EMAIL = "email";
     final static public String USR_CN_TOKEN = "token";
 
-    private String id;
+    //private String id;
     private String name;
     private String email;
     private String token;
@@ -30,14 +30,6 @@ public class User extends Model{
         this.name = name;
         this.email = email;
         this.token = token;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -95,8 +87,12 @@ public class User extends Model{
         });
     }
 
-    static public void findById(CallbackModel callbackModel){
-        Model.find(callbackModel,"id","ItV1fVBVxwBttOalqI8G\n","User");
+    static public void findById(CallbackModel callbackModel,String id){
+        Model.singleRecord(callbackModel,"id",id,"User");
+    }
+
+    static public void findByEmail(CallbackModel callbackModel,String email){
+        Model.singleRecord(callbackModel,"email",email,"User");
     }
 
     @Override
@@ -106,5 +102,16 @@ public class User extends Model{
         map.put(USR_CN_EMAIL, this.email);
         map.put(USR_CN_TOKEN, this.token);
         return map;
+    }
+
+    @Override
+    public void mapToModel(CallbackModel callbackModel, Map<String, Object> mapRequest) {
+
+        HashMap<String, Object> map = (HashMap<String, Object>) mapRequest;
+        this.setName((String) map.get(USR_CN_NAME));
+        this.setEmail((String) map.get(USR_CN_EMAIL));
+        this.setToken((String) map.get(USR_CN_TOKEN));
+
+        callbackModel.onSuccess(this);
     }
 }

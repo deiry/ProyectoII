@@ -19,14 +19,15 @@
         <activity
             android:name=".Activities.HomeActivity"
             android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activities.SettingUserActivity"
             android:label="@string/title_activity_setting_user" />
-        <activity android:name=".Activities.FormCarActivity"
-            android:parentActivityName=".Activities.HomeActivity">
-
-        </activity>
+        <activity
+            android:name=".Activities.FormCarActivity"
+            android:parentActivityName=".Activities.ProfileActivity"></activity>
+        <activity android:name=".Activities.ProfileActivity"
+            android:parentActivityName=".Activities.HomeActivity"></activity>
     </application>
 
 </manifest>

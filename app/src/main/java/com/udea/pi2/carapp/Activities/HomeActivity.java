@@ -26,9 +26,13 @@ import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 import com.udea.pi2.carapp.R;
 
+import callback.CallbackModel;
+import model.User;
+
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final String TAG = "FIRE";
     private FirebaseAuth auth;
     NavigationView navigationView;
 
@@ -120,6 +124,10 @@ public class HomeActivity extends AppCompatActivity
                         }
                     });
         }
+        else if(id == R.id.nav_profile){
+            Intent intent = new Intent(this, ProfileActivity.class);
+            startActivity(intent);
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -135,6 +143,18 @@ public class HomeActivity extends AppCompatActivity
             String email = user.getEmail();
             String name = user.getDisplayName();
             Uri uri = user.getPhotoUrl();
+            User.findByEmail(new CallbackModel() {
+                @Override
+                public void onSuccess(Object id) {
+                    User u = (User) id;
+                }
+
+                @Override
+                public void onError(Object model, String message) {
+
+                }
+            },email);
+            getUserFireSotore(email);
             TextView tv_email = (TextView) headerView.findViewById(R.id.email_current_user);
             TextView tv_name = (TextView) headerView.findViewById(R.id.name_current_user);
             ImageView image = (ImageView) headerView.findViewById(R.id.image_current_user);
@@ -158,5 +178,10 @@ public class HomeActivity extends AppCompatActivity
             //this.finish();
 
         }
+    }
+
+    private void getUserFireSotore(String email){
+
+
     }
 }

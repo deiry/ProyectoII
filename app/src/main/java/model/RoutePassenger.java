@@ -3,7 +3,6 @@ package model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -107,5 +106,16 @@ public class RoutePassenger extends Model {
         map.put(RP_CN_PASSENGER, this.user.getId());
         map.put(RP_CN_ROUTE, this.route.getId());
         return map;
+    }
+
+    @Override
+    public void mapToModel(CallbackModel callbackModel, Map<String, Object> mapRequest) {
+
+        /*HashMap<String, Object> map = (HashMap<String, Object>) mapRequest;
+        this.setName((String) map.get(USR_CN_NAME));
+        this.setEmail((String) map.get(USR_CN_EMAIL));
+        this.setToken((String) map.get(USR_CN_TOKEN));
+
+        callbackModel.onSuccess(this);*/
     }
 }

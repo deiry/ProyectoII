@@ -1,6 +1,7 @@
 package com.udea.pi2.carapp.Activities;
 
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -8,8 +9,13 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
 import com.udea.pi2.carapp.R;
 
 
@@ -17,6 +23,7 @@ import java.util.ArrayList;
 
 import callback.CallbackModel;
 import model.Car;
+import model.User;
 import petrov.kristiyan.colorpicker.ColorPicker;
 
 public class FormCarActivity extends AppCompatActivity {
@@ -33,6 +40,7 @@ public class FormCarActivity extends AppCompatActivity {
     private TextInputEditText inputNum;
     private TextInputEditText inputObs;
     private Car car;
+    private User currentUser;
     private String colorC;
     private TextView tvColor;
 
@@ -42,17 +50,33 @@ public class FormCarActivity extends AppCompatActivity {
         setContentView(R.layout.activity_form_car);
         car = new Car();
         init();
+        getCurrentUser();
         validate();
+    }
+
+    public void getCurrentUser() {
+        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+
+        User.findByEmail(new CallbackModel() {
+            @Override
+            public void onSuccess(Object id) {
+               currentUser = (User) id;
+            }
+
+            @Override
+            public void onError(Object model, String message) {
+
+            }
+        },email);
     }
 
     public void saveCar(View view) {
 
-        validate();
         String brand = inputBrand.getText().toString();
         car.setBrand(brand);
 
         String line = inputLine.getText().toString();
-        //car.setLine(line);
+        //car.set(line);
 
         String model = inputModel.getText().toString();
         car.setModel(model);
@@ -61,15 +85,19 @@ public class FormCarActivity extends AppCompatActivity {
         car.setPlaque(plaque);
 
         String numPass = inputNum.getText().toString();
+        if(numPass.isEmpty()) numPass="0";
         int numPassenger = Integer.parseInt(numPass);
         car.setPassegerNum(numPassenger);
 
         String obs = inputObs.getText().toString();
         car.setName(obs);
+
+        car.setDriver(currentUser);
+
         car.save(new CallbackModel() {
             @Override
             public void onSuccess(Object id) {
-
+                finish();
             }
 
             @Override
@@ -80,6 +108,11 @@ public class FormCarActivity extends AppCompatActivity {
 
         car.setColor(colorC);
 
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
     }
 
     public void init() {

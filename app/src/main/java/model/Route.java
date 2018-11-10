@@ -4,7 +4,6 @@ package model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -208,5 +207,45 @@ public class Route extends Model{
 
 
         return map;
+    }
+
+    @Override
+    public void mapToModel(final CallbackModel callbackModel, Map<String, Object> mapRequest) {
+        final HashMap<String, Object> map = (HashMap<String, Object>) mapRequest;
+        this.setArrivalLat((Double) map.get(ROU_CN_ARRIVAL_LAT));
+        this.setArrivalLng((Double) map.get(ROU_CN_ARRIVAL_LNG));
+        this.setArrivalTime((Double) map.get(ROU_CN_ARRIVAL_TIME));
+        this.setDepartureLat((Double) map.get(ROU_CN_DEPARTURE_LAT));
+        this.setDepartureLng((Double) map.get(ROU_CN_DEPARTURE_LNG));
+        this.setDepartureTime((Double) map.get(ROU_CN_DEPARTURE_TIME));
+        this.setPrice((Double) map.get(ROU_CN_PRICE));
+        Car.findById(new CallbackModel() {
+            @Override
+            public void onSuccess(Object id) {
+                setCar((Car) id);
+                //callbackModel.onSuccess(getThis());
+                State.findById(new CallbackModel() {
+                    @Override
+                    public void onSuccess(Object id) {
+                        setState((State) id);
+                        callbackModel.onSuccess(getThis());
+                    }
+
+                    @Override
+                    public void onError(Object model, String message) {
+                        callbackModel.onError(model,message);
+                    }
+                },(String) map.get(ROU_CN_STATE),State.class.getSimpleName());
+            }
+
+            @Override
+            public void onError(Object model, String message) {
+                callbackModel.onError(model,message);
+            }
+        },(String) map.get(ROU_CN_CAR),"Car");
+    }
+
+    public Route getThis(){
+        return this;
     }
 }
