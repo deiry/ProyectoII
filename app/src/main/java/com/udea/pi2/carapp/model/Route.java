@@ -23,6 +23,7 @@ public class Route extends Model{
     final static public String ROU_CN_ARRIVAL_TIME = "arrivalTime";
     final static public String ROU_CN_STATE = "state";
     final static public String ROU_CN_CAR = "car";
+    final static public String ROU_CN_OWNER = "owner";
 
     @Column(name = ROU_CN_DEPARTURE_LAT, notNull = true)
     private double departureLat;
@@ -51,12 +52,16 @@ public class Route extends Model{
     @Column(name = ROU_CN_CAR, notNull = true)
     private Car car;
 
+    @Column(name = ROU_CN_OWNER, notNull = true)
+    private User owner;
+
+
     /*constructors*/
     public Route() {
     }
 
     public Route(double departureLat, double departureLng, double arrivalLat, double arrivalLng,
-                 double price, double departureTime, double arrivalTime, State state, Car car) {
+                 double price, double departureTime, double arrivalTime, State state, Car car, User owner) {
         this.departureLat = departureLat;
         this.departureLng = departureLng;
         this.arrivalLat = arrivalLat;
@@ -66,6 +71,7 @@ public class Route extends Model{
         this.arrivalTime = arrivalTime;
         this.state = state;
         this.car = car;
+        this.owner = owner;
     }
 
     /* getters and setters methods*/
@@ -141,6 +147,14 @@ public class Route extends Model{
         this.car = car;
     }
 
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
     @Override
     public List<JSONObject> modelToJSON(){
         return null;
@@ -167,6 +181,21 @@ public class Route extends Model{
             @Override
             public void onSuccess(Object id) {
                 state.setId((String)id);
+                saveOwner(callbackModel);
+            }
+
+            @Override
+            public void onError(Object model, String message) {
+                callbackModel.onError(model, message);
+            }
+        });
+    }
+
+    private void saveOwner(final CallbackModel callbackModel){
+        this.owner.save(new CallbackModel() {
+            @Override
+            public void onSuccess(Object id) {
+                owner.setId((String)id);
                 saveRoute(callbackModel);
             }
 
@@ -208,6 +237,7 @@ public class Route extends Model{
         map.put(ROU_CN_CAR, this.car.getId());
         map.put(ROU_CN_STATE, this.state.getId());
         map.put(ROU_CN_PRICE, this.price);
+        map.put(ROU_CN_OWNER, this.owner);
 
 
         return map;
@@ -247,6 +277,18 @@ public class Route extends Model{
                 callbackModel.onError(model,message);
             }
         },(String) map.get(ROU_CN_CAR),"Car");
+        User.findById(new CallbackModel() {
+            @Override
+            public void onSuccess(Object id) {
+                setOwner((User) id);
+                callbackModel.onSuccess(getThis());
+            }
+
+            @Override
+            public void onError(Object model, String message) {
+                callbackModel.onError(model,message);
+            }
+        },ROU_CN_OWNER);
     }
 
     public Route getThis(){

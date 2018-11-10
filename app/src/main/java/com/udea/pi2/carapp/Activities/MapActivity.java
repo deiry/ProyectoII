@@ -24,7 +24,7 @@ public class MapActivity extends AppCompatActivity
     private GoogleMap mMap;
     private double lat;
     private double lng;
-
+    private MarkerOptions markerInit;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,17 +35,25 @@ public class MapActivity extends AppCompatActivity
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        double lat = getIntent().getDoubleExtra("lat",0);
+        double lng = getIntent().getDoubleExtra("lng",0);
+        String titleMarker = getIntent().getStringExtra("tittleMarker");
+        String tittleActivity = getIntent().getStringExtra("tittleActivity");
+
+        if (tittleActivity != null && !tittleActivity.isEmpty()) {
+            setTitle(tittleActivity);
+        }
+
+        //si no se le envia nada no dibuja el marcador
+        if(lat != 0 && lng != 0){
+            markerInit = new MarkerOptions()
+                    .position(new LatLng(lat,lng))
+                    .title(titleMarker);
+        }
+
     }
 
-    /**
-     * Manipulates the map when it's available.
-     * The API invokes this callback when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user receives a prompt to install
-     * Play services inside the SupportMapFragment. The API invokes this method after the user has
-     * installed Google Play services and returned to the app.
-     */
+
     @Override
     public void onMapReady(final GoogleMap googleMap) {
         mMap = googleMap;
@@ -53,6 +61,11 @@ public class MapActivity extends AppCompatActivity
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         mMap.animateCamera(CameraUpdateFactory.zoomTo( 17.0f ));
         mMap.setOnMapLongClickListener(this);
+        //add marker
+        if(markerInit!=null){
+            mMap.addMarker(markerInit);
+        }
+
         setupGoogleMapScreenSettings(mMap);
     }
 
@@ -77,6 +90,7 @@ public class MapActivity extends AppCompatActivity
     @Override
     public void onMapLongClick(final LatLng latLng) {
         mMap.clear();
+
         MarkerOptions marker = new MarkerOptions().position(latLng);
         mMap.addMarker(marker);
 
