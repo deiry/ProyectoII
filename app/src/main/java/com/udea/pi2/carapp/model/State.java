@@ -41,7 +41,11 @@ public class State extends Model{
 
     private String id;
 
-    public State() {
+    public State(){
+
+    }
+
+    public State(String activo) {
     }
 
     @Override
