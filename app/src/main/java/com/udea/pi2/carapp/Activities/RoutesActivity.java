@@ -31,7 +31,7 @@ public class RoutesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_routes);
         TYPE_ROUTES = getIntent().getIntExtra("typeRoutes",0);
         ID_CURRENT_USER = getIntent().getStringExtra("idCurrentUser");
-        createRoutesTest();
+      //  createRoutesTest();
     }
 
     private void createRoutesTest() {
