@@ -1,4 +1,4 @@
-package model;
+package com.udea.pi2.carapp.model;
 
 
 import com.activeandroid.annotation.Column;
@@ -190,6 +190,10 @@ public class Route extends Model{
                 callbackModel.onError(model,message);
             }
         });
+    }
+
+    static public void findSelfRoutes(CallbackModel callbackModel,String id){
+        Model.multiRecord(callbackModel,"car",id,Route.class.getSimpleName());
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.udea.pi2.carapp.Activities;
 
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -9,21 +8,17 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.squareup.picasso.Picasso;
 import com.udea.pi2.carapp.R;
 
 
 import java.util.ArrayList;
 
 import callback.CallbackModel;
-import model.Car;
-import model.User;
+import com.udea.pi2.carapp.model.Car;
+import com.udea.pi2.carapp.model.User;
 import petrov.kristiyan.colorpicker.ColorPicker;
 
 public class FormCarActivity extends AppCompatActivity {

@@ -11,7 +11,7 @@ import com.udea.pi2.carapp.R;
 
 import java.util.ArrayList;
 
-import model.Car;
+import com.udea.pi2.carapp.model.Car;
 
 public class CarAdapter extends RecyclerView.Adapter<CarAdapter.ViewHolder> {
 
