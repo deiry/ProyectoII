@@ -162,7 +162,18 @@ public class Route extends Model{
 
     @Override
     public void save(final CallbackModel callbackModel) {
-        this.car.save(new CallbackModel() {
+        this.saveModel(new CallbackModel() {
+            @Override
+            public void onSuccess(Object id) {
+                System.out.print("MODEL: " + id);
+            }
+
+            @Override
+            public void onError(Object model, String message) {
+
+            }
+        });
+        /*this.car.save(new CallbackModel() {
             @Override
             public void onSuccess(Object id) {
                 car.setId((String) id);
@@ -173,7 +184,7 @@ public class Route extends Model{
             public void onError(Object model, String message) {
                 callbackModel.onError(model,message);
             }
-        });
+        });*/
     }
 
     private void saveState(final CallbackModel callbackModel){
@@ -237,7 +248,7 @@ public class Route extends Model{
         map.put(ROU_CN_CAR, this.car.getId());
         map.put(ROU_CN_STATE, this.state.getId());
         map.put(ROU_CN_PRICE, this.price);
-        map.put(ROU_CN_OWNER, this.owner);
+        map.put(ROU_CN_OWNER, this.owner.getId());
 
 
         return map;

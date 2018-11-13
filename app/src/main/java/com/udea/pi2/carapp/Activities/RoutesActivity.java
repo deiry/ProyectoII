@@ -3,11 +3,11 @@ package com.udea.pi2.carapp.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.udea.pi2.carapp.R;
+import com.udea.pi2.carapp.model.Car;
 import com.udea.pi2.carapp.model.Route;
 import com.udea.pi2.carapp.model.State;
 import com.udea.pi2.carapp.model.User;
@@ -31,13 +31,15 @@ public class RoutesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_routes);
         TYPE_ROUTES = getIntent().getIntExtra("typeRoutes",0);
         ID_CURRENT_USER = getIntent().getStringExtra("idCurrentUser");
-        createRoutesTest();
+        //createRoutesTest();
     }
 
     private void createRoutesTest() {
         //get current user
                 User user = new User();
                 user.id = ID_CURRENT_USER;
+                Car car = new Car();
+                car.id = "2iYrmzzLJWCXro7KTf63";
 
                 for (int i = 0; i< 10;i++){
                     Route route = new Route();
@@ -50,6 +52,7 @@ public class RoutesActivity extends AppCompatActivity {
                     route.setPrice(2000);
                     route.setState(new State("activo"));
                     route.setOwner(user);
+                    route.setCar(car);
 
                     route.save(new CallbackModel() {
                         @Override
