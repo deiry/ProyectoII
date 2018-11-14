@@ -246,7 +246,7 @@ public abstract class Model{
                             },documentSnapshot.getData());
                         }
                         else if(className.equals(State.class.getSimpleName())){
-                            final State model = documentSnapshot.toObject(State.class);
+                            final State model = new State();
                             model.setId(id);
                             model.mapToModel(new CallbackModel() {
                                 @Override
@@ -265,7 +265,7 @@ public abstract class Model{
                             //callbackModel.onSuccess(com.udea.pi2.carapp.model);
                         }
                         else if(className.equals(Route.class.getSimpleName())){
-                            final Route model = documentSnapshot.toObject(Route.class);
+                            final Route model = new Route();
                             model.setId(id);
                             model.mapToModel(new CallbackModel() {
                                 @Override

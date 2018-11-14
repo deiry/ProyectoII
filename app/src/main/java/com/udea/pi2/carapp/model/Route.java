@@ -233,7 +233,7 @@ public class Route extends Model{
     }
 
     static public void findSelfRoutes(CallbackModel callbackModel,String id){
-        Model.multiRecord(callbackModel,"car",id,Route.class.getSimpleName());
+        Model.multiRecord(callbackModel,ROU_CN_OWNER,id,Route.class.getSimpleName());
     }
 
     @Override
