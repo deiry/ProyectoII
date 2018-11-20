@@ -28,6 +28,7 @@ public class MapActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("Ubicación de partida");
         // Retrieve the content view that renders the map.
         setContentView(R.layout.activity_map);
         // Get the SupportMapFragment and request notification

@@ -81,7 +81,7 @@ public class RouteActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route);
-
+        setTitle("Crear ruta");
         ly_arrived_time = (TextInputLayout) findViewById(R.id.input_ly_arrive_time);
         et_arrived_time = (TextInputEditText) findViewById(R.id.input_arrive_time);
         et_departure_time = (TextInputEditText) findViewById(R.id.input_departure_time);

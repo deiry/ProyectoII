@@ -43,6 +43,7 @@ public class FormCarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_car);
+        setTitle("Registro de vehículo");
         car = new Car();
         init();
         getCurrentUser();
