@@ -58,13 +58,16 @@ public class MapActivity extends AppCompatActivity
     @Override
     public void onMapReady(final GoogleMap googleMap) {
         mMap = googleMap;
-        LatLng sydney = new LatLng(6.267577,-75.5706907);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo( 17.0f ));
+        LatLng udea = new LatLng(6.267577,-75.5706907);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(udea));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo( 15.0f ));
         mMap.setOnMapLongClickListener(this);
+        MarkerOptions marker = new MarkerOptions().position(udea);
+        mMap.addMarker(marker);
         //add marker
         if(markerInit!=null){
             mMap.addMarker(markerInit);
+
         }
 
         setupGoogleMapScreenSettings(mMap);

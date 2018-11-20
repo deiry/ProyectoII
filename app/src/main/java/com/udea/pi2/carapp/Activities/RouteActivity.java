@@ -73,6 +73,7 @@ public class RouteActivity extends AppCompatActivity {
     private double lngDeparture;
     private Car carSelect;
     private User userCurrent;
+    private boolean isClickArrive, isClickDeparture = false;
 
     private boolean isCheckRoundTrip, isCheckOneTrip = false;
 

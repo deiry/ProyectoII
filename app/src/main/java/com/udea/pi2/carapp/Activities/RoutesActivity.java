@@ -29,6 +29,7 @@ public class RoutesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_routes);
+        setTitle("Mis rutas");
         TYPE_ROUTES = getIntent().getIntExtra("typeRoutes",0);
         ID_CURRENT_USER = getIntent().getStringExtra("idCurrentUser");
 
