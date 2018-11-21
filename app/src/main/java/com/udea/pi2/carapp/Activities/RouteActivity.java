@@ -9,13 +9,11 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -26,8 +24,11 @@ import com.udea.pi2.carapp.model.Car;
 import com.udea.pi2.carapp.model.Route;
 import com.udea.pi2.carapp.model.User;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import callback.CallbackModel;
 import callback.CallbackRecyclerCar;
@@ -284,6 +285,35 @@ public class RouteActivity extends AppCompatActivity {
         Route route = new Route();
         route.setCar(carSelect);
         route.setOwner(userCurrent);
+        route.setArrivalLat(latArrive);
+        route.setArrivalLng(lngArrive);
+        String dtStart = et_route_date.getText().toString() + " " +et_arrived_time.getText().toString();
+        String dtStart2 = et_route_date.getText().toString() + " " +et_departure_time.getText().toString();
+        Date date = new Date();
+        Date date2 = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("dd-MMyyyy h:mm a");
+        try {
+            date = format.parse(dtStart);
+            date2 = format.parse(dtStart2);
+            System.out.println(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        route.setArrivalTime((double) date.getTime());
+        route.setDepartureLat(latDeparture);
+        route.setDepartureLng(lngDeparture);
+        route.setDepartureTime((double) date2.getTime());
+        route.save(new CallbackModel() {
+            @Override
+            public void onSuccess(Object id) {
+                Toast.makeText(getApplicationContext(),"Ruta guardada correctamente.",Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onError(Object model, String message) {
+
+            }
+        });
     }
 
     @Override

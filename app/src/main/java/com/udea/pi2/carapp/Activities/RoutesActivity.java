@@ -3,9 +3,12 @@ package com.udea.pi2.carapp.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
+import com.udea.pi2.carapp.Adapters.RouteAdapter;
 import com.udea.pi2.carapp.R;
 import com.udea.pi2.carapp.model.Car;
 import com.udea.pi2.carapp.model.Route;
@@ -110,8 +113,13 @@ public class RoutesActivity extends AppCompatActivity {
         }
     }
 
-    private void setRoutes(ArrayList<Route> id) {
-        Toast.makeText(this,id.toString(),Toast.LENGTH_LONG).show();
+    private void setRoutes(ArrayList<Route> routes) {
+        RecyclerView rv = (RecyclerView) findViewById(R.id.rv_routes_list);
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        rv.setLayoutManager(llm);
+        RouteAdapter carsAdapter = new RouteAdapter(routes);
+        rv.setAdapter(carsAdapter);
     }
 
     public void addRoute(View v){
