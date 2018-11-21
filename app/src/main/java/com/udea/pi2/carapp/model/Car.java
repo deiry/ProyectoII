@@ -173,6 +173,10 @@ public class Car extends Model{
         Model.multiRecord(callbackModel,"driver",id,Car.class.getSimpleName());
     }
 
+    static public void findById(CallbackModel callbackModel,String id){
+        Model.findById(callbackModel, id, Car.class.getSimpleName());
+    }
+
     static public void findAll(CallbackModel callbackModel){
         Model.multiRecord(callbackModel,"",null,Car.class.getSimpleName());
     }

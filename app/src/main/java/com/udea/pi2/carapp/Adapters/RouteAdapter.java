@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.udea.pi2.carapp.R;
 import com.udea.pi2.carapp.model.Route;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -40,9 +42,10 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
         holder.tv_to.setText(String.valueOf(route.getDepartureLat())+", "+ String.valueOf(route.getDepartureLng()));
         //set Dates
         Date dateArrived = new Date((long)route.getArrivalTime());
-        holder.tv_arrive_date.setText(dateArrived.toString());
+        DateFormat df = new SimpleDateFormat("h:mm a");
+        holder.tv_arrive_date.setText(df.format(dateArrived));
         Date dateDeparture = new Date((long)route.getDepartureTime());
-        holder.tv_arrive_date.setText(dateDeparture.toString());
+        holder.tv_deperture_date.setText(df.format(dateDeparture));
 
     }
 
