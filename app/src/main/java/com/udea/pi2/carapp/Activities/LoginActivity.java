@@ -17,12 +17,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.udea.pi2.carapp.R;
+import com.udea.pi2.carapp.model.User;
 
 import java.util.Arrays;
 import java.util.List;
 
 import callback.CallbackModel;
-import com.udea.pi2.carapp.model.User;
 
 public class LoginActivity extends AppCompatActivity {
 

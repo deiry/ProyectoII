@@ -269,37 +269,38 @@ public class Route extends Model{
             public void onSuccess(Object id) {
                 setCar((Car) id);
                 //callbackModel.onSuccess(getThis());
-                State.findById(new CallbackModel() {
+                User.findById(new CallbackModel() {
                     @Override
                     public void onSuccess(Object id) {
-                        setState((State) id);
-                        callbackModel.onSuccess(getThis());
+                        setOwner((User) id);
+                        State.findById(new CallbackModel() {
+                            @Override
+                            public void onSuccess(Object id) {
+                                setState((State) id);
+                                callbackModel.onSuccess(getThis());
+                            }
+
+                            @Override
+                            public void onError(Object model, String message) {
+                                callbackModel.onError(model,message);
+                            }
+                        },(String) map.get(ROU_CN_STATE),State.class.getSimpleName());
+                        //callbackModel.onSuccess(getThis());
                     }
 
                     @Override
                     public void onError(Object model, String message) {
                         callbackModel.onError(model,message);
                     }
-                },(String) map.get(ROU_CN_STATE),State.class.getSimpleName());
+                },(String) map.get(ROU_CN_OWNER), User.class.getSimpleName());
             }
 
             @Override
             public void onError(Object model, String message) {
                 callbackModel.onError(model,message);
             }
-        },(String) map.get(ROU_CN_CAR),"Car");
-        User.findById(new CallbackModel() {
-            @Override
-            public void onSuccess(Object id) {
-                setOwner((User) id);
-                callbackModel.onSuccess(getThis());
-            }
+        },(String) map.get(ROU_CN_CAR),Car.class.getSimpleName());
 
-            @Override
-            public void onError(Object model, String message) {
-                callbackModel.onError(model,message);
-            }
-        },ROU_CN_OWNER);
     }
 
     public Route getThis(){

@@ -48,7 +48,7 @@ public abstract class Model{
                         if(task.isSuccessful()){
                             String id = task.getResult().getId();
 
-                            if(className == "User"){
+                            if(className.equals("User")){
                                 final User model = new User();
                                 model.setId(id);
                                 model.mapToModel(new CallbackModel() {
@@ -63,8 +63,23 @@ public abstract class Model{
                                     }
                                 }, task.getResult().getData());
                             }
-                            else if(className == "Car"){
-                                final User model = new User();
+                            else if(className.equals("Car")){
+                                final Car model = new Car();
+                                model.setId(id);
+                                model.mapToModel(new CallbackModel() {
+                                    @Override
+                                    public void onSuccess(Object id) {
+                                        callbackModel.onSuccess(model);
+                                    }
+
+                                    @Override
+                                    public void onError(Object model, String message) {
+                                        callbackModel.onError(model,message);
+                                    }
+                                }, task.getResult().getData());
+                            }
+                            else if(className.equals("State")){
+                                final State model = new State();
                                 model.setId(id);
                                 model.mapToModel(new CallbackModel() {
                                     @Override
@@ -154,7 +169,6 @@ public abstract class Model{
                                             callbackModel.onError(model, message);
                                         }
                                     },documentSnapshot.getData());
-                                    callbackModel.onSuccess(model);
                                 }
                                 /*else if(className == "RoutePassenger"){
                                     RoutePassenger com.udea.pi2.carapp.model = documentSnapshot.toObject(RoutePassenger.class);
