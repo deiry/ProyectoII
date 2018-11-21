@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_margin="8dp"
-    tools:context=".Activities.RouteActivity">
+    tools:context=".Activities.RouteActivity"
+    android:background="@color/white">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -17,13 +18,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
+            <!--Fecha-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:orientation="horizontal">
 
                 <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_ly_arrive_time"
+                    android:id="@+id/input_ly_date"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="6"
@@ -43,79 +45,13 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:background="@color/white"
                     android:onClick="clickArriveDate"
                     app:srcCompat="@drawable/ic_baseline_calendar_today_24px" />
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal">
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_ly_arrive"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="6"
-                    app:hintAnimationEnabled="true">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/input_arrive"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Lugar de llegada"
-                        android:inputType="text"
-                        android:maxLines="1" />
-
-                </android.support.design.widget.TextInputLayout>
-
-                <ImageButton
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:onClick="clickArriveLocation"
-                    app:srcCompat="@drawable/ic_baseline_edit_24px" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal">
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_ly_arrive_time"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="4"
-                    app:hintAnimationEnabled="true">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/input_arrive_time"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Hora de llegada"
-                        android:inputType="text"
-                        android:maxLines="1" />
-
-                </android.support.design.widget.TextInputLayout>
-
-                <ImageButton
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:onClick="clickArriveTime"
-                    app:srcCompat="@drawable/ic_baseline_alarm_24px" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:orientation="vertical"></LinearLayout>
-
-            </LinearLayout>
-
+            <!--Lugar de partida-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -143,10 +79,12 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:onClick="clickDepartureLocation"
-                    app:srcCompat="@drawable/ic_baseline_edit_24px" />
+                    app:srcCompat="@drawable/ic_baseline_edit_24px"
+                    android:background="@color/white"/>
 
             </LinearLayout>
 
+            <!--Hora de llegada y partida-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -156,7 +94,7 @@
                     android:id="@+id/input_ly_departure_time"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="4"
+                    android:layout_weight="2"
                     app:hintAnimationEnabled="true">
 
                     <android.support.design.widget.TextInputEditText
@@ -170,14 +108,255 @@
 
                 </android.support.design.widget.TextInputLayout>
 
+                <ImageButton
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:onClick="clickArriveTime"
+                    app:srcCompat="@drawable/ic_baseline_alarm_24px" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_ly_arrive_time"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:visibility="invisible"
+                    app:hintAnimationEnabled="true">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/input_arrive_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Hora de llegada"
+                        android:inputType="text"
+                        android:maxLines="1" />
+
+                </android.support.design.widget.TextInputLayout>
+
+
+            </LinearLayout>
+
+            <!--Lugar de llegada-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_ly_arrive"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="6"
+                    app:hintAnimationEnabled="true">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/input_arrive"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Lugar de llegada"
+                        android:inputType="text"
+                        android:maxLines="1" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <ImageButton
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:onClick="clickArriveLocation"
+                    app:srcCompat="@drawable/ic_baseline_edit_24px" />
+
+            </LinearLayout>
+
+            <!--Precio y check ida y vuelta-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_ly_price"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    app:hintAnimationEnabled="true">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/input_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:hint="Precio $"
+                        android:inputType="numberDecimal"
+                        android:maxLines="1" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <!--Check ida y vuelta-->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="3"
-                    android:orientation="vertical"></LinearLayout>
+                    android:orientation="vertical">
+
+                    <CheckBox android:id="@+id/checkbox_one_trip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ida"
+                        android:layout_marginBottom="10dp"
+                        android:onClick="onClickOneTrip"
+                        />
+
+                    <CheckBox android:id="@+id/checkbox_round_trip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ida y vuelta"
+                        android:onClick="onClickRoundTrip"/>
+                </LinearLayout>
 
             </LinearLayout>
+
+            <!--Hora de regreso-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:id="@+id/ly_back_time"
+                android:visibility="visible">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_ly_back_time"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    app:hintAnimationEnabled="true">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/input_back_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Hora de regreso"
+                        android:inputType="text"
+                        android:maxLines="1" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <ImageButton
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:onClick="clickBackTime"
+                    app:srcCompat="@drawable/ic_baseline_alarm_24px" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"/>
+
+            </LinearLayout>
+
+            <!--Carro seleccionada-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                android:id="@+id/ly_car_select">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_ly_car"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    app:hintAnimationEnabled="true">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/input_car_marca"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:hint="Marca"
+                        android:inputType="text"
+                        android:maxLines="1" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_ly_car_2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    app:hintAnimationEnabled="true">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/input_car_placa"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:hint="Placa"
+                        android:inputType="text"
+                        android:maxLines="1" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_autorenew_24px"
+                    android:background="@color/white"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:onClick="changeCar"/>
+
+            </LinearLayout>
+
+            <!--Recycler view for car-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:id="@+id/ly_list_car">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Seleccionar vehículo"
+                        android:padding="5dp"
+                        android:background="@color/colorPrimaryLight"/>
+                </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rv_route_car">
+
+                </android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="end|bottom"
+                android:layout_marginEnd="27dp"
+                android:layout_marginBottom="26dp"
+                android:onClick="saveRoute"
+                android:src="@drawable/ic_save_24px"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="341dp"
+                tools:layout_editor_absoluteY="466dp" />
+
+
         </LinearLayout>
+
     </ScrollView>
 
 </LinearLayout>
