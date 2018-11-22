@@ -88,21 +88,22 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:id="@+id/ly_arrive_time"
+                android:visibility="visible">
 
                 <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_ly_departure_time"
+                    android:id="@+id/input_ly_arrive_time"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="2"
                     app:hintAnimationEnabled="true">
 
                     <android.support.design.widget.TextInputEditText
-                        android:id="@+id/input_departure_time"
+                        android:id="@+id/input_arrive_time"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="4"
-                        android:hint="Hora de partida"
+                        android:hint="Hora de llegada"
                         android:inputType="text"
                         android:maxLines="1" />
 
@@ -116,24 +117,10 @@
                     android:onClick="clickArriveTime"
                     app:srcCompat="@drawable/ic_baseline_alarm_24px" />
 
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_ly_arrive_time"
+                <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:visibility="invisible"
-                    app:hintAnimationEnabled="true">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/input_arrive_time"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Hora de llegada"
-                        android:inputType="text"
-                        android:maxLines="1" />
-
-                </android.support.design.widget.TextInputLayout>
-
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"/>
 
             </LinearLayout>
 
