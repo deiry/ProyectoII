@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -22,6 +24,7 @@ import com.udea.pi2.carapp.Adapters.CarAdapter;
 import com.udea.pi2.carapp.R;
 import com.udea.pi2.carapp.model.Car;
 import com.udea.pi2.carapp.model.Route;
+import com.udea.pi2.carapp.model.State;
 import com.udea.pi2.carapp.model.User;
 
 import java.text.ParseException;
@@ -47,9 +50,11 @@ public class RouteActivity extends AppCompatActivity {
     LinearLayout ly_back_time;
     TextInputEditText et_car_brand;
     TextInputEditText et_car_plaque;
-    TextInputEditText et_departure_time;
+    TextInputEditText et_price;
     TextInputEditText et_back_time;
     CheckBox ch_one_trip, ch_round_trip;
+    ImageButton btn_arrive;
+    ImageButton btn_departure;
 
     private static final String CERO = "0";
     private static final String DOS_PUNTOS = ":";
@@ -67,6 +72,8 @@ public class RouteActivity extends AppCompatActivity {
 
     int REQUEST_CODE = 1;
     int REQUEST_CODE2 = 2;
+    private String STR_UDEA_LOCATION = "6.268143,-75.568782";
+    private String STR_UDEA_NAME = "Universidad de Antioquia";
 
     private double latArrive;
     private double lngArrive;
@@ -74,6 +81,7 @@ public class RouteActivity extends AppCompatActivity {
     private double lngDeparture;
     private Car carSelect;
     private User userCurrent;
+    private State state;
     private boolean isClickArrive, isClickDeparture = false;
 
     private boolean isCheckRoundTrip, isCheckOneTrip = false;
@@ -87,6 +95,7 @@ public class RouteActivity extends AppCompatActivity {
         et_arrived_time = (TextInputEditText) findViewById(R.id.input_arrive_time);
         //et_departure_time = (TextInputEditText) findViewById(R.id.input_departure_time);
         et_back_time = (TextInputEditText) findViewById(R.id.input_back_time);
+        et_price = (TextInputEditText) findViewById(R.id.input_price);
 
         ly_back_time = (LinearLayout) findViewById(R.id.ly_back_time);
         et_route_date = (TextInputEditText) findViewById(R.id.input_route_date);
@@ -101,10 +110,31 @@ public class RouteActivity extends AppCompatActivity {
 
         ch_one_trip = (CheckBox) findViewById(R.id.checkbox_one_trip);
         ch_round_trip = (CheckBox)findViewById(R.id.checkbox_round_trip);
+        btn_arrive = (ImageButton) findViewById(R.id.btn_route_arrive_location);
+        btn_departure = (ImageButton) findViewById(R.id.btn_route_departure_location);
+
         ch_round_trip.setChecked(true);
         isCheckRoundTrip=true;
 
         getCars();
+        //set default UDEA location
+        String[] latlong =  STR_UDEA_LOCATION.split(",");
+        //save latitude and longitude
+        latArrive = Double.parseDouble(latlong[0]);
+        lngArrive = Double.parseDouble(latlong[1]);
+        //set name udea
+        et_arrived.setText(STR_UDEA_NAME);
+        State.findById(new CallbackModel() {
+            @Override
+            public void onSuccess(Object id) {
+                state = (State) id;
+            }
+
+            @Override
+            public void onError(Object model, String message) {
+                System.out.print(message);
+            }
+        },"OFa1SeEqBgBsb3CwrgBD");
 
     }
 
@@ -198,17 +228,7 @@ public class RouteActivity extends AppCompatActivity {
         TimePickerDialog recogerHora = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                String AM_PM = (hourOfDay > 12) ? "p.m." : "a.m.";
-                hourOfDay = (hourOfDay > 12) ? (hourOfDay - 12) : hourOfDay;
-                //Formateo el hora obtenido: antepone el 0 si son menores de 10
-                String horaFormateada =  (hourOfDay < 10)? String.valueOf(CERO + hourOfDay) : String.valueOf(hourOfDay);
-                //Formateo el minuto obtenido: antepone el 0 si son menores de 10
-                String minutoFormateado = (minute < 10)? String.valueOf(CERO + minute):String.valueOf(minute);
-                //Obtengo el valor a.m. o p.m., dependiendo de la selección del usuario
-                //Muestro la hora con el formato deseado
-                et_arrived_time.setText(horaFormateada + DOS_PUNTOS + minutoFormateado + " " + AM_PM);
-
-
+                et_arrived_time.setText(formatHour(hourOfDay,minute));
             }
             //Estos valores deben ir en ese orden
             //Al colocar en false se muestra en formato 12 horas y true en formato 24 horas
@@ -222,17 +242,7 @@ public class RouteActivity extends AppCompatActivity {
         TimePickerDialog recogerHora = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                String AM_PM = (hourOfDay > 12) ? "p.m." : "a.m.";
-                hourOfDay = (hourOfDay > 12) ? (hourOfDay - 12) : hourOfDay;
-                //Formateo el hora obtenido: antepone el 0 si son menores de 10
-                String horaFormateada =  (hourOfDay < 10)? String.valueOf(CERO + hourOfDay) : String.valueOf(hourOfDay);
-                //Formateo el minuto obtenido: antepone el 0 si son menores de 10
-                String minutoFormateado = (minute < 10)? String.valueOf(CERO + minute):String.valueOf(minute);
-                //Obtengo el valor a.m. o p.m., dependiendo de la selección del usuario
-                //Muestro la hora con el formato deseado
-                et_back_time.setText(horaFormateada + DOS_PUNTOS + minutoFormateado + " " + AM_PM);
-
-
+                et_back_time.setText(formatHour(hourOfDay, minute));
             }
             //Estos valores deben ir en ese orden
             //Al colocar en false se muestra en formato 12 horas y true en formato 24 horas
@@ -253,6 +263,30 @@ public class RouteActivity extends AppCompatActivity {
         },year,month,day);
 
         datePickerDialog.show();
+    }
+
+    public void clickSwapLocation(View v){
+        //save lat, lng and str EditText
+        double lat = this.latArrive;
+        double lng = this.lngArrive;
+        String str = et_arrived.getText().toString();
+
+        this.latArrive = this.latDeparture;
+        this.lngArrive = this.lngDeparture;
+        et_arrived.setText(et_departure.getText().toString());
+
+        this.latDeparture = lat;
+        this.lngDeparture = lng;
+        et_departure.setText(str);
+
+        if(et_departure.getText().toString().equals(STR_UDEA_NAME)){
+            btn_departure.setVisibility(View.INVISIBLE);
+            btn_arrive.setVisibility(View.VISIBLE);
+        }
+        else if(et_arrived.getText().toString().equals(STR_UDEA_NAME)) {
+            btn_departure.setVisibility(View.VISIBLE);
+            btn_arrive.setVisibility(View.INVISIBLE);
+        }
     }
 
 
@@ -287,13 +321,10 @@ public class RouteActivity extends AppCompatActivity {
         route.setArrivalLat(latArrive);
         route.setArrivalLng(lngArrive);
         String dtStart = et_route_date.getText().toString() + " " +et_arrived_time.getText().toString();
-        String dtStart2 = et_route_date.getText().toString() + " " +et_departure_time.getText().toString();
         Date date = new Date();
-        Date date2 = new Date();
         SimpleDateFormat format = new SimpleDateFormat("dd-MMyyyy h:mm a");
         try {
             date = format.parse(dtStart);
-            date2 = format.parse(dtStart2);
             System.out.println(date);
         } catch (ParseException e) {
             e.printStackTrace();
@@ -301,7 +332,11 @@ public class RouteActivity extends AppCompatActivity {
         route.setArrivalTime((double) date.getTime());
         route.setDepartureLat(latDeparture);
         route.setDepartureLng(lngDeparture);
-        route.setDepartureTime((double) date2.getTime());
+        route.setDepartureTime(route.getArrivalTime()-(30*60));
+        route.setState(state);
+        String price = et_price.getText().toString();
+        route.setPrice(Double.valueOf(price));
+
         route.save(new CallbackModel() {
             @Override
             public void onSuccess(Object id) {
@@ -313,6 +348,43 @@ public class RouteActivity extends AppCompatActivity {
 
             }
         });
+
+        if(ch_round_trip.isChecked()){
+
+            dtStart = et_route_date.getText().toString() + " " +et_back_time.getText().toString();
+            date = new Date();
+            format = new SimpleDateFormat("dd-MMyyyy h:mm a");
+            try {
+                date = format.parse(dtStart);
+                System.out.println(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Route round = new Route();
+            round.setCar(carSelect);
+            round.setOwner(userCurrent);
+            round.setDepartureLat(latArrive);
+            round.setDepartureLng(lngArrive);
+            round.setDepartureTime((double) date.getTime());
+            round.setArrivalLat(latDeparture);
+            round.setArrivalLng(lngDeparture);
+            round.setArrivalTime((double) date.getTime() + (30*60));
+            round.setState(state);
+            price = et_price.getText().toString();
+            round.setPrice(Double.valueOf(price));
+
+            round.save(new CallbackModel() {
+                @Override
+                public void onSuccess(Object id) {
+                    Toast.makeText(getApplicationContext(),"Ruta guardada correctamente.",Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void onError(Object model, String message) {
+
+                }
+            });
+        }
     }
 
     @Override
@@ -357,11 +429,19 @@ public class RouteActivity extends AppCompatActivity {
             }
 
         }
+    }
 
-
-
-
-
+    @NonNull
+    private String formatHour(int hourOfDay, int minute){
+        String AM_PM = (hourOfDay >= 12) ? "p.m." : "a.m.";
+        hourOfDay = (hourOfDay > 12) ? (hourOfDay - 12) : hourOfDay;
+        //Formateo el hora obtenido: antepone el 0 si son menores de 10
+        String horaFormateada =  (hourOfDay < 10)? String.valueOf(CERO + hourOfDay) : String.valueOf(hourOfDay);
+        //Formateo el minuto obtenido: antepone el 0 si son menores de 10
+        String minutoFormateado = (minute < 10)? String.valueOf(CERO + minute):String.valueOf(minute);
+        //Obtengo el valor a.m. o p.m., dependiendo de la selección del usuario
+        //Muestro la hora con el formato deseado
+        return (horaFormateada + DOS_PUNTOS + minutoFormateado + " " + AM_PM);
     }
 
 

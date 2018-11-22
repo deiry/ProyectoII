@@ -69,6 +69,10 @@ public class State extends Model{
         });
     }
 
+    static public void findById(CallbackModel callbackModel,String id){
+        Model.findById(callbackModel, id, State.class.getSimpleName());
+    }
+
     @Override
     public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();

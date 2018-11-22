@@ -165,12 +165,13 @@ public class Route extends Model{
         this.saveModel(new CallbackModel() {
             @Override
             public void onSuccess(Object id) {
-                System.out.print("MODEL: " + id);
+                setId((String) id);
+                callbackModel.onSuccess(id);
             }
 
             @Override
             public void onError(Object model, String message) {
-
+                callbackModel.onError(model,message);
             }
         });
         /*this.car.save(new CallbackModel() {

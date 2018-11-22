@@ -35,6 +35,10 @@
                         android:id="@+id/input_route_date"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:hint="Fecha"
                         android:inputType="text"
                         android:maxLines="1" />
@@ -68,6 +72,10 @@
                         android:id="@+id/input_departure"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:hint="Lugar de partida"
                         android:inputType="text"
                         android:maxLines="1" />
@@ -75,6 +83,7 @@
                 </android.support.design.widget.TextInputLayout>
 
                 <ImageButton
+                    android:id="@+id/btn_route_departure_location"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -103,6 +112,10 @@
                         android:id="@+id/input_arrive_time"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:hint="Hora de llegada"
                         android:inputType="text"
                         android:maxLines="1" />
@@ -116,6 +129,14 @@
                     android:background="@color/white"
                     android:onClick="clickArriveTime"
                     app:srcCompat="@drawable/ic_baseline_alarm_24px" />
+
+                <ImageButton
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:onClick="clickSwapLocation"
+                    app:srcCompat="@drawable/ic_baseline_cached_24px"/>
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -141,6 +162,10 @@
                         android:id="@+id/input_arrive"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:hint="Lugar de llegada"
                         android:inputType="text"
                         android:maxLines="1" />
@@ -148,10 +173,13 @@
                 </android.support.design.widget.TextInputLayout>
 
                 <ImageButton
+                    android:id="@+id/btn_route_arrive_location"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@color/white"
+                    android:clickable="false"
+                    android:visibility="invisible"
                     android:onClick="clickArriveLocation"
                     app:srcCompat="@drawable/ic_baseline_edit_24px" />
 
@@ -224,6 +252,10 @@
                         android:id="@+id/input_back_time"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:hint="Hora de regreso"
                         android:inputType="text"
                         android:maxLines="1" />
