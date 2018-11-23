@@ -5,6 +5,7 @@ import com.activeandroid.annotation.Table;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,31 +15,36 @@ import callback.CallbackModel;
 @Table(name = "tbl_route_passenger")
 public class RoutePassenger extends Model {
 
-    final static public String RP_CN_PASSENGER = "user";
+    final static public String RP_CN_PASSENGER = "users";
     final static public String RP_CN_ROUTE = "route";
 
     @Column(name = RP_CN_PASSENGER)
-    private User user;
+    private ArrayList<User> users;
 
     @Column(name = RP_CN_ROUTE)
     private Route route;
 
     /* constructors */
     public RoutePassenger() {
+        users = new ArrayList<User>();
     }
 
-    public RoutePassenger(User user, Route route) {
-        this.user = user;
+    public RoutePassenger(ArrayList<User> users, Route route) {
+        this.users = users;
         this.route = route;
     }
 
-    /* getters and setters methods*/
-    public User getUser() {
-        return user;
+    public void addUser(User user){
+        users.add(user);
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    /* getters and setters methods*/
+    public ArrayList<User> getUser() {
+        return users;
+    }
+
+    public void setUser(ArrayList<User> user) {
+        this.users = user;
     }
 
     public Route getRoute() {
@@ -56,7 +62,7 @@ public class RoutePassenger extends Model {
 
     @Override
     public void save(final CallbackModel callbackModel) {
-        this.user.save(new CallbackModel() {
+        /*this.user.save(new CallbackModel() {
             @Override
             public void onSuccess(Object id) {
                 user.setId((String) id);
@@ -66,6 +72,18 @@ public class RoutePassenger extends Model {
             @Override
             public void onError(Object model, String message) {
 
+            }
+        });*/
+        this.saveModel(new CallbackModel() {
+            @Override
+            public void onSuccess(Object id) {
+                setId((String)id);
+                callbackModel.onSuccess(id);
+            }
+
+            @Override
+            public void onError(Object model, String message) {
+                callbackModel.onError(model,message);
             }
         });
     }
@@ -100,22 +118,52 @@ public class RoutePassenger extends Model {
         });
     }
 
-    @Override
-    public Map<String, Object> toMap() {
-        Map<String, Object> map = new HashMap<>();
-        map.put(RP_CN_PASSENGER, this.user.getId());
-        map.put(RP_CN_ROUTE, this.route.getId());
-        return map;
+    public RoutePassenger getThis(){
+        return this;
     }
 
     @Override
-    public void mapToModel(CallbackModel callbackModel, Map<String, Object> mapRequest) {
+    public Map<String, Object> toMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put(RP_CN_PASSENGER, this.usersToArray());
+        map.put(RP_CN_ROUTE, this.route.getId());
+        return map;
+    }
+    
+    private String[] usersToArray(){
+        String[] array = new String[users.size()];
+        for (int i = 0; i < users.size(); i++) {
+            User u = users.get(i);
+            array[i] = u.getId();
+        }
+        /*for (int i = 0; i < users.size(); i++) {
+            User u = users.get(i);
+            array += "\"" + u.getId() + "\"";
+            if(i<users.size()-1){
+                array += ",";
+            }
+        }
+        return array + "]";*/
+        return array;
+    }
 
-        /*HashMap<String, Object> map = (HashMap<String, Object>) mapRequest;
-        this.setName((String) map.get(USR_CN_NAME));
-        this.setEmail((String) map.get(USR_CN_EMAIL));
-        this.setToken((String) map.get(USR_CN_TOKEN));
+    @Override
+    public void mapToModel(final CallbackModel callbackModel, Map<String, Object> mapRequest) {
 
-        callbackModel.onSuccess(this);*/
+        HashMap<String, Object> map = (HashMap<String, Object>) mapRequest;
+        Route.findById(new CallbackModel() {
+            @Override
+            public void onSuccess(Object id) {
+                setRoute((Route) id);
+                callbackModel.onSuccess(getThis());
+            }
+
+            @Override
+            public void onError(Object model, String message) {
+                callbackModel.onError(model,message);
+            }
+        },(String) map.get(RP_CN_ROUTE));
+
+        callbackModel.onSuccess(this);
     }
 }

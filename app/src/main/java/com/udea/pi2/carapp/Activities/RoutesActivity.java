@@ -12,6 +12,7 @@ import com.udea.pi2.carapp.Adapters.RouteAdapter;
 import com.udea.pi2.carapp.R;
 import com.udea.pi2.carapp.model.Car;
 import com.udea.pi2.carapp.model.Route;
+import com.udea.pi2.carapp.model.RoutePassenger;
 import com.udea.pi2.carapp.model.State;
 import com.udea.pi2.carapp.model.User;
 
@@ -27,6 +28,8 @@ public class RoutesActivity extends AppCompatActivity {
      */
     private int TYPE_ROUTES = 0;
     private String ID_CURRENT_USER = null;
+    public Route route;
+    public ArrayList<User> users;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,45 +39,34 @@ public class RoutesActivity extends AppCompatActivity {
         TYPE_ROUTES = getIntent().getIntExtra("typeRoutes",0);
         ID_CURRENT_USER = getIntent().getStringExtra("idCurrentUser");
 
-      //  createRoutesTest();
+        createRoutesTest();
 
     }
 
     private void createRoutesTest() {
-        //get current user
-                User user = new User();
-                user.id = ID_CURRENT_USER;
-                Car car = new Car();
-                car.id = "2iYrmzzLJWCXro7KTf63";
+        Route.findById(new CallbackModel() {
+            @Override
+            public void onSuccess(Object id) {
+                route = (Route) id;
+            }
 
-                for (int i = 0; i< 10;i++){
-                    Route route = new Route();
-                    route.setArrivalLat(i);
-                    route.setArrivalLng(i);
-                    route.setDepartureLat(i);
-                    route.setDepartureLng(i);
-                    route.setArrivalTime(i);
-                    route.setDepartureTime(i-1);
-                    route.setPrice(2000);
-                    route.setState(new State("activo"));
-                    route.setOwner(user);
-                    route.setCar(car);
+            @Override
+            public void onError(Object model, String message) {
+                System.out.print(model.toString() + message);
+            }
+        },"HQRGDLyLVMhv1yNdIZl5");
 
-                    route.save(new CallbackModel() {
-                        @Override
-                        public void onSuccess(Object id) {
-                            System.out.print(id);
-                        }
+        User.findAll(new CallbackModel() {
+            @Override
+            public void onSuccess(Object id) {
+                users = (ArrayList<User>) id;
+            }
 
-                        @Override
-                        public void onError(Object model, String message) {
-                            System.out.print(message + model.toString());
-                        }
-                    });
-                }
-
-
-
+            @Override
+            public void onError(Object model, String message) {
+                System.out.print(model.toString() + message);
+            }
+        });
     }
 
     @Override
@@ -123,8 +115,24 @@ public class RoutesActivity extends AppCompatActivity {
     }
 
     public void addRoute(View v){
-        Intent intent = new Intent(this,RouteActivity.class);
+        RoutePassenger routePassenger = new RoutePassenger();
+        routePassenger.setRoute(route);
+        routePassenger.addUser(users.get(0));
+        routePassenger.addUser(users.get(1));
+
+        routePassenger.save(new CallbackModel() {
+            @Override
+            public void onSuccess(Object id) {
+                System.out.print(id);
+            }
+
+            @Override
+            public void onError(Object model, String message) {
+                System.out.print(message);
+            }
+        });
+        /*Intent intent = new Intent(this,RouteActivity.class);
         intent.putExtra("idCurrentUser",ID_CURRENT_USER);
-        startActivity(intent);
+        startActivity(intent);*/
     }
 }

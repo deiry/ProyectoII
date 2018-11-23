@@ -93,6 +93,36 @@ public abstract class Model{
                                     }
                                 }, task.getResult().getData());
                             }
+                            else if(className.equals(Route.class.getSimpleName())){
+                                final Route model = new Route();
+                                model.setId(id);
+                                model.mapToModel(new CallbackModel() {
+                                    @Override
+                                    public void onSuccess(Object id) {
+                                        callbackModel.onSuccess(model);
+                                    }
+
+                                    @Override
+                                    public void onError(Object model, String message) {
+                                        callbackModel.onError(model,message);
+                                    }
+                                }, task.getResult().getData());
+                            }
+                            else if(className.equals(RoutePassenger.class.getSimpleName())){
+                                final RoutePassenger model = new RoutePassenger();
+                                model.setId(id);
+                                model.mapToModel(new CallbackModel() {
+                                    @Override
+                                    public void onSuccess(Object id) {
+                                        callbackModel.onSuccess(model);
+                                    }
+
+                                    @Override
+                                    public void onError(Object model, String message) {
+                                        callbackModel.onError(model,message);
+                                    }
+                                }, task.getResult().getData());
+                            }
                         }
 
                     }

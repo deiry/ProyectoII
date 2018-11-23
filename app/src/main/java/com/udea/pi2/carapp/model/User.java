@@ -95,6 +95,10 @@ public class User extends Model{
         Model.singleRecord(callbackModel,"email",email,"User");
     }
 
+    static public void findAll(CallbackModel callbackModel){
+        Model.multiRecord(callbackModel,"",null,User.class.getSimpleName());
+    }
+
     @Override
     public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();

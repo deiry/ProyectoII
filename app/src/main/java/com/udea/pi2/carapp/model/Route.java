@@ -237,6 +237,14 @@ public class Route extends Model{
         Model.multiRecord(callbackModel,ROU_CN_OWNER,id,Route.class.getSimpleName());
     }
 
+    static public void findById(CallbackModel callbackModel,String id){
+        Model.findById(callbackModel, id, Route.class.getSimpleName());
+    }
+
+    static public void findAll(CallbackModel callbackModel){
+        Model.multiRecord(callbackModel,"",null,Route.class.getSimpleName());
+    }
+
     @Override
     public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();
