@@ -1,6 +1,8 @@
 package com.udea.pi2.carapp.model;
 
 
+import android.util.Log;
+
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
@@ -16,6 +18,8 @@ import callback.CallbackModel;
 public class Route extends Model{
     final static public String ROU_CN_DEPARTURE_LAT = "departureLat";
     final static public String ROU_CN_DEPARTURE_LNG = "departureLng";
+    final static public String ROU_CN_ARRIVE_DIR = "arriveDir";
+    final static public String ROU_CN_DEPARTURE_DIR = "departureDir";
     final static public String ROU_CN_ARRIVAL_LAT = "arrivalLat";
     final static public String ROU_CN_ARRIVAL_LNG = "arrivalLng";
     final static public String ROU_CN_PRICE = "price";
@@ -30,6 +34,12 @@ public class Route extends Model{
 
     @Column(name = ROU_CN_DEPARTURE_LNG, notNull = true)
     private double departureLng;
+
+    @Column(name = ROU_CN_ARRIVE_DIR, notNull = true)
+    private String arriveDir;
+
+    @Column(name = ROU_CN_DEPARTURE_DIR, notNull = true)
+    private String departureDir;
 
     @Column(name = ROU_CN_ARRIVAL_LAT, notNull = true)
     private double arrivalLat;
@@ -61,7 +71,8 @@ public class Route extends Model{
     }
 
     public Route(double departureLat, double departureLng, double arrivalLat, double arrivalLng,
-                 double price, double departureTime, double arrivalTime, State state, Car car, User owner) {
+                 double price, double departureTime, double arrivalTime, State state, Car car,
+                 User owner, String departureDir, String arriveDir) {
         this.departureLat = departureLat;
         this.departureLng = departureLng;
         this.arrivalLat = arrivalLat;
@@ -72,6 +83,8 @@ public class Route extends Model{
         this.state = state;
         this.car = car;
         this.owner = owner;
+        this.departureDir = departureDir;
+        this.arriveDir = arriveDir;
     }
 
     /* getters and setters methods*/
@@ -153,6 +166,22 @@ public class Route extends Model{
 
     public void setOwner(User owner) {
         this.owner = owner;
+    }
+
+    public String getArriveDir() {
+        return arriveDir;
+    }
+
+    public void setArriveDir(String arriveDir) {
+        this.arriveDir = arriveDir;
+    }
+
+    public String getDepartureDir() {
+        return departureDir;
+    }
+
+    public void setDepartureDir(String departureDir) {
+        this.departureDir = departureDir;
     }
 
     @Override
@@ -258,6 +287,8 @@ public class Route extends Model{
         map.put(ROU_CN_STATE, this.state.getId());
         map.put(ROU_CN_PRICE, this.price);
         map.put(ROU_CN_OWNER, this.owner.getId());
+        map.put(ROU_CN_ARRIVE_DIR, this.arriveDir);
+        map.put(ROU_CN_DEPARTURE_DIR, this.departureDir);
 
 
         return map;
@@ -266,49 +297,57 @@ public class Route extends Model{
     @Override
     public void mapToModel(final CallbackModel callbackModel, Map<String, Object> mapRequest) {
         final HashMap<String, Object> map = (HashMap<String, Object>) mapRequest;
-        this.setArrivalLat((Double) map.get(ROU_CN_ARRIVAL_LAT));
-        this.setArrivalLng((Double) map.get(ROU_CN_ARRIVAL_LNG));
-        this.setArrivalTime((Double) map.get(ROU_CN_ARRIVAL_TIME));
-        this.setDepartureLat((Double) map.get(ROU_CN_DEPARTURE_LAT));
-        this.setDepartureLng((Double) map.get(ROU_CN_DEPARTURE_LNG));
-        this.setDepartureTime((Double) map.get(ROU_CN_DEPARTURE_TIME));
-        this.setPrice((Double) map.get(ROU_CN_PRICE));
-        Car.findById(new CallbackModel() {
-            @Override
-            public void onSuccess(Object id) {
-                setCar((Car) id);
-                //callbackModel.onSuccess(getThis());
-                User.findById(new CallbackModel() {
-                    @Override
-                    public void onSuccess(Object id) {
-                        setOwner((User) id);
-                        State.findById(new CallbackModel() {
-                            @Override
-                            public void onSuccess(Object id) {
-                                setState((State) id);
-                                callbackModel.onSuccess(getThis());
-                            }
+        try{
+            this.setArrivalLat((Double) map.get(ROU_CN_ARRIVAL_LAT));
+            this.setArrivalLng((Double) map.get(ROU_CN_ARRIVAL_LNG));
+            this.setArrivalTime((Double) map.get(ROU_CN_ARRIVAL_TIME));
+            this.setDepartureLat((Double) map.get(ROU_CN_DEPARTURE_LAT));
+            this.setDepartureLng((Double) map.get(ROU_CN_DEPARTURE_LNG));
+            this.setDepartureTime((Double) map.get(ROU_CN_DEPARTURE_TIME));
+            this.setPrice((Double) map.get(ROU_CN_PRICE));
+            this.setDepartureDir((String) map.get(ROU_CN_DEPARTURE_DIR));
+            this.setArriveDir((String) map.get(ROU_CN_ARRIVE_DIR));
+            Car.findById(new CallbackModel() {
+                @Override
+                public void onSuccess(Object id) {
+                    setCar((Car) id);
+                    //callbackModel.onSuccess(getThis());
+                    User.findById(new CallbackModel() {
+                        @Override
+                        public void onSuccess(Object id) {
+                            setOwner((User) id);
+                            State.findById(new CallbackModel() {
+                                @Override
+                                public void onSuccess(Object id) {
+                                    setState((State) id);
+                                    callbackModel.onSuccess(getThis());
+                                }
 
-                            @Override
-                            public void onError(Object model, String message) {
-                                callbackModel.onError(model,message);
-                            }
-                        },(String) map.get(ROU_CN_STATE),State.class.getSimpleName());
-                        //callbackModel.onSuccess(getThis());
-                    }
+                                @Override
+                                public void onError(Object model, String message) {
+                                    callbackModel.onError(model,message);
+                                }
+                            },(String) map.get(ROU_CN_STATE),State.class.getSimpleName());
+                            //callbackModel.onSuccess(getThis());
+                        }
 
-                    @Override
-                    public void onError(Object model, String message) {
-                        callbackModel.onError(model,message);
-                    }
-                },(String) map.get(ROU_CN_OWNER), User.class.getSimpleName());
-            }
+                        @Override
+                        public void onError(Object model, String message) {
+                            callbackModel.onError(model,message);
+                        }
+                    },(String) map.get(ROU_CN_OWNER), User.class.getSimpleName());
+                }
 
-            @Override
-            public void onError(Object model, String message) {
-                callbackModel.onError(model,message);
-            }
-        },(String) map.get(ROU_CN_CAR),Car.class.getSimpleName());
+                @Override
+                public void onError(Object model, String message) {
+                    callbackModel.onError(model,message);
+                }
+            },(String) map.get(ROU_CN_CAR),Car.class.getSimpleName());
+        }
+        catch (NullPointerException e){
+            Log.e("ERROR",e.toString());
+        }
+
 
     }
 

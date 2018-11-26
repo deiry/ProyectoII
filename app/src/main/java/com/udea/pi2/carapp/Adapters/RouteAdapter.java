@@ -38,8 +38,8 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull RouteAdapter.ViewHolder holder, int position) {
         Route route = routes.get(position);
         //set lat and lng
-        holder.tv_from.setText(String.valueOf(route.getArrivalLat())+", "+ String.valueOf(route.getArrivalLng()));
-        holder.tv_to.setText(String.valueOf(route.getDepartureLat())+", "+ String.valueOf(route.getDepartureLng()));
+        holder.tv_from.setText(route.getDepartureDir());
+        holder.tv_to.setText(route.getArriveDir());
         //set Dates
         Date dateArrived = new Date((long)route.getArrivalTime());
         DateFormat df = new SimpleDateFormat("h:mm a");

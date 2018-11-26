@@ -1,11 +1,14 @@
 package com.udea.pi2.carapp.model;
 
+import android.util.Log;
+
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +61,10 @@ public class RoutePassenger extends Model {
     @Override
     public List<JSONObject> modelToJSON(){
         return null;
+    }
+
+    static public void findById(CallbackModel callbackModel,String id){
+        Model.findById(callbackModel, id, RoutePassenger.class.getSimpleName());
     }
 
     @Override
@@ -130,7 +137,7 @@ public class RoutePassenger extends Model {
         return map;
     }
     
-    private String[] usersToArray(){
+    private List<String> usersToArray(){
         String[] array = new String[users.size()];
         for (int i = 0; i < users.size(); i++) {
             User u = users.get(i);
@@ -144,26 +151,52 @@ public class RoutePassenger extends Model {
             }
         }
         return array + "]";*/
-        return array;
+        return Arrays.asList(array);
     }
 
     @Override
     public void mapToModel(final CallbackModel callbackModel, Map<String, Object> mapRequest) {
 
         HashMap<String, Object> map = (HashMap<String, Object>) mapRequest;
-        Route.findById(new CallbackModel() {
-            @Override
-            public void onSuccess(Object id) {
-                setRoute((Route) id);
-                callbackModel.onSuccess(getThis());
-            }
+        try{
+            final List<String> list = (List<String>) map.get(RP_CN_PASSENGER);
+            final int size = list.size();
+            Route.findById(new CallbackModel() {
+                @Override
+                public void onSuccess(Object id) {
+                    setRoute((Route) id);
+                    int count = 1;
+                    for (String user : list){
+                        final int finalCount = count;
+                        User.findById(new CallbackModel() {
+                            @Override
+                            public void onSuccess(Object id) {
+                                users.add((User) id);
+                                if(size == finalCount){
+                                    callbackModel.onSuccess(users);
+                                }
+                            }
 
-            @Override
-            public void onError(Object model, String message) {
-                callbackModel.onError(model,message);
-            }
-        },(String) map.get(RP_CN_ROUTE));
+                            @Override
+                            public void onError(Object model, String message) {
+                                callbackModel.onError(model,message);
+                            }
+                        },(String) user, User.class.getSimpleName());
+                        count++;
+                    }
+                    //callbackModel.onSuccess(getThis());
 
-        callbackModel.onSuccess(this);
+                }
+
+                @Override
+                public void onError(Object model, String message) {
+                    callbackModel.onError(model,message);
+                }
+            },(String) map.get(RP_CN_ROUTE));
+        }
+        catch (NullPointerException e){
+            Log.e("ERROR ", e.getMessage());
+            callbackModel.onError(this,"error");
+        }
     }
 }

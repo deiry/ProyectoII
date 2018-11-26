@@ -282,10 +282,29 @@ public class RouteActivity extends AppCompatActivity {
         if(et_departure.getText().toString().equals(STR_UDEA_NAME)){
             btn_departure.setVisibility(View.INVISIBLE);
             btn_arrive.setVisibility(View.VISIBLE);
+
+            et_departure.setClickable(false);
+            et_departure.setCursorVisible(false);
+            et_departure.setFocusable(false);
+            et_departure.setFocusableInTouchMode(false);
+
+            et_arrived.setClickable(true);
+            et_arrived.setCursorVisible(true);
+            et_arrived.setFocusable(true);
+            et_arrived.setFocusableInTouchMode(true);
         }
         else if(et_arrived.getText().toString().equals(STR_UDEA_NAME)) {
             btn_departure.setVisibility(View.VISIBLE);
             btn_arrive.setVisibility(View.INVISIBLE);
+            et_arrived.setClickable(false);
+            et_arrived.setCursorVisible(false);
+            et_arrived.setFocusable(false);
+            et_arrived.setFocusableInTouchMode(false);
+
+            et_departure.setClickable(true);
+            et_departure.setCursorVisible(true);
+            et_departure.setFocusable(true);
+            et_departure.setFocusableInTouchMode(true);
         }
     }
 
@@ -334,6 +353,8 @@ public class RouteActivity extends AppCompatActivity {
         route.setDepartureLng(lngDeparture);
         route.setDepartureTime(route.getArrivalTime()-(30*60));
         route.setState(state);
+        route.setArriveDir(et_arrived.getText().toString());
+        route.setDepartureDir(et_departure.getText().toString());
         String price = et_price.getText().toString();
         route.setPrice(Double.valueOf(price));
 
@@ -370,6 +391,8 @@ public class RouteActivity extends AppCompatActivity {
             round.setArrivalLng(lngDeparture);
             round.setArrivalTime((double) date.getTime() + (30*60));
             round.setState(state);
+            route.setArriveDir(et_departure.getText().toString());
+            route.setDepartureDir(et_arrived.getText().toString());
             price = et_price.getText().toString();
             round.setPrice(Double.valueOf(price));
 

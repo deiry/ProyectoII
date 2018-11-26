@@ -72,10 +72,6 @@
                         android:id="@+id/input_departure"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:clickable="false"
-                        android:cursorVisible="false"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
                         android:hint="Lugar de partida"
                         android:inputType="text"
                         android:maxLines="1" />
@@ -162,10 +158,6 @@
                         android:id="@+id/input_arrive"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:clickable="false"
-                        android:cursorVisible="false"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
                         android:hint="Lugar de llegada"
                         android:inputType="text"
                         android:maxLines="1" />

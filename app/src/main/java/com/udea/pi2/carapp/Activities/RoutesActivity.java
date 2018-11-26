@@ -10,10 +10,8 @@ import android.widget.Toast;
 
 import com.udea.pi2.carapp.Adapters.RouteAdapter;
 import com.udea.pi2.carapp.R;
-import com.udea.pi2.carapp.model.Car;
 import com.udea.pi2.carapp.model.Route;
 import com.udea.pi2.carapp.model.RoutePassenger;
-import com.udea.pi2.carapp.model.State;
 import com.udea.pi2.carapp.model.User;
 
 import java.util.ArrayList;
@@ -28,7 +26,7 @@ public class RoutesActivity extends AppCompatActivity {
      */
     private int TYPE_ROUTES = 0;
     private String ID_CURRENT_USER = null;
-    public Route route;
+    public RoutePassenger route;
     public ArrayList<User> users;
 
     @Override
@@ -44,29 +42,19 @@ public class RoutesActivity extends AppCompatActivity {
     }
 
     private void createRoutesTest() {
-        Route.findById(new CallbackModel() {
+        RoutePassenger.findById(new CallbackModel() {
             @Override
             public void onSuccess(Object id) {
-                route = (Route) id;
+                route = (RoutePassenger) id;
             }
 
             @Override
             public void onError(Object model, String message) {
                 System.out.print(model.toString() + message);
             }
-        },"HQRGDLyLVMhv1yNdIZl5");
+        },"LnCQKYezXlVDiypaml0E");
 
-        User.findAll(new CallbackModel() {
-            @Override
-            public void onSuccess(Object id) {
-                users = (ArrayList<User>) id;
-            }
 
-            @Override
-            public void onError(Object model, String message) {
-                System.out.print(model.toString() + message);
-            }
-        });
     }
 
     @Override
@@ -115,24 +103,8 @@ public class RoutesActivity extends AppCompatActivity {
     }
 
     public void addRoute(View v){
-        RoutePassenger routePassenger = new RoutePassenger();
-        routePassenger.setRoute(route);
-        routePassenger.addUser(users.get(0));
-        routePassenger.addUser(users.get(1));
-
-        routePassenger.save(new CallbackModel() {
-            @Override
-            public void onSuccess(Object id) {
-                System.out.print(id);
-            }
-
-            @Override
-            public void onError(Object model, String message) {
-                System.out.print(message);
-            }
-        });
-        /*Intent intent = new Intent(this,RouteActivity.class);
+        Intent intent = new Intent(this,RouteActivity.class);
         intent.putExtra("idCurrentUser",ID_CURRENT_USER);
-        startActivity(intent);*/
+        startActivity(intent);
     }
 }
