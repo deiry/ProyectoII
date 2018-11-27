@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.ProfileActivity"
+      >
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/content_profile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+
+   <!-- <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab1"
+        android:layout_width="@dimen/standard_55"
+        android:layout_height="@dimen/standard_55"
+        android:layout_margin="@dimen/fab_margin"
+        android:visibility="invisible"
+        android:src="@drawable/ic_menu_send"
+        app:layout_anchor="@+id/include"
+        app:layout_anchorGravity="right|bottom" />-->
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab2"
+        android:layout_width="@dimen/standard_55"
+        android:layout_height="@dimen/standard_55"
+        android:layout_margin="@dimen/fab_margin"
+
+        android:src="@drawable/ic_car_50dp"
+        android:onClick="goToCar"
+        app:layout_anchor="@+id/include"
+        app:layout_anchorGravity="right|bottom" />
+
+   <!-- <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="@dimen/standard_55"
+        android:layout_height="@dimen/standard_55"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/fui_ic_github_white_24dp"
+        app:layout_anchor="@+id/include"
+        app:layout_anchorGravity="right|bottom" />-->
+
+</android.support.design.widget.CoordinatorLayout>

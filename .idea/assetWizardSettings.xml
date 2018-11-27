@@ -3,6 +3,40 @@
   <component name="WizardSettings">
     <option name="children">
       <map>
+        <entry key="imageWizard">
+          <value>
+            <PersistentState>
+              <option name="children">
+                <map>
+                  <entry key="imageAssetPanel">
+                    <value>
+                      <PersistentState>
+                        <option name="children">
+                          <map>
+                            <entry key="launcher">
+                              <value>
+                                <PersistentState>
+                                  <option name="values">
+                                    <map>
+                                      <entry key="backgroundLayerName" value="ic_launcher_background" />
+                                      <entry key="foregroundImage" value="$USER_HOME$/Descargas/background.jpg" />
+                                      <entry key="outputName" value="ic_bg_med" />
+                                      <entry key="previewDensity" value="MEDIUM" />
+                                    </map>
+                                  </option>
+                                </PersistentState>
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </PersistentState>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </PersistentState>
+          </value>
+        </entry>
         <entry key="vectorWizard">
           <value>
             <PersistentState>
@@ -14,8 +48,9 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_color" />
-                            <entry key="sourceFile" value="$PROJECT_DIR$/app/src/main/res/drawable/color.svg" />
+                            <entry key="outputName" value="ic_baseline_cached_24px" />
+                            <entry key="overrideSize" value="true" />
+                            <entry key="sourceFile" value="D:\Downloads\baseline-cached-24px.svg" />
                           </map>
                         </option>
                       </PersistentState>

@@ -5,17 +5,20 @@
     android:layout_height="100dp"
     android:orientation="horizontal">
 
-    <ImageView
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/item_own_route_img_user"
         android:layout_width="wrap_content"
-        android:layout_height="70dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:layout_margin="15dp"
         android:layout_weight="0"
-        app:srcCompat="@android:drawable/sym_def_app_icon" />
+        android:elevation="0dp"
+        app:srcCompat="@drawable/ic_baseline_person_pin_24px" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="5dp"
         android:layout_weight="1"
         android:orientation="vertical">
 
@@ -38,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="TextView" />
+                android:text="-->" />
 
             <TextView
                 android:id="@+id/item_own_route_to"
@@ -82,7 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:text="TextView" />
+                android:text="Pasajeros" />
 
             <ImageView
                 android:id="@+id/item_own_route_img_people"

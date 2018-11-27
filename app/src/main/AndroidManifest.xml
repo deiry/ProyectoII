@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.sofiaalejandro.carapp">
+    package="com.udea.pi2.carapp">
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -9,22 +11,35 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.LoginActivity">
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCEGzJctSn-RbH2OR7uHJh2fqEaLFGMKl4"/>
+
+        <activity android:name=".Activities.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".Activities.HomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".SettingUserActivity"
+            android:name=".Activities.SettingUserActivity"
             android:label="@string/title_activity_setting_user" />
-        <activity android:name=".FormCarActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity
+            android:name=".Activities.FormCarActivity"
+            android:parentActivityName=".Activities.ProfileActivity" />
+        <activity
+            android:name=".Activities.ProfileActivity"
+            android:parentActivityName=".Activities.HomeActivity" />
+        <activity android:name=".Activities.RoutesActivity" />
+        <activity android:name=".Activities.RouteActivity" />
+        <activity android:name=".Activities.MapActivity"></activity>
+
     </application>
 
 </manifest>
