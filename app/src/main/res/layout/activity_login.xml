@@ -14,12 +14,6 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <TextView
-            android:id="@+id/status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="TextView" />
     </LinearLayout>
 
 
@@ -109,7 +103,8 @@
             android:drawableLeft="@drawable/ic_btn_google_light_normal_ios"
             android:elevation="0dp"
             android:onClick="signoutGoogleAcount"
-            android:text="Desconectarse" />
+            android:text="Desconectarse"
+            android:visibility="invisible" />
     </LinearLayout>
 
 
