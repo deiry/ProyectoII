@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,6 +27,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
+import com.udea.pi2.carapp.Adapters.RecyclerItemClickListener;
 import com.udea.pi2.carapp.Adapters.RouteAdapter;
 import com.udea.pi2.carapp.R;
 import com.udea.pi2.carapp.model.Route;
@@ -42,6 +44,7 @@ public class HomeActivity extends AppCompatActivity
     private FirebaseAuth auth;
     NavigationView navigationView;
     User currentUser;
+    Route routeSelect;
 
     //View vars
     RecyclerView rv_routes;
@@ -78,13 +81,29 @@ public class HomeActivity extends AppCompatActivity
         getAllRoutes();
     }
 
-    public void setRoutes(ArrayList<Route> routes){
+    public void setRoutes(final ArrayList<Route> routes){
 
         LinearLayoutManager lm = new LinearLayoutManager(this);
         lm.setOrientation(LinearLayoutManager.VERTICAL);
         rv_routes.setLayoutManager(lm);
         RouteAdapter carsAdapter = new RouteAdapter(routes);
         rv_routes.setAdapter(carsAdapter);
+        rv_routes.addOnItemTouchListener(
+                new RecyclerItemClickListener(this, rv_routes ,new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        // do whatever
+                        routeSelect = routes.get(position);
+                        String id = routeSelect.getId();
+                        Intent intent = new Intent(HomeActivity.this, ConcretarRouteActivity.class);
+                        intent.putExtra("idRoute", id);
+                        startActivity(intent);
+
+                    }
+
+                    @Override public void onLongItemClick(View view, int position) {
+                        // do whatever
+                    }
+                }));
 
 
 
