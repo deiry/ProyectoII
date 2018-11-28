@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:layout_marginTop="2dp"
+    android:background="@drawable/border">
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/item_own_route_img_user"
@@ -93,7 +95,8 @@
                 android:layout_height="20dp"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="0"
-                app:srcCompat="@drawable/side_nav_bar" />
+                app:srcCompat="@drawable/ic_baseline_person_24px"
+                />
 
             <ImageView
                 android:id="@+id/imageView4"
@@ -101,7 +104,7 @@
                 android:layout_height="20dp"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="0"
-                app:srcCompat="@drawable/side_nav_bar" />
+                app:srcCompat="@drawable/ic_baseline_person_24px" />
 
             <ImageView
                 android:id="@+id/imageView6"
@@ -109,7 +112,7 @@
                 android:layout_height="20dp"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="0"
-                app:srcCompat="@drawable/side_nav_bar" />
+                app:srcCompat="@drawable/ic_baseline_person_24px" />
 
             <ImageView
                 android:id="@+id/imageView5"
@@ -117,7 +120,7 @@
                 android:layout_height="20dp"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="0"
-                app:srcCompat="@drawable/side_nav_bar" />
+                app:srcCompat="@drawable/ic_baseline_person_24px" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -61,7 +61,7 @@ public class HomeActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Actualizado!", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                        .setAction("Action", onClickListener()).show();
             }
         });
 
@@ -86,6 +86,17 @@ public class HomeActivity extends AppCompatActivity
         RouteAdapter carsAdapter = new RouteAdapter(routes);
         rv_routes.setAdapter(carsAdapter);
 
+
+    }
+
+    public View.OnClickListener onClickListener(){
+
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getAllRoutes();
+            }
+        };
 
     }
 
