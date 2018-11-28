@@ -48,7 +48,9 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:15.0.1'
 
     //Java Client for Google Maps Services
+
     implementation 'com.google.maps:google-maps-services:0.9.0'
+
     implementation 'org.slf4j:slf4j-simple:1.7.25'
 }
 

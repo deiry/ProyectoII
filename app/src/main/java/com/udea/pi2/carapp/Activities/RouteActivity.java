@@ -138,6 +138,10 @@ public class RouteActivity extends AppCompatActivity {
 
     }
 
+    public void finishApp(){
+        this.finish();
+    }
+
     public void changeCar(View view){
         ly_list_car.setVisibility(View.VISIBLE);
         ly_select_car.setVisibility(View.GONE);
@@ -334,43 +338,44 @@ public class RouteActivity extends AppCompatActivity {
     }
 
     public void saveRoute(View v){
-        Route route = new Route();
-        route.setCar(carSelect);
-        route.setOwner(userCurrent);
-        route.setArrivalLat(latArrive);
-        route.setArrivalLng(lngArrive);
-        String dtStart = et_route_date.getText().toString() + " " +et_arrived_time.getText().toString();
-        Date date = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("dd-MMyyyy h:mm a");
-        try {
-            date = format.parse(dtStart);
-            System.out.println(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        route.setArrivalTime((double) date.getTime());
-        route.setDepartureLat(latDeparture);
-        route.setDepartureLng(lngDeparture);
-        route.setDepartureTime(route.getArrivalTime()-(30*60));
-        route.setState(state);
-        route.setArriveDir(et_arrived.getText().toString());
-        route.setDepartureDir(et_departure.getText().toString());
-        String price = et_price.getText().toString();
-        route.setPrice(Double.valueOf(price));
-
-        route.save(new CallbackModel() {
-            @Override
-            public void onSuccess(Object id) {
-                Toast.makeText(getApplicationContext(),"Ruta guardada correctamente.",Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onError(Object model, String message) {
-
-            }
-        });
 
         if(ch_round_trip.isChecked()){
+            Route route = new Route();
+            route.setCar(carSelect);
+            route.setOwner(userCurrent);
+            route.setArrivalLat(latArrive);
+            route.setArrivalLng(lngArrive);
+            String dtStart = et_route_date.getText().toString() + " " +et_arrived_time.getText().toString();
+            Date date = new Date();
+            SimpleDateFormat format = new SimpleDateFormat("dd-MMyyyy h:mm a");
+            try {
+                date = format.parse(dtStart);
+                System.out.println(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            route.setArrivalTime((double) date.getTime());
+            route.setDepartureLat(latDeparture);
+            route.setDepartureLng(lngDeparture);
+            route.setDepartureTime(route.getArrivalTime()-(30*60));
+            route.setState(state);
+            route.setArriveDir(et_arrived.getText().toString());
+            route.setDepartureDir(et_departure.getText().toString());
+            String price = et_price.getText().toString();
+            route.setPrice(Double.valueOf(price));
+
+            route.save(new CallbackModel() {
+                @Override
+                public void onSuccess(Object id) {
+                    Toast.makeText(getApplicationContext(),"Ruta guardada correctamente.",Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void onError(Object model, String message) {
+
+                }
+            });
+
 
             dtStart = et_route_date.getText().toString() + " " +et_back_time.getText().toString();
             date = new Date();
@@ -391,8 +396,8 @@ public class RouteActivity extends AppCompatActivity {
             round.setArrivalLng(lngDeparture);
             round.setArrivalTime((double) date.getTime() + (30*60));
             round.setState(state);
-            route.setArriveDir(et_departure.getText().toString());
-            route.setDepartureDir(et_arrived.getText().toString());
+            round.setArriveDir(et_departure.getText().toString());
+            round.setDepartureDir(et_arrived.getText().toString());
             price = et_price.getText().toString();
             round.setPrice(Double.valueOf(price));
 
@@ -400,6 +405,7 @@ public class RouteActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(Object id) {
                     Toast.makeText(getApplicationContext(),"Ruta guardada correctamente.",Toast.LENGTH_LONG).show();
+                    finishApp();
                 }
 
                 @Override
@@ -407,6 +413,45 @@ public class RouteActivity extends AppCompatActivity {
 
                 }
             });
+        }
+        else {
+            Route route = new Route();
+            route.setCar(carSelect);
+            route.setOwner(userCurrent);
+            route.setArrivalLat(latArrive);
+            route.setArrivalLng(lngArrive);
+            String dtStart = et_route_date.getText().toString() + " " +et_arrived_time.getText().toString();
+            Date date = new Date();
+            SimpleDateFormat format = new SimpleDateFormat("dd-MMyyyy h:mm a");
+            try {
+                date = format.parse(dtStart);
+                System.out.println(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            route.setArrivalTime((double) date.getTime());
+            route.setDepartureLat(latDeparture);
+            route.setDepartureLng(lngDeparture);
+            route.setDepartureTime(route.getArrivalTime()-(30*60));
+            route.setState(state);
+            route.setArriveDir(et_arrived.getText().toString());
+            route.setDepartureDir(et_departure.getText().toString());
+            String price = et_price.getText().toString();
+            route.setPrice(Double.valueOf(price));
+
+            route.save(new CallbackModel() {
+                @Override
+                public void onSuccess(Object id) {
+                    Toast.makeText(getApplicationContext(),"Ruta guardada correctamente.",Toast.LENGTH_LONG).show();
+                    finishApp();
+                }
+
+                @Override
+                public void onError(Object model, String message) {
+
+                }
+            });
+
         }
     }
 

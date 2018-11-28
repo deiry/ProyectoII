@@ -10,10 +10,10 @@ import android.widget.TextView;
 import com.udea.pi2.carapp.R;
 import com.udea.pi2.carapp.model.Route;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> {
 
@@ -41,11 +41,30 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
         holder.tv_from.setText(route.getDepartureDir());
         holder.tv_to.setText(route.getArriveDir());
         //set Dates
-        Date dateArrived = new Date((long)route.getArrivalTime());
-        DateFormat df = new SimpleDateFormat("h:mm a");
-        holder.tv_arrive_date.setText(df.format(dateArrived));
+        //Date dateArrived = new Date((long)route.getArrivalTime());
+        //DateFormat df = new SimpleDateFormat("h:mm a");
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis((long) route.getArrivalTime());
+
+        int mYear = calendar.get(Calendar.YEAR);
+        int mMonth = calendar.get(Calendar.MONTH);
+        int mDay = calendar.get(Calendar.DAY_OF_MONTH);
+        int mHour = calendar.get(Calendar.HOUR_OF_DAY);
+        int mMin = calendar.get(Calendar.MINUTE);
+
+        Calendar calendar2 = Calendar.getInstance();
+        calendar.setTimeInMillis((long)route.getDepartureTime());
+
+        int mYear2 = calendar.get(Calendar.YEAR);
+        int mMonth2 = calendar.get(Calendar.MONTH);
+        int mDay2 = calendar.get(Calendar.DAY_OF_MONTH);
+        int mHour2 = calendar.get(Calendar.HOUR_OF_DAY);
+        int mMi2 = calendar.get(Calendar.MINUTE);
+
+        holder.tv_arrive_date.setText(calendar.getDisplayName(Calendar.DATE,Calendar.ALL_STYLES,Locale.US));
         Date dateDeparture = new Date((long)route.getDepartureTime());
-        holder.tv_deperture_date.setText(df.format(dateDeparture));
+        //holder.tv_deperture_date.setText(df.format(dateDeparture));
 
     }
 
