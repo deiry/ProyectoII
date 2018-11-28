@@ -52,6 +52,33 @@ public class MapActivity extends AppCompatActivity
                     .title(titleMarker);
         }
 
+        /*GeoApiContext context = new GeoApiContext.Builder()
+                .apiKey("AIzaSyD0N_3KGyBk4aKtINZGf5BiQH2UXhEeMtU")
+                .build();
+
+        DirectionsApiRequest request = DirectionsApi.getDirections(context,"Universidad de Antioquia","Gobernación de Antioquia");
+        try {
+            request.await();
+        } catch (ApiException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        request.setCallback(new PendingResult.Callback<DirectionsResult>() {
+            @Override
+            public void onResult(DirectionsResult result) {
+                System.out.print(result.toString());
+            }
+
+            @Override
+            public void onFailure(Throwable e) {
+                System.out.print(e);
+            }
+        });*/
+
     }
 
 
@@ -62,8 +89,8 @@ public class MapActivity extends AppCompatActivity
         mMap.moveCamera(CameraUpdateFactory.newLatLng(udea));
         mMap.animateCamera(CameraUpdateFactory.zoomTo( 15.0f ));
         mMap.setOnMapLongClickListener(this);
-        MarkerOptions marker = new MarkerOptions().position(udea);
-        mMap.addMarker(marker);
+        //MarkerOptions marker = new MarkerOptions().position(udea);
+        //mMap.addMarker(marker);
         //add marker
         if(markerInit!=null){
             mMap.addMarker(markerInit);
@@ -97,6 +124,7 @@ public class MapActivity extends AppCompatActivity
 
         MarkerOptions marker = new MarkerOptions().position(latLng);
         mMap.addMarker(marker);
+        mMap.addMarker(markerInit);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Comfirmar");
@@ -121,7 +149,7 @@ public class MapActivity extends AppCompatActivity
     private void setupGoogleMapScreenSettings(GoogleMap mMap) {
         mMap.setBuildingsEnabled(true);
         mMap.setIndoorEnabled(true);
-        mMap.setTrafficEnabled(true);
+        //mMap.setTrafficEnabled(true);
         UiSettings mUiSettings = mMap.getUiSettings();
         mUiSettings.setZoomControlsEnabled(true);
         mUiSettings.setCompassEnabled(true);
