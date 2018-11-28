@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.udea.pi2.carapp.R;
 import com.udea.pi2.carapp.model.Route;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -44,27 +46,25 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
         //Date dateArrived = new Date((long)route.getArrivalTime());
         //DateFormat df = new SimpleDateFormat("h:mm a");
 
+        DateFormat format = new SimpleDateFormat("dd/MM/yyyy H:mm a");
+        Date date;
+
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis((long) route.getArrivalTime());
+        date = calendar.getTime();
+        String strDate = format.format(date);
 
-        int mYear = calendar.get(Calendar.YEAR);
-        int mMonth = calendar.get(Calendar.MONTH);
-        int mDay = calendar.get(Calendar.DAY_OF_MONTH);
-        int mHour = calendar.get(Calendar.HOUR_OF_DAY);
-        int mMin = calendar.get(Calendar.MINUTE);
+        holder.tv_arrive_date.setText(strDate);
 
         Calendar calendar2 = Calendar.getInstance();
-        calendar.setTimeInMillis((long)route.getDepartureTime());
+        calendar2.setTimeInMillis((long)route.getDepartureTime());
+        date = calendar2.getTime();
+        strDate = format.format(date);
 
-        int mYear2 = calendar.get(Calendar.YEAR);
-        int mMonth2 = calendar.get(Calendar.MONTH);
-        int mDay2 = calendar.get(Calendar.DAY_OF_MONTH);
-        int mHour2 = calendar.get(Calendar.HOUR_OF_DAY);
-        int mMi2 = calendar.get(Calendar.MINUTE);
 
-        holder.tv_arrive_date.setText(calendar.getTime().toString());
+
         Date dateDeparture = new Date((long)route.getDepartureTime());
-        holder.tv_deperture_date.setText(calendar2.getTime().toString());
+        holder.tv_deperture_date.setText(strDate);
 
     }
 
