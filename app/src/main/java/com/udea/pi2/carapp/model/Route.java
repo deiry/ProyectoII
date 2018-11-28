@@ -48,13 +48,13 @@ public class Route extends Model{
     private double arrivalLng;
 
     @Column(name = ROU_CN_PRICE)
-    private double price;
+    private double price = 0;
 
     @Column(name = ROU_CN_DEPARTURE_TIME, notNull = true)
-    private double departureTime;
+    private long departureTime;
 
     @Column(name = ROU_CN_ARRIVAL_TIME, notNull = true)
-    private double arrivalTime;
+    private long arrivalTime;
 
     @Column(name = ROU_CN_STATE, notNull = true)
     private State state;
@@ -71,7 +71,7 @@ public class Route extends Model{
     }
 
     public Route(double departureLat, double departureLng, double arrivalLat, double arrivalLng,
-                 double price, double departureTime, double arrivalTime, State state, Car car,
+                 double price, long departureTime, long arrivalTime, State state, Car car,
                  User owner, String departureDir, String arriveDir) {
         this.departureLat = departureLat;
         this.departureLng = departureLng;
@@ -128,19 +128,19 @@ public class Route extends Model{
         this.price = price;
     }
 
-    public double getDepartureTime() {
+    public long getDepartureTime() {
         return departureTime;
     }
 
-    public void setDepartureTime(double departureTime) {
+    public void setDepartureTime(long departureTime) {
         this.departureTime = departureTime;
     }
 
-    public double getArrivalTime() {
+    public long getArrivalTime() {
         return arrivalTime;
     }
 
-    public void setArrivalTime(double arrivalTime) {
+    public void setArrivalTime(long arrivalTime) {
         this.arrivalTime = arrivalTime;
     }
 
@@ -300,10 +300,10 @@ public class Route extends Model{
         try{
             this.setArrivalLat((Double) map.get(ROU_CN_ARRIVAL_LAT));
             this.setArrivalLng((Double) map.get(ROU_CN_ARRIVAL_LNG));
-            this.setArrivalTime((Double) map.get(ROU_CN_ARRIVAL_TIME));
+            this.setArrivalTime((long) map.get(ROU_CN_ARRIVAL_TIME));
             this.setDepartureLat((Double) map.get(ROU_CN_DEPARTURE_LAT));
             this.setDepartureLng((Double) map.get(ROU_CN_DEPARTURE_LNG));
-            this.setDepartureTime((Double) map.get(ROU_CN_DEPARTURE_TIME));
+            this.setDepartureTime((long) map.get(ROU_CN_DEPARTURE_TIME));
             this.setPrice((Double) map.get(ROU_CN_PRICE));
             this.setDepartureDir((String) map.get(ROU_CN_DEPARTURE_DIR));
             this.setArriveDir((String) map.get(ROU_CN_ARRIVE_DIR));

@@ -86,6 +86,10 @@ public class RouteActivity extends AppCompatActivity {
 
     private boolean isCheckRoundTrip, isCheckOneTrip = false;
 
+    public String strDate;
+    public String strTimeArrive;
+    public String strTimeBack;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -233,6 +237,17 @@ public class RouteActivity extends AppCompatActivity {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 et_arrived_time.setText(formatHour(hourOfDay,minute));
+                strTimeArrive = "";
+                if(hourOfDay<10)
+                    strTimeArrive += "0" + String.valueOf(hourOfDay);
+                else
+                    strTimeArrive += String.valueOf(hourOfDay);
+
+                if(minute<10)
+                    strTimeArrive += ":0" + String.valueOf(minute) + ":00";
+                else
+                    strTimeArrive += ":" + String.valueOf(minute) + ":00";
+
             }
             //Estos valores deben ir en ese orden
             //Al colocar en false se muestra en formato 12 horas y true en formato 24 horas
@@ -247,6 +262,16 @@ public class RouteActivity extends AppCompatActivity {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 et_back_time.setText(formatHour(hourOfDay, minute));
+                strTimeBack = "";
+                if(hourOfDay<10)
+                    strTimeBack = strTimeBack + "0" + String.valueOf(hourOfDay);
+                else
+                    strTimeBack = strTimeBack + String.valueOf(hourOfDay);
+
+                if(minute<10)
+                    strTimeBack = strTimeBack + ":0" + String.valueOf(minute) + ":00";
+                else
+                    strTimeBack = strTimeBack + ":" + String.valueOf(minute) + ":00";
             }
             //Estos valores deben ir en ese orden
             //Al colocar en false se muestra en formato 12 horas y true en formato 24 horas
@@ -263,6 +288,16 @@ public class RouteActivity extends AppCompatActivity {
             public void onDateSet(DatePicker datePicker, int yy, int mm, int dd) {
                 Log.i("date",String.valueOf(yy)+ " " +String.valueOf(mm) + " " + String.valueOf(dd));
                 et_route_date.setText(String.valueOf(dd) + "-" + String.valueOf(mm+1) + "-" + String.valueOf(yy));
+                strDate = String.valueOf(yy);
+                if(mm+1 < 10)
+                    strDate += "-0" + String.valueOf(mm+1);
+                else
+                    strDate += "-" + String.valueOf(mm+1);
+                if(dd < 10)
+                    strDate += "-0" + String.valueOf(dd);
+                else
+                    strDate += "-" + String.valueOf(dd);
+
             }
         },year,month,day);
 
@@ -338,30 +373,34 @@ public class RouteActivity extends AppCompatActivity {
     }
 
     public void saveRoute(View v){
-
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ"); //
         if(ch_round_trip.isChecked()){
             Route route = new Route();
             route.setCar(carSelect);
             route.setOwner(userCurrent);
             route.setArrivalLat(latArrive);
             route.setArrivalLng(lngArrive);
-            String dtStart = et_route_date.getText().toString() + " " +et_arrived_time.getText().toString();
-            Date date = new Date();
-            SimpleDateFormat format = new SimpleDateFormat("dd-MMyyyy h:mm a");
+            String dtStart = strDate+"T"+strTimeArrive+"-0500";
+            Date date;
+
             try {
                 date = format.parse(dtStart);
                 System.out.println(date);
+                route.setArrivalTime(date.getTime());
+                route.setDepartureTime(route.getArrivalTime()-(30*60*100));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            route.setArrivalTime((double) date.getTime());
+            //route.setArrivalTime((long) date.getTime());
             route.setDepartureLat(latDeparture);
             route.setDepartureLng(lngDeparture);
-            route.setDepartureTime(route.getArrivalTime()-(30*60));
+            //route.setDepartureTime(route.getArrivalTime()-(30*60*1000));
             route.setState(state);
             route.setArriveDir(et_arrived.getText().toString());
             route.setDepartureDir(et_departure.getText().toString());
             String price = et_price.getText().toString();
+            if(price.isEmpty())
+                price = "0";
             route.setPrice(Double.valueOf(price));
 
             route.save(new CallbackModel() {
@@ -377,28 +416,31 @@ public class RouteActivity extends AppCompatActivity {
             });
 
 
-            dtStart = et_route_date.getText().toString() + " " +et_back_time.getText().toString();
-            date = new Date();
-            format = new SimpleDateFormat("dd-MMyyyy h:mm a");
+            dtStart = strDate+"T"+strTimeBack+"-0500";
+            Route round = new Route();
             try {
                 date = format.parse(dtStart);
                 System.out.println(date);
+                round.setArrivalTime((long) date.getTime());
+                round.setDepartureTime(route.getArrivalTime()+(30*60*100));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            Route round = new Route();
+
             round.setCar(carSelect);
             round.setOwner(userCurrent);
             round.setDepartureLat(latArrive);
             round.setDepartureLng(lngArrive);
-            round.setDepartureTime((double) date.getTime());
+            //round.setDepartureTime((long) date.getTime());
             round.setArrivalLat(latDeparture);
             round.setArrivalLng(lngDeparture);
-            round.setArrivalTime((double) date.getTime() + (30*60));
+            //round.setArrivalTime((long) date.getTime());
             round.setState(state);
             round.setArriveDir(et_departure.getText().toString());
             round.setDepartureDir(et_arrived.getText().toString());
             price = et_price.getText().toString();
+            if(price.isEmpty())
+                price = "0";
             round.setPrice(Double.valueOf(price));
 
             round.save(new CallbackModel() {
@@ -420,30 +462,33 @@ public class RouteActivity extends AppCompatActivity {
             route.setOwner(userCurrent);
             route.setArrivalLat(latArrive);
             route.setArrivalLng(lngArrive);
-            String dtStart = et_route_date.getText().toString() + " " +et_arrived_time.getText().toString();
-            Date date = new Date();
-            SimpleDateFormat format = new SimpleDateFormat("dd-MMyyyy h:mm a");
+            String dtStart = strDate+"T"+strTimeArrive+"-0500";
+            Date date;
+
             try {
                 date = format.parse(dtStart);
                 System.out.println(date);
+                route.setArrivalTime((long) date.getTime());
+                route.setDepartureTime(route.getArrivalTime()-(30*60*100));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            route.setArrivalTime((double) date.getTime());
+            //route.setArrivalTime((long) date.getTime());
             route.setDepartureLat(latDeparture);
             route.setDepartureLng(lngDeparture);
-            route.setDepartureTime(route.getArrivalTime()-(30*60));
+            //route.setDepartureTime(route.getArrivalTime()-(30*60*1000));
             route.setState(state);
             route.setArriveDir(et_arrived.getText().toString());
             route.setDepartureDir(et_departure.getText().toString());
             String price = et_price.getText().toString();
+            if(price.isEmpty())
+                price = "0";
             route.setPrice(Double.valueOf(price));
 
             route.save(new CallbackModel() {
                 @Override
                 public void onSuccess(Object id) {
                     Toast.makeText(getApplicationContext(),"Ruta guardada correctamente.",Toast.LENGTH_LONG).show();
-                    finishApp();
                 }
 
                 @Override
