@@ -11,6 +11,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -25,8 +26,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
+import com.udea.pi2.carapp.Adapters.RouteAdapter;
 import com.udea.pi2.carapp.R;
+import com.udea.pi2.carapp.model.Route;
 import com.udea.pi2.carapp.model.User;
+
+import java.util.ArrayList;
 
 import callback.CallbackModel;
 
@@ -46,7 +51,7 @@ public class HomeActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         setTitle("Inicio");
-
+        rv_routes = findViewById(R.id.rv_routes_enables);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -56,7 +61,7 @@ public class HomeActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Actualizado!", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                        .setAction("Action", onClickListener()).show();
             }
         });
 
@@ -70,7 +75,47 @@ public class HomeActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         getCurrentUser();
+        getAllRoutes();
     }
+
+    public void setRoutes(ArrayList<Route> routes){
+
+        LinearLayoutManager lm = new LinearLayoutManager(this);
+        lm.setOrientation(LinearLayoutManager.VERTICAL);
+        rv_routes.setLayoutManager(lm);
+        RouteAdapter carsAdapter = new RouteAdapter(routes);
+        rv_routes.setAdapter(carsAdapter);
+
+
+
+    }
+
+    public View.OnClickListener onClickListener(){
+
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getAllRoutes();
+            }
+        };
+
+    }
+
+    private void getAllRoutes() {
+
+            Route.findAll(new CallbackModel() {
+                @Override
+                public void onSuccess(Object id) {
+                    setRoutes((ArrayList<Route>) id);
+                }
+
+                @Override
+                public void onError(Object model, String message) {
+
+                }
+            });
+        }
+
 
 
     @Override
