@@ -62,9 +62,9 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
         int mHour2 = calendar.get(Calendar.HOUR_OF_DAY);
         int mMi2 = calendar.get(Calendar.MINUTE);
 
-        holder.tv_arrive_date.setText(calendar.getDisplayName(Calendar.DATE,Calendar.ALL_STYLES,Locale.US));
+        holder.tv_arrive_date.setText(calendar.getTime().toString());
         Date dateDeparture = new Date((long)route.getDepartureTime());
-        //holder.tv_deperture_date.setText(df.format(dateDeparture));
+        holder.tv_deperture_date.setText(calendar2.getTime().toString());
 
     }
 

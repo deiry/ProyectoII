@@ -387,7 +387,7 @@ public class RouteActivity extends AppCompatActivity {
                 date = format.parse(dtStart);
                 System.out.println(date);
                 route.setArrivalTime(date.getTime());
-                route.setDepartureTime(route.getArrivalTime()-(30*60*100));
+                route.setDepartureTime(route.getArrivalTime());
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -421,8 +421,8 @@ public class RouteActivity extends AppCompatActivity {
             try {
                 date = format.parse(dtStart);
                 System.out.println(date);
-                round.setArrivalTime((long) date.getTime());
-                round.setDepartureTime(route.getArrivalTime()+(30*60*100));
+                round.setArrivalTime(date.getTime());
+                round.setDepartureTime(route.getArrivalTime());
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -468,8 +468,8 @@ public class RouteActivity extends AppCompatActivity {
             try {
                 date = format.parse(dtStart);
                 System.out.println(date);
-                route.setArrivalTime((long) date.getTime());
-                route.setDepartureTime(route.getArrivalTime()-(30*60*100));
+                route.setArrivalTime(date.getTime());
+                route.setDepartureTime(route.getArrivalTime());
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -489,6 +489,7 @@ public class RouteActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(Object id) {
                     Toast.makeText(getApplicationContext(),"Ruta guardada correctamente.",Toast.LENGTH_LONG).show();
+                    finishApp();
                 }
 
                 @Override
